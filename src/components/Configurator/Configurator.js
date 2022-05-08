@@ -142,43 +142,6 @@ export default function Configurator(props) {
                 <Text fontSize="sm" mb="16px">
                   Choose between 2 different sidenav types.
                 </Text>
-                <Box>
-                  <Link
-                    href="https://www.creative-tim.com/product/purity-ui-dashboard"
-                    w="100%"
-                    mb="16px"
-                  >
-                    <Button
-                      w="100%"
-                      mb="16px"
-                      bg={bgButton}
-                      color={colorButton}
-                      fontSize="xs"
-                      variant="no-hover"
-                      px="30px"
-                    >
-                      Free Download
-                    </Button>
-                  </Link>
-                  <Link
-                    href="https://demos.creative-tim.com/docs-purity-ui-dashboard/"
-                    w="100%"
-                  >
-                    <Button
-                      w="100%"
-                      bg={secondaryButtonBg}
-                      border="1px solid"
-                      borderColor={secondaryButtonBorder}
-                      color={secondaryButtonColor}
-                      fontSize="xs"
-                      variant="no-hover"
-                      px="20px"
-                      mb="16px"
-                    >
-                      <Text textDecorationColor="none">Documentation</Text>
-                    </Button>
-                  </Link>
-                </Box>
                 <Flex
                   justifyContent="center"
                   alignItems="center"

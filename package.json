@@ -1,6 +1,10 @@
 {
-  "name": "purity-dashboard-react",
-  "version": "2.0.1",
+  "name": "invetht",
+  "version": "0.0.1",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/michaelg9/invetht"
+  },
   "homepage": ".",
   "private": true,
   "dependencies": {

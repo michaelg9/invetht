@@ -1,7 +1,5 @@
-// chakra imports
 import { Box, ChakraProvider, Portal } from "@chakra-ui/react";
-import Footer from "components/Footer/Footer";
-// core components
+
 import AuthNavbar from "components/Navbars/AuthNavbar";
 import React from "react";
 import { Redirect, Route, Switch } from "react-router-dom";
@@ -89,7 +87,7 @@ export default function Pages(props) {
         <Portal containerRef={navRef}>
           <AuthNavbar
             secondary={getActiveNavbar(routes)}
-            logoText="PURITY UI DASHBOARD"
+            logoText="Invetht"
           />
         </Portal>
         <Box w="100%">
@@ -99,9 +97,6 @@ export default function Pages(props) {
               <Redirect from="/auth" to="/auth/login-page" />
             </Switch>
           </Box>
-        </Box>
-        <Box px="24px" mx="auto" width="1044px" maxW="100%">
-          <Footer />
         </Box>
       </Box>
     </ChakraProvider>

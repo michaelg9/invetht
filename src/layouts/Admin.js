@@ -1,7 +1,6 @@
 // Chakra imports
 import { ChakraProvider, Portal, useDisclosure } from "@chakra-ui/react";
 import Configurator from "components/Configurator/Configurator";
-import Footer from "components/Footer/Footer";
 // Layout components
 import AdminNavbar from "components/Navbars/AdminNavbar";
 import Sidebar from "components/Sidebar";
@@ -15,15 +14,19 @@ import FixedPlugin from "../components/FixedPlugin/FixedPlugin";
 import MainPanel from "../components/Layout/MainPanel";
 import PanelContainer from "../components/Layout/PanelContainer";
 import PanelContent from "../components/Layout/PanelContent";
+
 export default function Dashboard(props) {
   const { ...rest } = props;
   // states and functions
   const [sidebarVariant, setSidebarVariant] = useState("transparent");
   const [fixed, setFixed] = useState(false);
+  const { isOpen, onOpen, onClose } = useDisclosure();
+
+  if (localStorage['wallet'] == null) {
+    return <Redirect to="/auth/signup" />;
+  }
+
   // functions for changing the states from components
-  const getRoute = () => {
-    return window.location.pathname !== "/admin/full-screen-maps";
-  };
   const getActiveRoute = (routes) => {
     let activeRoute = "Default Brand Text";
     for (let i = 0; i < routes.length; i++) {
@@ -89,14 +92,12 @@ export default function Dashboard(props) {
       }
     });
   };
-  const { isOpen, onOpen, onClose } = useDisclosure();
-  document.documentElement.dir = "ltr";
-  // Chakra Color Mode
+
   return (
     <ChakraProvider theme={theme} resetCss={false}>
       <Sidebar
         routes={routes}
-        logoText={"PURITY UI DASHBOARD"}
+        logoText={"Invetht"}
         display="none"
         sidebarVariant={sidebarVariant}
         {...rest}
@@ -110,24 +111,21 @@ export default function Dashboard(props) {
         <Portal>
           <AdminNavbar
             onOpen={onOpen}
-            logoText={"PURITY UI DASHBOARD"}
+            logoText={"Invetht"}
             brandText={getActiveRoute(routes)}
             secondary={getActiveNavbar(routes)}
             fixed={fixed}
             {...rest}
           />
         </Portal>
-        {getRoute() ? (
-          <PanelContent>
-            <PanelContainer>
-              <Switch>
-                {getRoutes(routes)}
-                <Redirect from="/admin" to="/admin/dashboard" />
-              </Switch>
-            </PanelContainer>
-          </PanelContent>
-        ) : null}
-        <Footer />
+        <PanelContent>
+          <PanelContainer>
+            <Switch>
+              {getRoutes(routes)}
+              <Redirect from="/admin" to="/admin/dashboard" />
+            </Switch>
+          </PanelContainer>
+        </PanelContent>
         <Portal>
           <FixedPlugin
             secondary={getActiveNavbar(routes)}

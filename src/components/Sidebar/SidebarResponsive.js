@@ -25,7 +25,7 @@ function SidebarResponsive(props) {
     // to check for active links and opened collapses
     let location = useLocation();
     // this is for the rest of the collapses
-    const [state, setState] = React.useState({});
+    const [state, ] = React.useState({});
     const mainPanel = React.useRef();
 
     // Chakra Color Mode
@@ -39,8 +39,6 @@ function SidebarResponsive(props) {
     };
   
     const createLinks = (routes) => {
-
-  
       return routes.map((prop, key) => {
         if (prop.redirect || prop.listed === false) {
           return null;
@@ -179,7 +177,7 @@ function SidebarResponsive(props) {
       });
     };
     
-    const { logoText, routes, ...rest } = props;
+    const { logoText, routes } = props;
   
     var links = <>{createLinks(routes)}</>;
     //  BRAND

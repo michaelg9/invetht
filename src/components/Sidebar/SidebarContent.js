@@ -21,7 +21,7 @@ const SidebarContent = ({ logoText, routes }) => {
     // to check for active links and opened collapses
   let location = useLocation();
   // this is for the rest of the collapses
-  const [state, setState] = React.useState({});
+  const [state ] = React.useState({});
   const activeBg = useColorModeValue("white", "gray.700");
   const inactiveBg = useColorModeValue("white", "gray.700");
   const activeColor = useColorModeValue("gray.700", "white");

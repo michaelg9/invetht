@@ -1,4 +1,3 @@
-// Chakra imports
 import {
   Box,
   Button,
@@ -20,17 +19,10 @@ import PropTypes from "prop-types";
 import React from "react";
 import { NavLink } from "react-router-dom";
 import routes from "routes";
+
 export default function AuthNavbar(props) {
-  const [open, setOpen] = React.useState(false);
-  const handleDrawerToggle = () => {
-    setOpen(!open);
-  };
   const { logo, logoText, secondary, ...rest } = props;
-  // verifies if routeName is the one active (in browser input)
-  const activeRoute = (routeName) => {
-    return window.location.href.indexOf(routeName) > -1 ? true : false;
-  };
-  // Chakra color mode
+
   let navbarIcon = useColorModeValue("gray.700", "gray.200");
   let mainText = useColorModeValue("gray.700", "gray.200");
   let navbarBg = useColorModeValue(
@@ -50,12 +42,8 @@ export default function AuthNavbar(props) {
     "drop-shadow(0px 7px 23px rgba(0, 0, 0, 0.05))"
   );
   let navbarBackdrop = "blur(21px)";
-  let bgButton = useColorModeValue(
-    "linear-gradient(81.62deg, #313860 2.25%, #151928 79.87%)",
-    "gray.800"
-  );
+
   let navbarPosition = "fixed";
-  let colorButton = "white";
   if (props.secondary === true) {
     navbarIcon = "white";
     navbarBg = "none";
@@ -63,8 +51,6 @@ export default function AuthNavbar(props) {
     navbarShadow = "initial";
     navbarFilter = "initial";
     navbarBackdrop = "none";
-    bgButton = "white";
-    colorButton = "gray.700";
     mainText = "white";
     navbarPosition = "absolute";
   }
@@ -91,7 +77,6 @@ export default function AuthNavbar(props) {
         <Button
           fontSize="sm"
           ms="0px"
-          me="0px"
           px="0px"
           me={{ sm: "2px", md: "16px" }}
           color={navbarIcon}
@@ -105,7 +90,6 @@ export default function AuthNavbar(props) {
         <Button
           fontSize="sm"
           ms="0px"
-          me="0px"
           px="0px"
           me={{ sm: "2px", md: "16px" }}
           color={navbarIcon}
@@ -121,7 +105,6 @@ export default function AuthNavbar(props) {
         <Button
           fontSize="sm"
           ms="0px"
-          me="0px"
           px="0px"
           me={{ sm: "2px", md: "16px" }}
           color={navbarIcon}
@@ -183,7 +166,7 @@ export default function AuthNavbar(props) {
             {...rest}
           />
         </Box>
-        {/* {linksAuth} */}
+        {linksAuth}
       </Flex>
     </Flex>
   );

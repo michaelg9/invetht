@@ -13,7 +13,6 @@ import Projects from "./components/Projects";
 
 function Profile() {
   // Chakra color mode
-  const textColor = useColorModeValue("gray.700", "white");
   const bgProfile = useColorModeValue(
     "hsla(0,0%,100%,.8)",
     "linear-gradient(112.83deg, rgba(255, 255, 255, 0.21) 0%, rgba(255, 255, 255, 0) 110.84%)"

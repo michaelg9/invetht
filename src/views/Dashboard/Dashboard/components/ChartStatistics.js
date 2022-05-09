@@ -4,9 +4,7 @@ import React from "react";
 
 const ChartStatistics = ({ title, amount, icon, percentage }) => {
   const iconTeal = useColorModeValue("teal.300", "teal.300");
-  const iconBoxInside = useColorModeValue("white", "white");
   const textColor = useColorModeValue("gray.700", "white");
-  const overlayRef = React.useRef();
   return (
     <Flex direction='column'>
       <Flex alignItems='center'>

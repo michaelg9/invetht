@@ -11,7 +11,7 @@ function Sidebar(props) {
   const mainPanel = React.useRef();
   let variantChange = "0.2s linear";
 
-  const { logoText, routes, sidebarVariant } = props;
+  const { routes, sidebarVariant } = props;
 
   let sidebarBg = useColorModeValue("white", "gray.700");
   let sidebarRadius = "0px";

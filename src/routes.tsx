@@ -13,11 +13,12 @@ import {
   DocumentIcon,
   RocketIcon,
 } from "components/Icons/Icons";
+import ConnectWallet from "ether/ConnectWallet";
 
 const dashRoutes = [
   {
-    path: "/dashboard",
-    name: "Dashboard",
+    path: "/portofolio",
+    name: "Portofolio",
     icon: <HomeIcon color="inherit" />,
     component: Dashboard,
     layout: "/admin",
@@ -34,6 +35,13 @@ const dashRoutes = [
     name: "Billing",
     icon: <CreditIcon color="inherit" />,
     component: Billing,
+    layout: "/admin",
+  },
+  {
+    path: "/connect",
+    name: "Connect Wallet",
+    icon: <CreditIcon color="inherit" />,
+    component: ConnectWallet,
     layout: "/admin",
   },
   {
@@ -54,6 +62,7 @@ const dashRoutes = [
         name: "Sign In",
         icon: <DocumentIcon color="inherit" />,
         component: SignIn,
+        listed: false,
         layout: "/auth",
       },
       {
@@ -62,6 +71,7 @@ const dashRoutes = [
         icon: <RocketIcon color="inherit" />,
         secondaryNavbar: true,
         component: SignUp,
+        listed: false,
         layout: "/auth",
       },
     ],

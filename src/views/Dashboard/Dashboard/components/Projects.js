@@ -1,4 +1,3 @@
-// Chakra imports
 import {
   Flex,
   Icon,

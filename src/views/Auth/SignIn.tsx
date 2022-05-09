@@ -13,11 +13,16 @@ import {
 } from "@chakra-ui/react";
 // Assets
 import signInImage from "assets/img/signInImage.png";
+import { useState } from "react";
+import { useHistory } from "react-router-dom";
 
 function SignIn() {
   // Chakra color mode
+  const history = useHistory();
   const titleColor = useColorModeValue("teal.300", "teal.200");
   const textColor = useColorModeValue("gray.400", "white");
+  const [username, setUsername] = useState("");
+  const [password, setPassword] = useState("");
   return (
     <Flex position='relative' mb='40px'>
       <Flex
@@ -57,6 +62,8 @@ function SignIn() {
               <Input
                 borderRadius='15px'
                 mb='24px'
+                value={username}
+                onChange={e => setUsername(e.target.value)}
                 fontSize='sm'
                 type='text'
                 placeholder='Your email adress'
@@ -72,6 +79,8 @@ function SignIn() {
                 type='password'
                 placeholder='Your password'
                 size='lg'
+                value={password}
+                onChange={e => setPassword(e.target.value)}
               />
               <FormControl display='flex' alignItems='center'>
                 <Switch id='remember-login' colorScheme='teal' me='10px' />
@@ -87,9 +96,13 @@ function SignIn() {
                 fontSize='10px'
                 type='submit'
                 bg='teal.300'
+                disabled={!username || !password}
                 w='100%'
                 h='45'
                 mb='20px'
+                onClick={() => {
+                  history.push('/')
+                }}
                 color='white'
                 mt='20px'
                 _hover={{
@@ -109,7 +122,7 @@ function SignIn() {
               mt='0px'>
               <Text color={textColor} fontWeight='medium'>
                 Don't have an account?
-                <Link color={titleColor} as='span' ms='5px' fontWeight='bold'>
+                <Link color={titleColor} href={'/#/auth/signup'} ms='5px' fontWeight='bold'>
                   Sign Up
                 </Link>
               </Text>

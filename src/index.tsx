@@ -15,19 +15,34 @@
 * The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
 
 */
-import ReactDOM from "react-dom";
+import { createRoot } from "react-dom/client";
 import { HashRouter, Route, Switch, Redirect } from "react-router-dom";
+import { providers } from 'ethers';
+import { AsyncSendable } from "ethers/providers";
+import { Web3ReactProvider } from "@web3-react/core";
 
 import AuthLayout from "layouts/Auth";
 import AdminLayout from "layouts/Admin";
 
-ReactDOM.render(
-  <HashRouter>
-    <Switch>
-      <Route path={`/auth`} component={AuthLayout} />
-      <Route path={`/admin`} component={AdminLayout} />
-      <Redirect from={`/`} to="/admin/dashboard" />
-    </Switch>
-  </HashRouter>,
-  document.getElementById("root")
+const container = document.getElementById("root");
+const root = createRoot(container!);
+
+const getLibrary = (provider: AsyncSendable) => {
+  console.log(providers);
+  const library = new providers.Web3Provider(provider);
+  library.pollingInterval = 8000; // frequency provider is polling
+  console.log("here", library)
+  return library;
+};
+
+root.render(
+  <Web3ReactProvider getLibrary={getLibrary}>
+    <HashRouter>
+      <Switch>
+        <Route path={`/auth`} component={AuthLayout} />
+        <Route path={`/admin`} component={AdminLayout} />
+        <Redirect from={`/`} to="/admin/portofolio" />
+      </Switch>
+    </HashRouter>
+    </Web3ReactProvider>
 );

@@ -4,12 +4,12 @@ import {
     Link,
     Stack,
     Text,
+    Icon,
     useColorModeValue
 } from "@chakra-ui/react";
 import IconBox from "components/Icons/IconBox";
 import { CreativeTimLogo } from "components/Icons/Icons";
 import { Separator } from "components/Separator/Separator";
-import { SidebarHelp } from "components/Sidebar/SidebarHelp";
 import React from "react";
 import { NavLink, useLocation } from "react-router-dom";
 
@@ -22,20 +22,18 @@ const SidebarContent = ({ logoText, routes }) => {
   let location = useLocation();
   // this is for the rest of the collapses
   const [state, setState] = React.useState({});
-
+  const activeBg = useColorModeValue("white", "gray.700");
+  const inactiveBg = useColorModeValue("white", "gray.700");
+  const activeColor = useColorModeValue("gray.700", "white");
+  const inactiveColor = useColorModeValue("gray.400", "gray.400");
   // verifies if routeName is the one active (in browser input)
   const activeRoute = (routeName) => {
     return location.pathname === routeName ? "active" : "";
   };
   const createLinks = (routes) => {
-    // Chakra Color Mode
-    const activeBg = useColorModeValue("white", "gray.700");
-    const inactiveBg = useColorModeValue("white", "gray.700");
-    const activeColor = useColorModeValue("gray.700", "white");
-    const inactiveColor = useColorModeValue("gray.400", "gray.400");
 
     return routes.map((prop, key) => {
-      if (prop.redirect) {
+      if (prop.redirect || prop.listed === false) {
         return null;
       }
       if (prop.category) {
@@ -198,7 +196,6 @@ const SidebarContent = ({ logoText, routes }) => {
           <Stack direction="column" mb="40px">
             <Box>{links}</Box>
           </Stack>
-          <SidebarHelp />
     </>
   )
 }

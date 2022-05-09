@@ -14,12 +14,14 @@ import {
 } from "@chakra-ui/react";
 import BgSignUp from "assets/img/BgSignUp.png";
 import { FaApple, FaFacebook, FaGoogle } from "react-icons/fa";
+import { useHistory } from "react-router-dom";
 
 function SignUp() {
   const titleColor = useColorModeValue("teal.300", "teal.200");
   const textColor = useColorModeValue("gray.700", "white");
   const bgColor = useColorModeValue("white", "gray.700");
   const bgIcons = useColorModeValue("teal.200", "rgba(255, 255, 255, 0.5)");
+  const history = useHistory();
   return (
     <Flex
       direction='column'
@@ -196,8 +198,7 @@ function SignUp() {
               color='white'
               fontWeight='bold'
               onClick={() => {
-                localStorage['wallet'] = true;
-
+                history.push('/');
               }}
               w='100%'
               h='45'
@@ -221,9 +222,8 @@ function SignUp() {
               Already have an account?
               <Link
                 color={titleColor}
-                as='span'
+                href={'/#/auth/signin'}
                 ms='5px'
-                href='#'
                 fontWeight='bold'>
                 Sign In
               </Link>

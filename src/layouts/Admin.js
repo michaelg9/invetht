@@ -22,10 +22,6 @@ export default function Dashboard(props) {
   const [fixed, setFixed] = useState(false);
   const { isOpen, onOpen, onClose } = useDisclosure();
 
-  if (localStorage['wallet'] == null) {
-    return <Redirect to="/auth/signup" />;
-  }
-
   // functions for changing the states from components
   const getActiveRoute = (routes) => {
     let activeRoute = "Default Brand Text";
@@ -122,7 +118,7 @@ export default function Dashboard(props) {
           <PanelContainer>
             <Switch>
               {getRoutes(routes)}
-              <Redirect from="/admin" to="/admin/dashboard" />
+              <Redirect from="/admin" to="/admin/portofolio" />
             </Switch>
           </PanelContainer>
         </PanelContent>

@@ -13,15 +13,14 @@ function Sidebar(props) {
 
   const { logoText, routes, sidebarVariant } = props;
 
-  //  BRAND
-  //  Chakra Color Mode
-  let sidebarBg = "none";
+  let sidebarBg = useColorModeValue("white", "gray.700");
   let sidebarRadius = "0px";
   let sidebarMargins = "0px";
   if (sidebarVariant === "opaque") {
-    sidebarBg = useColorModeValue("white", "gray.700");
     sidebarRadius = "16px";
     sidebarMargins = "16px 0px 16px 16px";
+  } else { 
+    sidebarBg = "none";
   }
 
   // SIDEBAR

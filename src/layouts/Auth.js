@@ -80,7 +80,6 @@ export default function Pages(props) {
     });
   };
   const navRef = React.useRef();
-  document.documentElement.dir = "ltr";
   return (
     <ChakraProvider theme={theme} resetCss={false} w="100%">
       <Box ref={navRef} w="100%">
@@ -94,7 +93,7 @@ export default function Pages(props) {
           <Box ref={wrapper} w="100%">
             <Switch>
               {getRoutes(routes)}
-              <Redirect from="/auth" to="/auth/login-page" />
+              <Redirect from="/auth" to="/auth/signin" />
             </Switch>
           </Box>
         </Box>

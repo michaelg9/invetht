@@ -87,7 +87,7 @@ export default function AuthNavbar(props) {
   );
   var linksAuth = (
     <HStack display={{ sm: "none", lg: "flex" }}>
-      <NavLink to="/admin/dashboard">
+      <NavLink to="/admin/portofolio">
         <Button
           fontSize="sm"
           ms="0px"

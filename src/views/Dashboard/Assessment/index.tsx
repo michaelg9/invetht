@@ -1,7 +1,7 @@
 import { Text, VStack, HStack, Button } from "@chakra-ui/react";
 import { useWeb3React } from "@web3-react/core";
 import { useHistory } from "react-router-dom";
-import ethers from "ethers";
+import { ethers } from "ethers";
 import IBabController from "./IBabController.json";
 
 export default function Assessment() {

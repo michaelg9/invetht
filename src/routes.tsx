@@ -1,5 +1,6 @@
 import Dashboard from "views/Dashboard/Dashboard";
 import Tables from "views/Dashboard/Tables";
+import Assessment from "views/Dashboard/Assessment";
 import Billing from "views/Dashboard/Billing";
 import Profile from "views/Dashboard/Profile";
 import SignIn from "views/Auth/SignIn";
@@ -42,6 +43,13 @@ const dashRoutes = [
     name: "Connect Wallet",
     icon: <CreditIcon color="inherit" />,
     component: ConnectWallet,
+    layout: "/admin",
+  },
+  {
+    path: "/assessment",
+    name: "Assessment",
+    icon: <RocketIcon color="inherit" />,
+    component: Assessment,
     layout: "/admin",
   },
   {

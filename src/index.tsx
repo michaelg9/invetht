@@ -17,7 +17,7 @@
 */
 import { createRoot } from "react-dom/client";
 import { HashRouter, Route, Switch, Redirect } from "react-router-dom";
-import { providers } from 'ethers';
+import { providers } from "ethers";
 import { AsyncSendable } from "ethers/providers";
 import { Web3ReactProvider } from "@web3-react/core";
 
@@ -28,10 +28,9 @@ const container = document.getElementById("root");
 const root = createRoot(container!);
 
 const getLibrary = (provider: AsyncSendable) => {
-  console.log(providers);
   const library = new providers.Web3Provider(provider);
   library.pollingInterval = 8000; // frequency provider is polling
-  console.log("here", library)
+
   return library;
 };
 
@@ -44,5 +43,5 @@ root.render(
         <Redirect from={`/`} to="/admin/portofolio" />
       </Switch>
     </HashRouter>
-    </Web3ReactProvider>
+  </Web3ReactProvider>
 );

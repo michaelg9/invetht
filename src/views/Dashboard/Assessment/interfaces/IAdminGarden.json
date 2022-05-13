@@ -1,0 +1,190 @@
+{
+  "_format": "hh-sol-artifact-1",
+  "contractName": "IAdminGarden",
+  "sourceName": "contracts/interfaces/IGarden.sol",
+  "abi": [
+    {
+      "inputs": [
+        {
+          "internalType": "address[4]",
+          "name": "_newCreators",
+          "type": "address[4]"
+        }
+      ],
+      "name": "addExtraCreators",
+      "outputs": [],
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "address",
+          "name": "_token",
+          "type": "address"
+        },
+        {
+          "internalType": "address",
+          "name": "_address",
+          "type": "address"
+        }
+      ],
+      "name": "delegateVotes",
+      "outputs": [],
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "address",
+          "name": "_reserveAsset",
+          "type": "address"
+        },
+        {
+          "internalType": "contract IBabController",
+          "name": "_controller",
+          "type": "address"
+        },
+        {
+          "internalType": "address",
+          "name": "_creator",
+          "type": "address"
+        },
+        {
+          "internalType": "string",
+          "name": "_name",
+          "type": "string"
+        },
+        {
+          "internalType": "string",
+          "name": "_symbol",
+          "type": "string"
+        },
+        {
+          "internalType": "uint256[]",
+          "name": "_gardenParams",
+          "type": "uint256[]"
+        },
+        {
+          "internalType": "uint256",
+          "name": "_initialContribution",
+          "type": "uint256"
+        },
+        {
+          "internalType": "bool[]",
+          "name": "_publicGardenStrategistsStewards",
+          "type": "bool[]"
+        }
+      ],
+      "name": "initialize",
+      "outputs": [],
+      "stateMutability": "payable",
+      "type": "function"
+    },
+    {
+      "inputs": [],
+      "name": "makeGardenPublic",
+      "outputs": [],
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "uint256",
+          "name": "_hardlockStartsAt",
+          "type": "uint256"
+        }
+      ],
+      "name": "resetHardlock",
+      "outputs": [],
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "bool",
+          "name": "_publicStrategist",
+          "type": "bool"
+        },
+        {
+          "internalType": "bool",
+          "name": "_publicStewards",
+          "type": "bool"
+        }
+      ],
+      "name": "setPublicRights",
+      "outputs": [],
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "address",
+          "name": "_newCreator",
+          "type": "address"
+        },
+        {
+          "internalType": "uint8",
+          "name": "_index",
+          "type": "uint8"
+        }
+      ],
+      "name": "transferCreatorRights",
+      "outputs": [],
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "address",
+          "name": "_newCreator",
+          "type": "address"
+        },
+        {
+          "internalType": "address[4]",
+          "name": "_newCreators",
+          "type": "address[4]"
+        }
+      ],
+      "name": "updateCreators",
+      "outputs": [],
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "uint256[12]",
+          "name": "_newParams",
+          "type": "uint256[12]"
+        }
+      ],
+      "name": "updateGardenParams",
+      "outputs": [],
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "uint256",
+          "name": "_verifiedCategory",
+          "type": "uint256"
+        }
+      ],
+      "name": "verifyGarden",
+      "outputs": [],
+      "stateMutability": "nonpayable",
+      "type": "function"
+    }
+  ],
+  "bytecode": "0x",
+  "deployedBytecode": "0x",
+  "linkReferences": {},
+  "deployedLinkReferences": {}
+}

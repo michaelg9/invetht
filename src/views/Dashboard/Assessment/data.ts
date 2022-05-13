@@ -1,104 +1,80 @@
 import { ethers } from "ethers";
 
 async function getGardenData(gardenContract: ethers.Contract) {
-  const name = await gardenContract.name();
-//   const symbol = await gardenContract.symbol();
-//   const tokenURI = await gardenContract.tokenURI();
+  //   const symbol = await gardenContract.symbol();
+  //   const tokenURI = await gardenContract.tokenURI();
 
-  const privateGarden = await gardenContract.privateGarden();
-  const publicStrategists = await gardenContract.publicStrategists();
-  const publicStewards = await gardenContract.publicStewards();
-  const controller = await gardenContract.controller();
-  const creator = await gardenContract.creator();
+  const promises = [
+    gardenContract.name(),
+    gardenContract.privateGarden(),
+    gardenContract.publicStrategists(),
+    gardenContract.publicStewards(),
+    gardenContract.controller(),
+    gardenContract.creator(),
+    gardenContract.reserveAsset(),
+    gardenContract.verifiedCategory(),
+    gardenContract.canMintNftAfter(),
+    gardenContract.hardlockStartsAt(),
+    gardenContract.totalContributors(),
+    gardenContract.gardenInitializedAt(),
+    gardenContract.minContribution(),
+    gardenContract.depositHardlock(),
+    gardenContract.minLiquidityAsset(),
+    gardenContract.minStrategyDuration(),
+    gardenContract.maxStrategyDuration(),
+    gardenContract.reserveAssetRewardsSetAside(),
+    gardenContract.absoluteReturns(),
+    gardenContract.totalStake(),
+    gardenContract.minVotesQuorum(),
+    gardenContract.minVoters(),
+    gardenContract.maxDepositLimit(),
+    gardenContract.strategyCooldownPeriod(),
+    gardenContract.getStrategies(),
+    gardenContract.getFinalizedStrategies(),
+    gardenContract.keeperDebt(),
+    gardenContract.totalKeeperFees(),
+    gardenContract.lastPricePerShare(),
+    gardenContract.lastPricePerShareTS(),
+    gardenContract.pricePerShareDecayRate(),
+    gardenContract.pricePerShareDelta(),
+  ];
 
-  const reserveAsset = await gardenContract.reserveAsset();
-
-  const verifiedCategory = await gardenContract.verifiedCategory();
-
-  const canMintNftAfter = await gardenContract.canMintNftAfter();
-
-  const hardlockStartsAt = await gardenContract.hardlockStartsAt();
-
-  const totalContributors = await gardenContract.totalContributors();
-
-  const gardenInitializedAt = await gardenContract.gardenInitializedAt();
-
-  const minContribution = await gardenContract.minContribution();
-
-  const depositHardlock = await gardenContract.depositHardlock();
-
-  const minLiquidityAsset = await gardenContract.minLiquidityAsset();
-
-  const minStrategyDuration = await gardenContract.minStrategyDuration();
-
-  const maxStrategyDuration = await gardenContract.maxStrategyDuration();
-
-  const reserveAssetRewardsSetAside = await gardenContract.reserveAssetRewardsSetAside();
-
-  const absoluteReturns = await gardenContract.absoluteReturns();
-
-  const totalStake = await gardenContract.totalStake();
-
-  const minVotesQuorum = await gardenContract.minVotesQuorum();
-
-  const minVoters = await gardenContract.minVoters();
-
-  const maxDepositLimit = await gardenContract.maxDepositLimit();
-
-  const strategyCooldownPeriod = await gardenContract.strategyCooldownPeriod();
-
-  const getStrategies = await gardenContract.getStrategies();
-
-  const getFinalizedStrategies = await gardenContract.getFinalizedStrategies();
-
-  const keeperDebt = await gardenContract.keeperDebt();
-
-  const totalKeeperFees = await gardenContract.totalKeeperFees();
-
-  const lastPricePerShare = await gardenContract.lastPricePerShare();
-
-  const lastPricePerShareTS = await gardenContract.lastPricePerShareTS();
-
-  const pricePerShareDecayRate = await gardenContract.pricePerShareDecayRate();
-
-  const pricePerShareDelta = await gardenContract.pricePerShareDelta();
-
-  return {
-    name,
-    // symbol,
-    // tokenURI,
-    privateGarden,
-    publicStrategists,
-    publicStewards,
-    controller,
-    creator,
-    reserveAsset,
-    verifiedCategory,
-    canMintNftAfter,
-    hardlockStartsAt,
-    totalContributors,
-    gardenInitializedAt,
-    minContribution,
-    depositHardlock,
-    minLiquidityAsset,
-    minStrategyDuration,
-    maxStrategyDuration,
-    reserveAssetRewardsSetAside,
-    absoluteReturns,
-    totalStake,
-    minVotesQuorum,
-    minVoters,
-    maxDepositLimit,
-    strategyCooldownPeriod,
-    getStrategies,
-    getFinalizedStrategies,
-    keeperDebt,
-    totalKeeperFees,
-    lastPricePerShare,
-    lastPricePerShareTS,
-    pricePerShareDecayRate,
-    pricePerShareDelta,
-  };
+  return Promise.all(promises).then((promises) => {
+    return {
+      name: promises[0],
+      privateGarden: promises[1],
+      publicStrategists: promises[2],
+      publicStewards: promises[3],
+      controller: promises[4],
+      creator: promises[5],
+      reserveAsset: promises[6],
+      verifiedCategory: promises[7],
+      canMintNftAfter: promises[8],
+      hardlockStartsAt: promises[9],
+      totalContributors: promises[10],
+      gardenInitializedAt: promises[11],
+      minContribution: promises[12],
+      depositHardlock: promises[13],
+      minLiquidityAsset: promises[14],
+      minStrategyDuration: promises[15],
+      maxStrategyDuration: promises[16],
+      reserveAssetRewardsSetAside: promises[17],
+      absoluteReturns: promises[18],
+      totalStake: promises[19],
+      minVotesQuorum: promises[20],
+      minVoters: promises[21],
+      maxDepositLimit: promises[22],
+      strategyCooldownPeriod: promises[23],
+      getStrategies: promises[24],
+      getFinalizedStrategies: promises[25],
+      keeperDebt: promises[26],
+      totalKeeperFees: promises[27],
+      lastPricePerShare: promises[28],
+      lastPricePerShareTS: promises[29],
+      pricePerShareDecayRate: promises[30],
+      pricePerShareDelta: promises[31],
+    };
+  });
 }
 
 export { getGardenData };

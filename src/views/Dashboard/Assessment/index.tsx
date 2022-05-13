@@ -12,12 +12,14 @@ import {
 } from "./interfaces";
 import { useState } from "react";
 import { getGardenData } from "./data";
+import Gardens from "./Gardens";
 
 export default function Assessment() {
   const { active, library } = useWeb3React();
   const history = useHistory();
   const [controller, setController] = useState<null | ethers.Contract>(null);
   const [gardens, setGardens] = useState<object[]>([]);
+  const [gardensLoading, setGardensLoading] = useState<bool>(false);
 
   function getControllerContract() {
     const contractAddress = "0xD4a5b5fcB561dAF3aDF86F8477555B92FBa43b5F";
@@ -37,30 +39,37 @@ export default function Assessment() {
   }
 
   async function getGardens() {
-    const gardenAdresses = await controller!.getGardens();
+    setGardensLoading(true);
 
     const allGardenData = [];
 
-    for (const gardenAddress of gardenAdresses.slice(0, 1)) {
-      const gardenContract = new ethers.Contract(
-        gardenAddress,
-        [
-          ...IGarden.abi,
-          ...IERC20Metadata.abi,
-          ...ICoreGarden.abi,
-          ...IAdminGarden.abi,
-          ...IStrategyGarden.abi,
-        ],
-        library.getSigner()
-      );
+    try {
+      const gardenAdresses = await controller!.getGardens();
 
-      const gardenData = await getGardenData(gardenContract);
+      // TODO: For now just load the first few gardens
+      for (const gardenAddress of gardenAdresses.slice(0, 5)) {
+        const gardenContract = new ethers.Contract(
+          gardenAddress,
+          [
+            ...IGarden.abi,
+            ...IERC20Metadata.abi,
+            ...ICoreGarden.abi,
+            ...IAdminGarden.abi,
+            ...IStrategyGarden.abi,
+          ],
+          library.getSigner()
+        );
 
-      allGardenData.push({ ...gardenData, address: gardenAddress });
+        const gardenData = await getGardenData(gardenContract);
+
+        allGardenData.push({ ...gardenData, address: gardenAddress });
+      }
+
+      console.log({ allGardenData });
+      setGardens(allGardenData);
+    } finally {
+      setGardensLoading(false);
     }
-
-    console.log({ allGardenData });
-    setGardens(allGardenData);
 
     return allGardenData;
   }
@@ -89,11 +98,23 @@ export default function Assessment() {
 
       <HStack mt="3rem">
         {!gardens.length ? (
-          <Button onClick={getGardens} disabled={!active || !controller}>
+          <Button
+            onClick={getGardens}
+            disabled={!active || !controller}
+            isLoading={gardensLoading}
+          >
             Get Gardens
           </Button>
         ) : (
           <Text>Gardens loaded</Text>
+        )}
+      </HStack>
+
+      <HStack mt="3rem">
+        {!gardens.length ? (
+          <Text>No gardens found</Text>
+        ) : (
+          <Gardens title="Gardens" captions={["Name"]} data={gardens} />
         )}
       </HStack>
     </Flex>

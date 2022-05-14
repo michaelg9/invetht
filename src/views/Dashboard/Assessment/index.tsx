@@ -1,6 +1,5 @@
-import { Text, Flex, HStack, Button } from "@chakra-ui/react";
+import { Text, Flex, HStack, Spinner } from "@chakra-ui/react";
 import { useWeb3React } from "@web3-react/core";
-import { useHistory } from "react-router-dom";
 import { ethers } from "ethers";
 import {
   IBabController,
@@ -10,111 +9,89 @@ import {
   IAdminGarden,
   IStrategyGarden,
 } from "./interfaces";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { GardenDataType, getGardenData } from "./data";
 import Gardens from "./Gardens";
 
-export default function Assessment() {
-  const { active, library } = useWeb3React();
-  const history = useHistory();
-  const [controller, setController] = useState<null | ethers.Contract>(null);
-  const [gardens, setGardens] = useState<GardenDataType[]>([]);
-  const [gardensLoading, setGardensLoading] = useState<boolean>(false);
+function getControllerContract(library: any) {
+  const contractAddress = "0xD4a5b5fcB561dAF3aDF86F8477555B92FBa43b5F";
 
-  function getControllerContract() {
-    const contractAddress = "0xD4a5b5fcB561dAF3aDF86F8477555B92FBa43b5F";
+  const signer = library.getSigner();
 
-    const signer = library.getSigner();
+  const controllerContract = new ethers.Contract(
+    contractAddress,
+    IBabController.abi,
+    signer
+  );
+  // console.log({ controllerContract });
+  return controllerContract;
+}
 
-    const controllerContract = new ethers.Contract(
-      contractAddress,
-      IBabController.abi,
-      signer
+async function getGardens(controller: ethers.Contract, library: any) {
+  const allGardenData = [];
+  const gardenAddresses = await controller.getGardens();
+
+  // TODO: For now just load the first few gardens
+  for (const gardenAddress of gardenAddresses.slice(0, 5)) {
+    const gardenContract = new ethers.Contract(
+      gardenAddress,
+      [
+        ...IGarden.abi,
+        ...IERC20Metadata.abi,
+        ...ICoreGarden.abi,
+        ...IAdminGarden.abi,
+        ...IStrategyGarden.abi,
+      ],
+      library.getSigner()
     );
 
-    console.log({ controllerContract });
-    setController(controllerContract);
+    const gardenData = await getGardenData(gardenContract);
 
-    return controllerContract;
+    allGardenData.push({ ...gardenData, address: gardenAddress });
   }
 
-  async function getGardens() {
-    setGardensLoading(true);
+  console.log({ allGardenData });
+  return allGardenData;
+}
 
-    const allGardenData = [];
+export default function Assessment() {
+  const { active, library } = useWeb3React();
+  const [gardens, setGardens] = useState<GardenDataType[]>([]);
+  const [loading, setLoading] = useState<boolean>(false);
 
-    try {
-      const gardenAdresses = await controller!.getGardens();
-
-      // TODO: For now just load the first few gardens
-      for (const gardenAddress of gardenAdresses.slice(0, 5)) {
-        const gardenContract = new ethers.Contract(
-          gardenAddress,
-          [
-            ...IGarden.abi,
-            ...IERC20Metadata.abi,
-            ...ICoreGarden.abi,
-            ...IAdminGarden.abi,
-            ...IStrategyGarden.abi,
-          ],
-          library.getSigner()
-        );
-
-        const gardenData = await getGardenData(gardenContract);
-
-        allGardenData.push({ ...gardenData, address: gardenAddress });
+  useEffect(() => {
+    if (!active) return;
+    async function load() {
+      setLoading(true);
+      try {
+        const controller = getControllerContract(library);
+        setGardens(await getGardens(controller, library));
+      } finally {
+        setLoading(false);
       }
-
-      console.log({ allGardenData });
-      setGardens(allGardenData);
-    } finally {
-      setGardensLoading(false);
     }
+    load();
+  }, [active]);
 
-    return allGardenData;
+  if (!active) {
+    return (
+      <Flex flexDirection="column" pt={{ base: "120px", md: "75px" }}>
+        <div>No connected wallet found</div>
+      </Flex>
+    );
+  } else if (loading) {
+    return <Flex flexDirection="column" pt={{ base: "120px", md: "75px" }}>
+      <Spinner />
+    </Flex>;
   }
 
   return (
     <Flex flexDirection="column" pt={{ base: "120px", md: "75px" }}>
-      <HStack>
-        {!active ? (
-          <Button onClick={() => history.push("/admin/connect")}>
-            Connect Wallet and come back
-          </Button>
-        ) : (
-          <Text>Wallet connected</Text>
-        )}
-      </HStack>
-
-      <HStack mt={"3rem"}>
-        {!controller ? (
-          <Button onClick={getControllerContract} disabled={!active}>
-            Get Controller Contract
-          </Button>
-        ) : (
-          <Text>Controller Contract loaded</Text>
-        )}
-      </HStack>
-
       <HStack mt="3rem">
-        {!gardens.length ? (
-          <Button
-            onClick={getGardens}
-            disabled={!active || !controller}
-            isLoading={gardensLoading}
-          >
-            Get Gardens
-          </Button>
+        {!gardens ? (
+          <Text>No options found</Text>
         ) : (
-          <Text>Gardens loaded</Text>
-        )}
-      </HStack>
-
-      <HStack mt="3rem">
-        {!gardens.length ? (
-          <Text>No gardens found</Text>
-        ) : (
-          <Gardens title="Gardens" captions={["Name"]} data={gardens} />
+          <Gardens title="Explore" captions={["Vault Name", "Net Asset Value", "90D", "30D", "APY"]} data={gardens} />
         )}
       </HStack>
     </Flex>

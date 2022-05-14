@@ -27,7 +27,6 @@ export default function ConnectWallet() {
     deactivate,
     active
   } = useWeb3React();
-  console.log(active, account, chainId);
   const [signature, setSignature] = useState("");
   const [error, setError] = useState<Error>();
   const [network, setNetwork] = useState<number | null>(null);

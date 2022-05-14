@@ -19,6 +19,7 @@ import PropTypes from "prop-types";
 import React from "react";
 import { NavLink } from "react-router-dom";
 import routes from "routes";
+import { PUBLIC_URL } from "variables/general";
 
 export default function AuthNavbar(props) {
   const { logo, logoText, secondary, ...rest } = props;
@@ -56,7 +57,7 @@ export default function AuthNavbar(props) {
   }
   var brand = (
     <Link
-      href={`${process.env.PUBLIC_URL}/#/`}
+      href={`${PUBLIC_URL}/#/`}
       target="_blank"
       display="flex"
       lineHeight="100%"

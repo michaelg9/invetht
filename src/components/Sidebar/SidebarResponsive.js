@@ -20,6 +20,7 @@ import { Logo } from "components/Icons/Icons";
 import { Separator } from "components/Separator/Separator";
 import React from "react";
 import { NavLink, useLocation } from "react-router-dom";
+import { PUBLIC_URL } from "variables/general";
 
 function SidebarResponsive(props) {
     // to check for active links and opened collapses
@@ -189,7 +190,7 @@ function SidebarResponsive(props) {
     var brand = (
       <Box pt={"35px"} mb="8px">
         <Link
-          href={`${process.env.PUBLIC_URL}/#/`}
+          href={`${PUBLIC_URL}/#/`}
           target="_blank"
           display="flex"
           lineHeight="100%"

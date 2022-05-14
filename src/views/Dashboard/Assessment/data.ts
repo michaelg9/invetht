@@ -1,4 +1,7 @@
 import { ethers } from "ethers";
+import { FaPencilAlt } from "react-icons/fa";
+
+export type GardenDataType = Awaited<ReturnType<typeof getGardenData>>;
 
 async function getGardenData(gardenContract: ethers.Contract) {
   //   const symbol = await gardenContract.symbol();
@@ -73,6 +76,7 @@ async function getGardenData(gardenContract: ethers.Contract) {
       lastPricePerShareTS: promises[29],
       pricePerShareDecayRate: promises[30],
       pricePerShareDelta: promises[31],
+      logo: FaPencilAlt,
     };
   });
 }

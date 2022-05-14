@@ -10,6 +10,7 @@ import {
 } from "@chakra-ui/react";
 import Card from "components/Card/Card";
 import CardHeader from "components/Card/CardHeader";
+import { GardenDataType } from "./data";
 import GardenTableRow from "./GardenTableRow";
 
 export default function Gardens({
@@ -19,7 +20,7 @@ export default function Gardens({
 }: {
   title: string;
   captions: string[];
-  data: object[];
+  data: GardenDataType[];
 }) {
   const textColor = useColorModeValue("gray.700", "white");
 
@@ -37,7 +38,7 @@ export default function Gardens({
           <Tr my=".8rem" ps="0px">
             {captions.map((caption, idx) => {
               return (
-                <Th color="gray.400" key={idx} ps={idx === 0 ? "0px" : null}>
+                <Th color="gray.400" key={idx} ps={idx === 0 ? "0px" : undefined}>
                   {caption}
                 </Th>
               );

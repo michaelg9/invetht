@@ -11,15 +11,15 @@ import {
   IStrategyGarden,
 } from "./interfaces";
 import { useState } from "react";
-import { getGardenData } from "./data";
+import { GardenDataType, getGardenData } from "./data";
 import Gardens from "./Gardens";
 
 export default function Assessment() {
   const { active, library } = useWeb3React();
   const history = useHistory();
   const [controller, setController] = useState<null | ethers.Contract>(null);
-  const [gardens, setGardens] = useState<object[]>([]);
-  const [gardensLoading, setGardensLoading] = useState<bool>(false);
+  const [gardens, setGardens] = useState<GardenDataType[]>([]);
+  const [gardensLoading, setGardensLoading] = useState<boolean>(false);
 
   function getControllerContract() {
     const contractAddress = "0xD4a5b5fcB561dAF3aDF86F8477555B92FBa43b5F";

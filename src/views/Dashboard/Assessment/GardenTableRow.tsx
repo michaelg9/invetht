@@ -1,7 +1,6 @@
-import { Flex, Icon, Td, Text, Tr, useColorModeValue } from "@chakra-ui/react";
-import React from "react";
+import { As, Flex, Icon, Td, Text, Tr, useColorModeValue } from "@chakra-ui/react";
 
-function GardenTableRow(props: { logo: string; name: string }) {
+function GardenTableRow(props: { logo: As<any>; name: string }) {
   const { logo, name } = props;
   const textColor = useColorModeValue("gray.700", "white");
   return (

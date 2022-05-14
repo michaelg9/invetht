@@ -73,7 +73,7 @@ export default function HeaderLinks({ variant, children, fixed, secondary, onOpe
           cursor="pointer"
           me="16px"
           ms={{ base: "16px", xl: "0px" }}
-          color={ active ? "green" : 'red'}
+          color={ active ? "green" : navbarIcon }
           w="18px"
           h="18px"
           as={FaWallet}

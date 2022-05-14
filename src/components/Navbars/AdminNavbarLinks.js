@@ -15,13 +15,8 @@ import {
   Text,
   useColorModeValue,
 } from "@chakra-ui/react";
-// Assets
 import avatar1 from "assets/img/avatars/avatar1.png";
-import avatar2 from "assets/img/avatars/avatar2.png";
-import avatar3 from "assets/img/avatars/avatar3.png";
-// Custom Icons
 import { ProfileIcon, SettingsIcon } from "components/Icons/Icons";
-// Custom Components
 import { ItemContent } from "components/Menu/ItemContent";
 import SidebarResponsive from "components/Sidebar/SidebarResponsive";
 import PropTypes from "prop-types";
@@ -156,7 +151,7 @@ export default function HeaderLinks(props) {
                 info="by Josh Henry"
                 boldInfo="New Album"
                 aName="Josh Henry"
-                aSrc={avatar2}
+                aSrc={avatar1}
               />
             </MenuItem>
             <MenuItem borderRadius="8px">
@@ -165,7 +160,7 @@ export default function HeaderLinks(props) {
                 info="Payment succesfully completed!"
                 boldInfo=""
                 aName="Kara"
-                aSrc={avatar3}
+                aSrc={avatar1}
               />
             </MenuItem>
           </Flex>

@@ -7,11 +7,7 @@ import {
   useColorModeValue,
 } from "@chakra-ui/react";
 // Assets
-import avatar2 from "assets/img/avatars/avatar2.png";
-import avatar3 from "assets/img/avatars/avatar3.png";
-import avatar4 from "assets/img/avatars/avatar4.png";
-import avatar5 from "assets/img/avatars/avatar5.png";
-import avatar6 from "assets/img/avatars/avatar6.png";
+import avatar1 from "assets/img/avatars/avatar1.png";
 // Custom components
 import Card from "components/Card/Card";
 import CardBody from "components/Card/CardBody";
@@ -34,7 +30,7 @@ const Conversations = ({ title }) => {
           <Flex justifyContent='space-between' mb='21px'>
             <Flex align='center'>
               <Avatar
-                src={avatar2}
+                src={avatar1}
                 w='50px'
                 h='50px'
                 borderRadius='15px'
@@ -62,7 +58,7 @@ const Conversations = ({ title }) => {
           <Flex justifyContent='space-between' mb='21px'>
             <Flex align='center'>
               <Avatar
-                src={avatar3}
+                src={avatar1}
                 w='50px'
                 h='50px'
                 borderRadius='15px'
@@ -90,7 +86,7 @@ const Conversations = ({ title }) => {
           <Flex justifyContent='space-between' mb='21px'>
             <Flex align='center'>
               <Avatar
-                src={avatar4}
+                src={avatar1}
                 w='50px'
                 h='50px'
                 borderRadius='15px'
@@ -118,7 +114,7 @@ const Conversations = ({ title }) => {
           <Flex justifyContent='space-between' mb='21px'>
             <Flex align='center'>
               <Avatar
-                src={avatar5}
+                src={avatar1}
                 w='50px'
                 h='50px'
                 borderRadius='15px'
@@ -146,7 +142,7 @@ const Conversations = ({ title }) => {
           <Flex justifyContent='space-between' mb='21px'>
             <Flex align='center'>
               <Avatar
-                src={avatar6}
+                src={avatar1}
                 w='50px'
                 h='50px'
                 borderRadius='15px'

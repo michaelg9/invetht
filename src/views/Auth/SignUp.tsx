@@ -51,7 +51,7 @@ function SignUp() {
         mt='6.5rem'
         mb='30px'>
         <Text fontSize='4xl' color='white' fontWeight='bold'>
-          Invetht
+          Inveth
         </Text>
         <Text
           fontSize='md'

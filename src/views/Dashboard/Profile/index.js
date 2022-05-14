@@ -1,6 +1,5 @@
-// Chakra imports
 import { Flex, Grid, useColorModeValue } from "@chakra-ui/react";
-import avatar4 from "assets/img/avatars/avatar4.png";
+import avatar1 from "assets/img/avatars/avatar1.png";
 import ProfileBgImage from "assets/img/ProfileBackground.png";
 import React from "react";
 import { FaCube, FaPenFancy } from "react-icons/fa";
@@ -12,7 +11,6 @@ import ProfileInformation from "./components/ProfileInformation";
 import Projects from "./components/Projects";
 
 function Profile() {
-  // Chakra color mode
   const bgProfile = useColorModeValue(
     "hsla(0,0%,100%,.8)",
     "linear-gradient(112.83deg, rgba(255, 255, 255, 0.21) 0%, rgba(255, 255, 255, 0) 110.84%)"
@@ -23,7 +21,7 @@ function Profile() {
       <Header
         backgroundHeader={ProfileBgImage}
         backgroundProfile={bgProfile}
-        avatarImage={avatar4}
+        avatarImage={avatar1}
         name={"Esthera Jackson"}
         email={"esthera@simmmple.com"}
         tabs={[

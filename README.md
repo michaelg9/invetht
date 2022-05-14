@@ -1,4 +1,4 @@
-# [Invetht](https://storage.googleapis.com/invetht/index.html#/admin/portofolio)
+# [Inveth](https://storage.googleapis.com/invetht/index.html#/admin/portofolio)
 
 Beginner friendly crypto investing Dapp project for HackMoney 2022
 

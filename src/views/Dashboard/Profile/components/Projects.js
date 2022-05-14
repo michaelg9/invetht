@@ -8,9 +8,7 @@ import {
   useColorModeValue,
 } from "@chakra-ui/react";
 // Assets
-import avatar2 from "assets/img/avatars/avatar2.png";
-import avatar4 from "assets/img/avatars/avatar4.png";
-import avatar6 from "assets/img/avatars/avatar6.png";
+import avatar1 from "assets/img/avatars/avatar1.png";
 import imageArchitect1 from "assets/img/ImageArchitect1.png";
 import imageArchitect2 from "assets/img/ImageArchitect2.png";
 import imageArchitect3 from "assets/img/ImageArchitect3.png";
@@ -50,7 +48,7 @@ const Projects = ({ title, description }) => {
             description={
               "As Uber works through a huge amount of internal management turmoil."
             }
-            avatars={[avatar2, avatar4, avatar6]}
+            avatars={[avatar1, avatar1, avatar1]}
           />
           <ProjectCard
             image={imageArchitect2}
@@ -59,7 +57,7 @@ const Projects = ({ title, description }) => {
             description={
               "Music is something that every person has his or her own specific opinion about."
             }
-            avatars={[avatar4, avatar2, avatar6, avatar4]}
+            avatars={[avatar1, avatar1, avatar1, avatar1]}
           />
           <ProjectCard
             image={imageArchitect3}
@@ -68,7 +66,7 @@ const Projects = ({ title, description }) => {
             description={
               "Different people have different taste, especially various types of music."
             }
-            avatars={[avatar2, avatar4, avatar6]}
+            avatars={[avatar1, avatar1, avatar1]}
           />
           <Button
             p='0px'

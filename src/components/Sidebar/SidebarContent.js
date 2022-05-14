@@ -8,7 +8,7 @@ import {
     useColorModeValue
 } from "@chakra-ui/react";
 import IconBox from "components/Icons/IconBox";
-import { CreativeTimLogo } from "components/Icons/Icons";
+import { Logo } from "components/Icons/Icons";
 import { Separator } from "components/Separator/Separator";
 import React from "react";
 import { NavLink, useLocation } from "react-router-dom";
@@ -186,7 +186,7 @@ const SidebarContent = ({ logoText, routes }) => {
         alignItems="center"
         fontSize="11px"
       >
-        <CreativeTimLogo w="32px" h="32px" me="10px" />
+        <Logo w="32px" h="32px" me="10px" />
         <Text fontSize="sm" mt="3px">
           {logoText}
         </Text>

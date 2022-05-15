@@ -31,7 +31,6 @@ async function getGardens(_controller: ethers.Contract, library: any) {
   const allGardenData = [];
   // const gardenAddresses = await controller.getGardens();
   const selectedGardenAddresses = COOL_GARDENS; // TODO: For now just load the first few gardens
-  console.log(selectedGardenAddresses);
   for (const gardenAddress of selectedGardenAddresses) {
     const gardenContract = new ethers.Contract(
       gardenAddress,
@@ -50,7 +49,7 @@ async function getGardens(_controller: ethers.Contract, library: any) {
     allGardenData.push({ ...gardenData, address: gardenAddress });
   }
 
-  console.log({ allGardenData });
+  // console.log({ allGardenData });
   return allGardenData;
 }
 

@@ -11,13 +11,8 @@ import { AiOutlineExclamation } from "react-icons/ai";
 import {
   FaArrowDown,
   FaArrowUp,
-  FaBell,
-  FaCreditCard,
   FaFilePdf,
-  FaHtml5,
-  FaShoppingCart,
 } from "react-icons/fa";
-import { SiDropbox } from "react-icons/si";
 
 export const dashboardTableData = [
   {
@@ -61,126 +56,6 @@ export const dashboardTableData = [
     members: [avatar1, avatar1, avatar1],
     budget: "$7,600",
     progression: 40,
-  },
-];
-
-export const timelineData = [
-  {
-    logo: FaBell,
-    title: "$2400, Design changes",
-    date: "22 DEC 7:20 PM",
-    color: "teal.300",
-  },
-  {
-    logo: FaHtml5,
-    title: "New order #4219423",
-    date: "21 DEC 11:21 PM",
-    color: "orange",
-  },
-  {
-    logo: FaShoppingCart,
-    title: "Server Payments for April",
-    date: "21 DEC 9:28 PM",
-    color: "blue.400",
-  },
-  {
-    logo: FaCreditCard,
-    title: "New card added for order #3210145",
-    date: "20 DEC 3:52 PM",
-    color: "orange.300",
-  },
-  {
-    logo: SiDropbox,
-    title: "Unlock packages for Development",
-    date: "19 DEC 11:35 PM",
-    color: "purple",
-  },
-  {
-    logo: AdobexdLogo,
-    title: "New order #9851258",
-    date: "18 DEC 4:41 PM",
-  },
-];
-export const rtlDashboardTableData = [
-  {
-    logo: AdobexdLogo,
-    name: "نسخة Purity UI",
-    members: [avatar1, avatar1, avatar1, avatar1, avatar1],
-    budget: "$14,000",
-    progression: 60,
-  },
-  {
-    logo: AtlassianLogo,
-    name: "إضافة مسار التقدم",
-    members: [avatar1, avatar1],
-    budget: "$3,000",
-    progression: 10,
-  },
-  {
-    logo: SlackLogo,
-    name: "إصلاح أخطاء النظام الأساسي",
-    members: [avatar1, avatar1],
-    budget: "غير مضبوط",
-    progression: 100,
-  },
-  {
-    logo: SpotifyLogo,
-    name: "إطلاق تطبيق الهاتف المحمول الخاص بنا",
-    members: [avatar1, avatar1, avatar1, avatar1],
-    budget: "$32,000",
-    progression: 100,
-  },
-  {
-    logo: JiraLogo,
-    name: "أضف صفحة التسعير الجديدة",
-    members: [avatar1, avatar1, avatar1, avatar1, avatar1],
-    budget: "$400",
-    progression: 25,
-  },
-  {
-    logo: InvisionLogo,
-    name: "إعادة تصميم متجر جديد على الإنترنت",
-    members: [avatar1, avatar1, avatar1],
-    budget: "$7,600",
-    progression: 40,
-  },
-];
-
-export const rtlTimelineData = [
-  {
-    logo: FaBell,
-    title: "$2400, تغييرات في التصميم",
-    date: "22 DEC 7:20 PM",
-    color: "teal.300",
-  },
-  {
-    logo: FaHtml5,
-    title: "طلب جديد #4219423",
-    date: "21 DEC 11:21 PM",
-    color: "orange",
-  },
-  {
-    logo: FaShoppingCart,
-    title: "مدفوعات الخادم لشهر أبريل",
-    date: "21 DEC 9:28 PM",
-    color: "blue.400",
-  },
-  {
-    logo: FaCreditCard,
-    title: "تمت إضافة بطاقة جديدة للطلب #3210145",
-    date: "20 DEC 3:52 PM",
-    color: "orange.300",
-  },
-  {
-    logo: SiDropbox,
-    title: "فتح الحزم من أجل التنمية",
-    date: "19 DEC 11:35 PM",
-    color: "purple",
-  },
-  {
-    logo: AdobexdLogo,
-    title: "طلب جديد #9851258",
-    date: "18 DEC 4:41 PM",
   },
 ];
 

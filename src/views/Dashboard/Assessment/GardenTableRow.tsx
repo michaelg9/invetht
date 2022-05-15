@@ -6,7 +6,6 @@ interface GardenTableRowProps {
 }
 
 function GardenTableRow({ data }: GardenTableRowProps) {
-  console.log(data);
   const textColor = useColorModeValue("gray.700", "white");
   return (
     <Tr>

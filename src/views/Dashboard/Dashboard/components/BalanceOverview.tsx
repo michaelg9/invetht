@@ -1,11 +1,14 @@
-// Chakra imports
 import { Box, Flex, Text, useColorModeValue } from "@chakra-ui/react";
-// Custom components
 import Card from "components/Card/Card";
 import CardHeader from "components/Card/CardHeader";
-import React from "react";
 
-const SalesOverview = ({ title, percentage, chart }) => {
+interface BalanceOverviewProps {
+  title: string;
+  percentage: number;
+  chart: React.ReactElement;
+}
+
+export default function BalanceOverview({ title, percentage, chart }: BalanceOverviewProps) {
   const textColor = useColorModeValue("gray.700", "white");
   return (
     <Card p='28px 10px 16px 0px' mb={{ sm: "26px", lg: "0px" }}>
@@ -19,9 +22,8 @@ const SalesOverview = ({ title, percentage, chart }) => {
               as='span'
               color={percentage > 0 ? "green.400" : "red.400"}
               fontWeight='bold'>
-              {`${percentage}%`} more
-            </Text>{" "}
-            in 2021
+              {`${percentage}%`}
+            </Text>
           </Text>
         </Flex>
       </CardHeader>
@@ -31,5 +33,3 @@ const SalesOverview = ({ title, percentage, chart }) => {
     </Card>
   );
 };
-
-export default SalesOverview;

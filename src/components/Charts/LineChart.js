@@ -14,8 +14,8 @@ class LineChart extends React.Component {
 
   componentDidMount() {
     this.setState({
-      chartData: lineChartData,
-      chartOptions: lineChartOptions,
+      chartData: this.props.lineChartData ||  lineChartData,
+      chartOptions: this.props.lineChartOptions || lineChartOptions,
     });
   }
 

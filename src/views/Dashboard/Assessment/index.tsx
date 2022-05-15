@@ -10,7 +10,7 @@ import {
   IStrategyGarden,
 } from "./interfaces";
 import { useEffect, useState } from "react";
-import { GardenDataType, getGardenData } from "./data";
+import { COOL_GARDENS, GardenDataType, getGardenData } from "./data";
 import Gardens from "./Gardens";
 
 function getControllerContract(library: any) {
@@ -27,12 +27,12 @@ function getControllerContract(library: any) {
   return controllerContract;
 }
 
-async function getGardens(controller: ethers.Contract, library: any) {
+async function getGardens(_controller: ethers.Contract, library: any) {
   const allGardenData = [];
-  const gardenAddresses = await controller.getGardens();
-
-  // TODO: For now just load the first few gardens
-  for (const gardenAddress of gardenAddresses.slice(0, 5)) {
+  // const gardenAddresses = await controller.getGardens();
+  const selectedGardenAddresses = COOL_GARDENS; // TODO: For now just load the first few gardens
+  console.log(selectedGardenAddresses);
+  for (const gardenAddress of selectedGardenAddresses) {
     const gardenContract = new ethers.Contract(
       gardenAddress,
       [

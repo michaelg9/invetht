@@ -37,7 +37,7 @@ export default function Gardens({
         <Tbody>
           {data.map((row) => {
             return (
-              <GardenTableRow key={row.name} name={row.name} logo={row.logo} />
+              <GardenTableRow key={row.name} data={row} />
             );
           })}
         </Tbody>

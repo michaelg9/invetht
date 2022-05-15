@@ -1,7 +1,14 @@
 import { ethers } from "ethers";
-import { FaPencilAlt } from "react-icons/fa";
 
 export type GardenDataType = Awaited<ReturnType<typeof getGardenData>>;
+
+export const COOL_GARDENS = [ 
+  '0xB5bD20248cfe9480487CC0de0d72D0e19eE0AcB6', //fountain of eth
+  '0x1D50c4F18D7af4fCe2Ea93c7942aae6260788596', //stable garden
+  '0x4C4Ad2790D2ea7D293B06896b09e1d102e6B2613', //fountain of btc
+  '0xd42B3A30ca89155d6C3499c81F0C4e5A978bE5c2', // arkhad's
+  '0x3eeC6Ac8675ab1B4768f6032F0598e36Ac64f415', //stable pebble
+]
 
 async function getGardenData(gardenContract: ethers.Contract) {
   //   const symbol = await gardenContract.symbol();
@@ -76,7 +83,7 @@ async function getGardenData(gardenContract: ethers.Contract) {
       lastPricePerShareTS: promises[29],
       pricePerShareDecayRate: promises[30],
       pricePerShareDelta: promises[31],
-      logo: FaPencilAlt,
+      address: '',
     };
   });
 }

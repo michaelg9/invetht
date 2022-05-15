@@ -1,4 +1,3 @@
-// Assets
 import avatar1 from "assets/img/avatars/avatar1.png";
 import {
   AdobexdLogo,
@@ -380,3 +379,6 @@ export const olderTransactions = [
     logo: FaArrowDown,
   },
 ];
+
+export const PUBLIC_URL = process?.env?.PUBLIC_URL || '';
+export const INFURA_ID = process?.env?.INFURA_KEY || '';

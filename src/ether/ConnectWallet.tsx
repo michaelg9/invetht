@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import {
   VStack,
   useDisclosure,
@@ -14,7 +14,6 @@ import SelectWalletModal from "./Modal";
 import { useWeb3React } from "@web3-react/core";
 import { CheckCircleIcon, WarningIcon } from "@chakra-ui/icons";
 import networkParams from "./networks";
-import connectors from "./connectors";
 import { toHex, truncateAddress } from "./utils";
 
 export default function ConnectWallet() {
@@ -23,11 +22,9 @@ export default function ConnectWallet() {
     library,
     chainId,
     account,
-    activate,
     deactivate,
     active
   } = useWeb3React();
-  console.log(active, account, chainId);
   const [signature, setSignature] = useState("");
   const [error, setError] = useState<Error>();
   const [network, setNetwork] = useState<number | null>(null);
@@ -105,11 +102,6 @@ export default function ConnectWallet() {
     refreshState();
     deactivate();
   };
-
-  useEffect(() => {
-    const provider = window.localStorage.getItem("provider") as keyof typeof connectors;
-    if (provider) activate(connectors[provider]);
-  }, []);
 
   return (
     <>

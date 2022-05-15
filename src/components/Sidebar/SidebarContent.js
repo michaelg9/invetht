@@ -12,6 +12,7 @@ import { Logo } from "components/Icons/Icons";
 import { Separator } from "components/Separator/Separator";
 import React from "react";
 import { NavLink, useLocation } from "react-router-dom";
+import { PUBLIC_URL } from "variables/general";
 
 // this function creates the links and collapses that appear in the sidebar (left menu)
 
@@ -176,7 +177,7 @@ const SidebarContent = ({ logoText, routes }) => {
     <>
         <Box pt={"25px"} mb="12px">
       <Link
-        href={`${process.env.PUBLIC_URL}/#/`}
+        href={`${PUBLIC_URL}/#/`}
         target="_blank"
         display="flex"
         lineHeight="100%"

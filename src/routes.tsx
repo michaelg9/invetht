@@ -46,8 +46,8 @@ const dashRoutes = [
     layout: "/admin",
   },
   {
-    path: "/assessment",
-    name: "Assessment",
+    path: "/explore",
+    name: "Explore",
     icon: <RocketIcon color="inherit" />,
     component: Assessment,
     layout: "/admin",

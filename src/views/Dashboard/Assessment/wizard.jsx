@@ -1,15 +1,3 @@
-// interface StepWizardChildProps {
-//   isActive?: boolean;
-//   currentStep?: number;
-//   totalSteps?: number;
-//   firstStep?: () => {};
-//   lastStep?: () => {};
-//   nextStep?: () => {};
-//   previousStep?: () => {};
-//   goToStep?: () => {};
-//   goToNamedStep?: () => {};
-// }
-
 import {
   Button,
   Box,
@@ -39,6 +27,16 @@ const StepWizardStyled = styled(StepWizard)`
   display: flex;
   flex-direction: column-reverse;
   align-items: center;
+`;
+
+const Card = styled(Container)`
+  cursor: pointer;
+  &:hover {
+    background-color: #4fd1c5;
+    transform: translateY(-5px);
+    height: 110%;
+    box-shadow: 0px 0px 10px 0px rgba(0, 0, 0, 0.75);
+  }
 `;
 
 function ValueToInvest(props) {
@@ -205,7 +203,7 @@ function Goals(props) {
               </Text>
 
               <Text mt="1rem">
-                Targeting multiples for my portoflio. Ready for a 100x.
+                Targeting multiples for my portfolio. Ready for a 100x.
               </Text>
             </Flex>
 
@@ -241,11 +239,82 @@ function Goals(props) {
 }
 
 function CrashReaction(props) {
+  function onCardClick(value) {
+    props.onValueChange("valueMarketReaction", value);
+
+    props.goToStep(props.currentStep + 1);
+  }
+
   return (
-    <>
+    <Flex direction={"column"} alignItems="center" maxW="80vw">
       <NavButtons step={3} {...props} />
-      <div>CrashReaction</div>
-    </>
+
+      <Box border="1px" borderRadius="xl" p="2rem" borderColor="gray.500">
+        <Text fontSize="2xl">
+          Due to macroeconomic conditions, the entire crypto market goes down by
+          45%.
+        </Text>
+        <Text fontSize="2xl">What do you do?</Text>
+
+        <Flex
+          display="flex"
+          flexDirection="column"
+          justifyContent="space-between"
+          alignItems="center"
+        >
+          <Card
+            border="1px"
+            borderRadius="xl"
+            borderColor="teal.300"
+            m="2rem 1rem 1rem 1rem"
+            p="1rem"
+            onClick={() => onCardClick(1)}
+          >
+            <Text>
+              Buy more, prices are cheap and it's a perfect buying opportunity
+            </Text>
+          </Card>
+
+          <Card
+            border="1px"
+            borderRadius="xl"
+            borderColor="teal.300"
+            m="1rem"
+            p="1rem"
+            onClick={() => onCardClick(2)}
+          >
+            <Text>Hodl. Prices will eventually recover.</Text>
+          </Card>
+
+          <Card
+            border="1px"
+            borderRadius="xl"
+            borderColor="teal.300"
+            m="1rem"
+            p="1rem"
+            onClick={() => onCardClick(3)}
+          >
+            <Text>
+              Sell some of my assets. It can go lower and I want to take some
+              funds from the market.
+            </Text>
+          </Card>
+
+          <Card
+            border="1px"
+            borderRadius="xl"
+            borderColor="teal.300"
+            m="1rem"
+            p="1rem"
+            onClick={() => onCardClick(4)}
+          >
+            <Text>
+              Sell everything. Investing in cryptocurrency was a mistake.
+            </Text>
+          </Card>
+        </Flex>
+      </Box>
+    </Flex>
   );
 }
 

@@ -15,12 +15,16 @@ export default function Assessment() {
     walletValueETH: 10, // TODO: get from user
     valueToInvest: 0,
     valueRiskProfile: 5,
+    valueMarketReaction: null,
   });
 
   // Do something on step change
   const onStepChange = (stats) => {
-    console.log(stats);
+    // console.log(stats);
   };
+
+  const onValueChange = (key, value) =>
+    setAssessmentState({ ...assessmentState, [key]: value });
 
   const onValueSliderChange = (key, value) =>
     setAssessmentState({ ...assessmentState, [key]: value });
@@ -34,7 +38,7 @@ export default function Assessment() {
       <StepWizardStyled onStepChange={onStepChange} nav={<Nav />}>
         <ValueToInvest state={{ ...assessmentState, onValueSliderChange }} />
         <Goals state={{ ...assessmentState, onValueSliderChange }} />
-        <CrashReaction />
+        <CrashReaction onValueChange={onValueChange} />
         <CalculationFeedback />
         <DisplayResults />
       </StepWizardStyled>

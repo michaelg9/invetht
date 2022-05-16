@@ -1,26 +1,28 @@
+import { ArrowBackIcon, ArrowForwardIcon } from "@chakra-ui/icons";
 import {
-  Button,
   Box,
-  Flex,
-  Text,
+  Button,
   Center,
   Container,
+  Flex,
+  Progress,
   Slider,
-  SliderTrack,
   SliderFilledTrack,
   SliderThumb,
+  SliderTrack,
   Table,
-  Thead,
-  Tbody,
-  Tr,
-  Th,
-  Td,
   TableCaption,
   TableContainer,
+  Tbody,
+  Td,
+  Text,
+  Th,
+  Thead,
+  Tr,
 } from "@chakra-ui/react";
-import StepWizard from "react-step-wizard";
 import styled from "@emotion/styled";
-import { ArrowForwardIcon, ArrowBackIcon } from "@chakra-ui/icons";
+import { useCallback, useEffect, useRef, useState } from "react";
+import StepWizard from "react-step-wizard";
 
 const StepWizardStyled = styled(StepWizard)`
   width: 100%;
@@ -34,9 +36,14 @@ const Card = styled(Container)`
   &:hover {
     background-color: #4fd1c5;
     transform: translateY(-5px);
-    height: 110%;
+    height: 120%;
     box-shadow: 0px 0px 10px 0px rgba(0, 0, 0, 0.75);
   }
+  /* background-color: ${(props) => props.active && "#4fd1c5"};
+  transform: ${(props) => props.active && "translateY(-5px)"};
+  height: ${(props) => props.active && "120%"};
+  box-shadow: ${(props) =>
+    props.active && "0px 0px 10px 0px rgba(0, 0, 0, 0.75)"}; */
 `;
 
 function ValueToInvest(props) {
@@ -217,12 +224,12 @@ function Goals(props) {
           <Text fontSize="2xl">What is your risk profile?</Text>
 
           <Center mt="1rem">
-            <Text>{state.valueRiskProfile}</Text>
+            <Text>{state.valueRiskProfile ? state.valueRiskProfile : "-"}</Text>
           </Center>
           <Slider
-            min={1}
+            min={0}
             max={9}
-            defaultValue={5}
+            defaultValue={0}
             colorScheme="teal"
             onChange={onSliderChange}
             mt="1rem"
@@ -247,7 +254,7 @@ function CrashReaction(props) {
 
   return (
     <Flex direction={"column"} alignItems="center" maxW="80vw">
-      <NavButtons step={3} {...props} />
+      <NavButtons step={3} {...props} hideForward />
 
       <Box border="1px" borderRadius="xl" p="2rem" borderColor="gray.500">
         <Text fontSize="2xl">
@@ -269,6 +276,7 @@ function CrashReaction(props) {
             m="2rem 1rem 1rem 1rem"
             p="1rem"
             onClick={() => onCardClick(1)}
+            active={props.valueMarketReaction === 1}
           >
             <Text>
               Buy more, prices are cheap and it's a perfect buying opportunity
@@ -282,6 +290,7 @@ function CrashReaction(props) {
             m="1rem"
             p="1rem"
             onClick={() => onCardClick(2)}
+            active={props.valueMarketReaction === 2}
           >
             <Text>Hodl. Prices will eventually recover.</Text>
           </Card>
@@ -293,6 +302,7 @@ function CrashReaction(props) {
             m="1rem"
             p="1rem"
             onClick={() => onCardClick(3)}
+            active={props.valueMarketReaction === 3}
           >
             <Text>
               Sell some of my assets. It can go lower and I want to take some
@@ -307,6 +317,7 @@ function CrashReaction(props) {
             m="1rem"
             p="1rem"
             onClick={() => onCardClick(4)}
+            active={props.valueMarketReaction === 4}
           >
             <Text>
               Sell everything. Investing in cryptocurrency was a mistake.
@@ -319,11 +330,98 @@ function CrashReaction(props) {
 }
 
 function CalculationFeedback(props) {
+  const [progressValue, setProgressValue] = useState(0);
+  const [timer, setTimer] = useState(null);
+
+  const { state } = props;
+
+  const allValuesCollected =
+    !!state.valueToInvest &&
+    !!state.valueRiskProfile &&
+    !!state.valueMarketReaction;
+
+  const progressRef = useRef(progressValue);
+  const timerRef = useRef(timer);
+
+  useEffect(() => {
+    progressRef.current = progressValue;
+  }, [progressValue]);
+
+  useEffect(() => {
+    timerRef.current = timer;
+  }, [timer]);
+
+  const updateProgress = useCallback(() => {
+    console.log("TIMER", timerRef.current);
+    if (progressRef.current === 100) {
+      console.log(timerRef.current);
+
+      clearInterval(timerRef.current);
+      // setTimeout(() => {
+      //   props.goToStep(props.currentStep + 1);
+      // }, 3000);
+    } else {
+      setProgressValue((progressValue) =>
+        progressValue + 1 > 100 ? 100 : progressValue + 1
+      );
+    }
+  }, [props]);
+
+  const previousIsActive = useRef(false);
+  useEffect(() => {
+    if (!previousIsActive.current && props.isActive && allValuesCollected) {
+      previousIsActive.current = true;
+
+      const timer = setInterval(() => {
+        updateProgress();
+      }, 200);
+      setTimer(timer);
+    }
+
+    if (!props.isActive && previousIsActive.current) {
+      previousIsActive.current = false;
+
+      console.log(timerRef.current);
+
+      clearInterval(timerRef.current);
+      setProgressValue(0);
+      console.log("RUN");
+    }
+  }, [props.isActive, timer, allValuesCollected, updateProgress]);
+
   return (
-    <>
+    <Flex direction={"column"} alignItems="center" maxW="80vw">
       <NavButtons step={4} {...props} />
-      <div>CalculationFeedback</div>
-    </>
+
+      <Box border="1px" borderRadius="xl" p="2rem" borderColor="gray.500">
+        {allValuesCollected ? (
+          <>
+            <Text fontSize="2xl">
+              Calculating ideal recommendations based on your answers.
+            </Text>
+            <Text fontSize="2xl">
+              Determining the best solution for your needs.
+            </Text>
+
+            <Text mt="2rem">{progressValue}%</Text>
+
+            <Text>
+              {progressValue === 100 &&
+                "Best solution found! Forwarding you to your best fitting vaults."}
+            </Text>
+          </>
+        ) : (
+          <>
+            <Text fontSize="2xl">Not all values are collected yet!</Text>
+            <Text fontSize="2xl">
+              Please fill all questions of previous steps.
+            </Text>
+          </>
+        )}
+
+        <Progress mt="1rem" value={progressValue} />
+      </Box>
+    </Flex>
   );
 }
 
@@ -369,6 +467,7 @@ const NavButtons = ({
   previousStep,
   totalSteps,
   step,
+  hideForward,
   children,
 }) => (
   <Center>
@@ -382,13 +481,14 @@ const NavButtons = ({
 
     {children ? children : <Text>Preferences</Text>}
 
-    {step < totalSteps ? (
-      <Button variant="ghost" onClick={nextStep}>
-        <ArrowForwardIcon />
-      </Button>
-    ) : (
-      <Button onClick={nextStep}>Finish</Button>
-    )}
+    {!hideForward &&
+      (step < totalSteps ? (
+        <Button variant="ghost" onClick={nextStep}>
+          <ArrowForwardIcon />
+        </Button>
+      ) : (
+        <Button onClick={nextStep}>Finish</Button>
+      ))}
   </Center>
 );
 

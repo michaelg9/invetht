@@ -13,8 +13,8 @@ import {
 export default function Assessment() {
   const [assessmentState, setAssessmentState] = useState({
     walletValueETH: 10, // TODO: get from user
-    valueToInvest: 0,
-    valueRiskProfile: 5,
+    valueToInvest: null,
+    valueRiskProfile: null,
     valueMarketReaction: null,
   });
 
@@ -39,7 +39,7 @@ export default function Assessment() {
         <ValueToInvest state={{ ...assessmentState, onValueSliderChange }} />
         <Goals state={{ ...assessmentState, onValueSliderChange }} />
         <CrashReaction onValueChange={onValueChange} />
-        <CalculationFeedback />
+        <CalculationFeedback state={assessmentState} />
         <DisplayResults />
       </StepWizardStyled>
     </Flex>

@@ -14,6 +14,7 @@ export default function Assessment() {
   const [assessmentState, setAssessmentState] = useState({
     walletValueETH: 10, // TODO: get from user
     valueToInvest: 0,
+    valueRiskProfile: 5,
   });
 
   // Do something on step change
@@ -21,10 +22,8 @@ export default function Assessment() {
     console.log(stats);
   };
 
-  const onValueSliderChange = (value) =>
-  setAssessmentState({ ...assessmentState, valueToInvest: value });
-
-  console.log("assessmentState", assessmentState);
+  const onValueSliderChange = (key, value) =>
+    setAssessmentState({ ...assessmentState, [key]: value });
 
   return (
     <Flex
@@ -34,7 +33,7 @@ export default function Assessment() {
     >
       <StepWizardStyled onStepChange={onStepChange} nav={<Nav />}>
         <ValueToInvest state={{ ...assessmentState, onValueSliderChange }} />
-        <Goals />
+        <Goals state={{ ...assessmentState, onValueSliderChange }} />
         <CrashReaction />
         <CalculationFeedback />
         <DisplayResults />

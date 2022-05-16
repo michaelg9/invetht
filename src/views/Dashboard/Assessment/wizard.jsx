@@ -24,7 +24,6 @@ import {
   Table,
   Thead,
   Tbody,
-  Tfoot,
   Tr,
   Th,
   Td,
@@ -45,18 +44,24 @@ const StepWizardStyled = styled(StepWizard)`
 function ValueToInvest(props) {
   const { state } = props;
 
+  function onSliderChange(value) {
+    state.onValueSliderChange("valueToInvest", value);
+  }
+
   return (
-    <Flex direction={"column"} alignItems="center">
+    <Flex direction={"column"} alignItems="center" maxW="80vw">
       <NavButtons step={1} {...props} />
 
-      <Container
+      <Box
         border="1px"
         borderRadius="xl"
         px="5rem"
         py="2rem"
         borderColor="gray.500"
       >
-        <Text>Your wallet currently has {state.walletValueETH} ETH.</Text>
+        <Text fontSize="2xl">
+          Your wallet currently has {state.walletValueETH} ETH.
+        </Text>
 
         <TableContainer>
           <Table variant="simple">
@@ -89,8 +94,8 @@ function ValueToInvest(props) {
           </Table>
         </TableContainer>
 
-        <Box mt='2rem'>
-          <Text>How much are you looking to invest?</Text>
+        <Box mt="2rem">
+          <Text fontSize="2xl">How much are you looking to invest?</Text>
 
           <Center mt="1rem">
             <Text>{state.valueToInvest} ETH</Text>
@@ -100,7 +105,7 @@ function ValueToInvest(props) {
             max={state.walletValueETH}
             defaultValue={0}
             colorScheme="teal"
-            onChange={state.onValueSliderChange}
+            onChange={onSliderChange}
             mt="1rem"
           >
             <SliderTrack bg="#4fd1c5">
@@ -109,17 +114,129 @@ function ValueToInvest(props) {
             <SliderThumb />
           </Slider>
         </Box>
-      </Container>
+      </Box>
     </Flex>
   );
 }
 
 function Goals(props) {
+  const { state } = props;
+
+  function onSliderChange(value) {
+    state.onValueSliderChange("valueRiskProfile", value);
+  }
+
   return (
-    <>
+    <Flex direction={"column"} alignItems="center" maxW="80vw">
       <NavButtons step={2} {...props} />
-      <div>Goals</div>
-    </>
+
+      <Box border="1px" borderRadius="xl" p="2rem" borderColor="gray.500">
+        <Text fontSize="2xl">What are your goals?</Text>
+
+        <Flex>
+          <Container
+            border="1px"
+            borderRadius="xl"
+            borderColor="teal.300"
+            m="1rem"
+            display="flex"
+            flexDirection="column"
+            justifyContent="space-between"
+          >
+            <Flex direction="column" alignItems="center" py="1rem">
+              <Text fontSize="4rem">🐷</Text>
+
+              <Text fontSize="2xl" mt="1rem">
+                Conservative
+              </Text>
+
+              <Text mt="1rem">
+                Stable and predictable returns. My money is always safe
+                regardless of market volatility.
+              </Text>
+            </Flex>
+
+            <Text align={"center"} mb="1rem">
+              1 - 3
+            </Text>
+          </Container>
+
+          <Container
+            border="1px"
+            borderRadius="xl"
+            borderColor="teal.300"
+            m="1rem"
+            display="flex"
+            flexDirection="column"
+            justifyContent="space-between"
+          >
+            <Flex direction="column" alignItems="center" py="1rem">
+              <Text fontSize="4rem">🪴</Text>
+
+              <Text fontSize="2xl" mt="1rem">
+                Steady Growth
+              </Text>
+
+              <Text mt="1rem">
+                I want to have exposure to crypto whilst minimizing risk. Long
+                term focused, targeting constant growth YoY.
+              </Text>
+            </Flex>
+
+            <Text align={"center"} mb="1rem">
+              4 - 6
+            </Text>
+          </Container>
+
+          <Container
+            border="1px"
+            borderRadius="xl"
+            borderColor="teal.300"
+            m="1rem"
+            display="flex"
+            flexDirection="column"
+            justifyContent="space-between"
+          >
+            <Flex direction="column" alignItems="center" py="1rem">
+              <Text fontSize="4rem">🚀</Text>
+
+              <Text fontSize="2xl" mt="1rem">
+                To the moon
+              </Text>
+
+              <Text mt="1rem">
+                Targeting multiples for my portoflio. Ready for a 100x.
+              </Text>
+            </Flex>
+
+            <Text align={"center"} mb="1rem">
+              7 - 9
+            </Text>
+          </Container>
+        </Flex>
+
+        <Box mt="2rem">
+          <Text fontSize="2xl">What is your risk profile?</Text>
+
+          <Center mt="1rem">
+            <Text>{state.valueRiskProfile}</Text>
+          </Center>
+          <Slider
+            min={1}
+            max={9}
+            defaultValue={5}
+            colorScheme="teal"
+            onChange={onSliderChange}
+            mt="1rem"
+          >
+            <SliderTrack bg="#4fd1c5">
+              <SliderFilledTrack />
+            </SliderTrack>
+            <SliderThumb />
+          </Slider>
+        </Box>
+      </Box>
+    </Flex>
   );
 }
 

@@ -41,7 +41,7 @@ function DashboardTableRow({
           {logo}
           <Text
             fontSize="md"
-            marginLeft={'3px'}
+            marginLeft={"3px"}
             color={textColor}
             fontWeight="bold"
             minWidth="100%"
@@ -78,18 +78,19 @@ function DashboardTableRow({
             pb=".5rem"
             fontSize="md"
           >
-            {diff > 0 ? `+${diff.toFixed(1)}%` : `${diff.toFixed(2)}%`}
+            {diff &&
+              (diff > 0 ? `+${diff.toFixed(1)}%` : `${diff.toFixed(2)}%`)}
           </StatHelpText>
         </Td>
       ))}
       <Td>
         <Text fontSize="md" color={textColor} fontWeight="bold" pb=".5rem">
-          {balance.toFixed(3)}{" "}{symbol}
+          {balance.toFixed(3)} {symbol}
         </Text>
       </Td>
       <Td>
         <Text fontSize="md" color={textColor} fontWeight="bold" pb=".5rem">
-          {`${value.toFixed(2)}`}{' '}{currency}
+          {`${value.toFixed(2)}`} {currency}
         </Text>
       </Td>
     </Tr>

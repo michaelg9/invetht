@@ -31,6 +31,7 @@ async function getGardens(_controller: ethers.Contract, library: any) {
   const allGardenData = [];
   // const gardenAddresses = await controller.getGardens();
   const selectedGardenAddresses = COOL_GARDENS; // TODO: For now just load the first few gardens
+
   for (const gardenAddress of selectedGardenAddresses) {
     const gardenContract = new ethers.Contract(
       gardenAddress,
@@ -49,17 +50,17 @@ async function getGardens(_controller: ethers.Contract, library: any) {
     allGardenData.push({ ...gardenData, address: gardenAddress });
   }
 
-  // console.log({ allGardenData });
   return allGardenData;
 }
 
-export default function Assessment() {
+function Explore() {
   const { active, library } = useWeb3React();
   const [gardens, setGardens] = useState<GardenDataType[]>([]);
   const [loading, setLoading] = useState<boolean>(false);
 
   useEffect(() => {
     if (!active) return;
+
     async function load() {
       setLoading(true);
       try {
@@ -102,3 +103,5 @@ export default function Assessment() {
     </Flex>
   );
 }
+
+export { getControllerContract, getGardens, Explore as default };

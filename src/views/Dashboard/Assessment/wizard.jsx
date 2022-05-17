@@ -5,6 +5,7 @@ import {
   Center,
   Container,
   Flex,
+  Image,
   Progress,
   Slider,
   SliderFilledTrack,
@@ -21,8 +22,11 @@ import {
   Tr,
 } from "@chakra-ui/react";
 import styled from "@emotion/styled";
+import { useWeb3React } from "@web3-react/core";
+import { VisaIcon } from "components/Icons/Icons";
 import { useCallback, useEffect, useRef, useState } from "react";
 import StepWizard from "react-step-wizard";
+import { getControllerContract, getGardens } from "../Explore";
 
 const StepWizardStyled = styled(StepWizard)`
   width: 100%;
@@ -264,7 +268,6 @@ function CrashReaction(props) {
         <Text fontSize="2xl">What do you do?</Text>
 
         <Flex
-          display="flex"
           flexDirection="column"
           justifyContent="space-between"
           alignItems="center"
@@ -333,7 +336,10 @@ function CalculationFeedback(props) {
   const [progressValue, setProgressValue] = useState(0);
   const [timer, setTimer] = useState(null);
 
-  const { state } = props;
+  const { state, gardens } = props;
+
+  const { library } = useWeb3React();
+  const [loadingGardens, setLoadingGardens] = useState(false);
 
   const allValuesCollected =
     !!state.valueToInvest &&
@@ -350,6 +356,34 @@ function CalculationFeedback(props) {
   useEffect(() => {
     timerRef.current = timer;
   }, [timer]);
+
+  const getVaultData = useCallback(async () => {
+    const controller = getControllerContract(library);
+    const gardenData = await getGardens(controller, library);
+
+    gardens.setGardenData(gardenData);
+
+    console.log({ gardenData });
+
+    return gardenData;
+  }, [gardens, library]);
+
+  useEffect(() => {
+    async function getVaults() {
+      if (gardens.gardenData.length === 0 && !loadingGardens && !!library) {
+        setLoadingGardens(true);
+        await getVaultData();
+        setLoadingGardens(false);
+      }
+    }
+    getVaults();
+  }, [
+    gardens.gardenData.length,
+    loadingGardens,
+    setLoadingGardens,
+    library,
+    getVaultData,
+  ]);
 
   const updateProgress = useCallback(() => {
     if (progressRef.current === 100) {
@@ -424,11 +458,90 @@ function CalculationFeedback(props) {
 }
 
 function DisplayResults(props) {
+  const { state, gardens } = props;
+
+  function onCardClick(value) {
+    console.log(value);
+    state.onValueChange("valueVaultChoice", value);
+  }
+
   return (
-    <>
+    <Flex direction={"column"} alignItems="center" maxW="80vw">
       <NavButtons step={5} {...props} />
-      <div>DisplayResults</div>
-    </>
+
+      <Box border="1px" borderRadius="xl" p="2rem" borderColor="gray.500">
+        <Text fontSize="2xl">
+          Recommendations ready. Vaults shown are most aligned with your
+          determined needs.
+        </Text>
+
+        <Flex>
+          {gardens.slice(0, 3).map((garden, index) => {
+            return (
+              <Card
+                key={garden.name}
+                display="flex"
+                flexDirection="column"
+                border="1px"
+                borderRadius="xl"
+                borderColor="teal.300"
+                m="2rem 1rem 1rem 1rem"
+                p="1rem"
+                onClick={() => onCardClick(index + 1)}
+                active={props.valueVaultChoice === index + 1}
+              >
+                <Flex>
+                  <Image
+                    src={`https://www.babylon.finance/gardens/${garden.address}/thumb.png`}
+                    h={"40px"}
+                    w={"40px"}
+                    pe="5px"
+                    onError={({ currentTarget }) => {
+                      currentTarget.onerror = null; // prevents looping
+                      currentTarget.src = "/assets/invest.svg";
+                    }}
+                  />
+
+                  <Box mx="1rem" w="100%" textAlign="center">
+                    <VisaIcon h={"40px"} w={"40px"} />
+                  </Box>
+                </Flex>
+
+                <Text fontSize="2xl" mt="1rem">
+                  {garden.name}
+                </Text>
+
+                <Text mt="1rem" wordBreak="break-all">
+                  <Box>Address: </Box>
+                  {garden.address}
+                </Text>
+
+                <TableContainer>
+                  <Table variant="simple">
+                    <Tbody>
+                      <Tr>
+                        <Td>NAV</Td>
+                        <Td isNumeric>$58,200</Td>
+                      </Tr>
+                      <Tr>
+                        <Td>30D</Td>
+                        <Td isNumeric>7.1%</Td>
+                      </Tr>
+                      <Tr>
+                        <Td>90D</Td>
+                        <Td isNumeric>9%</Td>
+                      </Tr>
+                    </Tbody>
+                  </Table>
+                </TableContainer>
+              </Card>
+            );
+          })}
+        </Flex>
+
+        <Button alignSelf="flex-end">Deposit</Button>
+      </Box>
+    </Flex>
   );
 }
 
@@ -477,7 +590,7 @@ const NavButtons = ({
       <div />
     )}
 
-    {children ? children : <Text>Preferences</Text>}
+    {children ? children : <Text mx="2rem">Preferences</Text>}
 
     {!hideForward &&
       (step < totalSteps ? (
@@ -485,7 +598,7 @@ const NavButtons = ({
           <ArrowForwardIcon />
         </Button>
       ) : (
-        <Button onClick={nextStep}>Finish</Button>
+        <Button onClick={nextStep} variant="ghost">Finish</Button>
       ))}
   </Center>
 );

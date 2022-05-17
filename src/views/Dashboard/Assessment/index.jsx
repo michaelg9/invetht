@@ -16,7 +16,9 @@ export default function Assessment() {
     valueToInvest: null,
     valueRiskProfile: null,
     valueMarketReaction: null,
+    valueVaultChoice: null,
   });
+  const [gardenData, setGardenData] = useState([]);
 
   // Do something on step change
   const onStepChange = (stats) => {
@@ -39,8 +41,14 @@ export default function Assessment() {
         <ValueToInvest state={{ ...assessmentState, onValueSliderChange }} />
         <Goals state={{ ...assessmentState, onValueSliderChange }} />
         <CrashReaction onValueChange={onValueChange} />
-        <CalculationFeedback state={assessmentState} />
-        <DisplayResults />
+        <CalculationFeedback
+          state={assessmentState}
+          gardens={{ gardenData, setGardenData }}
+        />
+        <DisplayResults
+          state={{ ...assessmentState, onValueChange }}
+          gardens={gardenData}
+        />
       </StepWizardStyled>
     </Flex>
   );

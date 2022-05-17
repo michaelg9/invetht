@@ -352,20 +352,14 @@ function CalculationFeedback(props) {
   }, [timer]);
 
   const updateProgress = useCallback(() => {
-    console.log("TIMER", timerRef.current);
     if (progressRef.current === 100) {
-      console.log(timerRef.current);
-
       clearInterval(timerRef.current);
-      // setTimeout(() => {
-      //   props.goToStep(props.currentStep + 1);
-      // }, 3000);
-    } else {
-      setProgressValue((progressValue) =>
-        progressValue + 1 > 100 ? 100 : progressValue + 1
-      );
     }
-  }, [props]);
+
+    setProgressValue((progressValue) =>
+      progressValue + 1 > 100 ? 100 : progressValue + 1
+    );
+  }, []);
 
   const previousIsActive = useRef(false);
   useEffect(() => {
@@ -374,24 +368,28 @@ function CalculationFeedback(props) {
 
       const timer = setInterval(() => {
         updateProgress();
-      }, 200);
+      }, 70);
       setTimer(timer);
     }
 
     if (!props.isActive && previousIsActive.current) {
       previousIsActive.current = false;
 
-      console.log(timerRef.current);
-
       clearInterval(timerRef.current);
-      setProgressValue(0);
-      console.log("RUN");
+
+      if (props.currentStep === 3) setProgressValue(0);
     }
-  }, [props.isActive, timer, allValuesCollected, updateProgress]);
+  }, [
+    props.isActive,
+    props.currentStep,
+    timer,
+    allValuesCollected,
+    updateProgress,
+  ]);
 
   return (
     <Flex direction={"column"} alignItems="center" maxW="80vw">
-      <NavButtons step={4} {...props} />
+      <NavButtons step={4} hideForward={progressValue !== 100} {...props} />
 
       <Box border="1px" borderRadius="xl" p="2rem" borderColor="gray.500">
         {allValuesCollected ? (
@@ -419,7 +417,7 @@ function CalculationFeedback(props) {
           </>
         )}
 
-        <Progress mt="1rem" value={progressValue} />
+        <Progress colorScheme="teal" mt="1rem" value={progressValue} />
       </Box>
     </Flex>
   );

@@ -576,10 +576,10 @@ const Nav = (props) => {
     dots.push(
       <NavDotStyled
         key={`nav-dot-${i}`}
-                active={isActive}
+        active={isActive}
         onClick={() => props.goToStep(i)}
       >
-        &bull;
+        {/* &bull; */}
       </NavDotStyled>
     );
   }
@@ -632,9 +632,11 @@ const NavButtons = ({
 };
 
 const StepWizardStyled = styled(StepWizard)`
+  height: 80vh;
   width: 100%;
   display: flex;
   flex-direction: column-reverse;
+  justify-content: space-between;
   align-items: center;
 `;
 
@@ -663,22 +665,23 @@ const NavStyled = styled.div`
 `;
 
 const NavDotStyled = styled.span`
-  color: black;
+  width: 8rem;
+  height: 0.5rem;
+  border-radius: 40px;
+  background-color: black;
+  display: inline-block;
+  margin-left: 0.5rem;
+  margin-right: 0.5rem;
+
   cursor: pointer;
-  font-size: 36px;
-  line-height: 1;
-  margin: 0 15px;
+
   opacity: 0.4;
-  text-shadow: none;
-  transition: opacity 1s ease, text-shadow 1s ease;
-  will-change: opacity, text-shadow;
 
   ${(props) => {
     if (props.active)
       return `
-    color: #4fd1c5;
+    background-color: #4fd1c5;
     opacity: 1;
-    text-shadow: 0 0px 8px;
     `;
   }}
 `;

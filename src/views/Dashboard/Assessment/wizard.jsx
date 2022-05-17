@@ -25,6 +25,7 @@ import styled from "@emotion/styled";
 import { useWeb3React } from "@web3-react/core";
 import { VisaIcon } from "components/Icons/Icons";
 import { useCallback, useEffect, useRef, useState } from "react";
+import { useHistory } from "react-router-dom";
 import StepWizard from "react-step-wizard";
 import { getControllerContract, getGardens } from "../Explore";
 
@@ -43,11 +44,15 @@ const Card = styled(Container)`
     height: 120%;
     box-shadow: 0px 0px 10px 0px rgba(0, 0, 0, 0.75);
   }
-  /* background-color: ${(props) => props.active && "#4fd1c5"};
-  transform: ${(props) => props.active && "translateY(-5px)"};
-  height: ${(props) => props.active && "120%"};
-  box-shadow: ${(props) =>
-    props.active && "0px 0px 10px 0px rgba(0, 0, 0, 0.75)"}; */
+  ${(props) => {
+    if (props.active)
+      return `
+      background-color: #4fd1c5;
+      transform: translateY(-5px);
+      height: 120%;
+      box-shadow: 0px 0px 10px 0px rgba(0, 0, 0, 0.75);
+      `;
+  }}
 `;
 
 function ValueToInvest(props) {
@@ -250,6 +255,8 @@ function Goals(props) {
 }
 
 function CrashReaction(props) {
+  const { state } = props;
+
   function onCardClick(value) {
     props.onValueChange("valueMarketReaction", value);
 
@@ -279,7 +286,7 @@ function CrashReaction(props) {
             m="2rem 1rem 1rem 1rem"
             p="1rem"
             onClick={() => onCardClick(1)}
-            active={props.valueMarketReaction === 1}
+            active={state.valueMarketReaction === 1}
           >
             <Text>
               Buy more, prices are cheap and it's a perfect buying opportunity
@@ -293,7 +300,7 @@ function CrashReaction(props) {
             m="1rem"
             p="1rem"
             onClick={() => onCardClick(2)}
-            active={props.valueMarketReaction === 2}
+            active={state.valueMarketReaction === 2}
           >
             <Text>Hodl. Prices will eventually recover.</Text>
           </Card>
@@ -305,7 +312,7 @@ function CrashReaction(props) {
             m="1rem"
             p="1rem"
             onClick={() => onCardClick(3)}
-            active={props.valueMarketReaction === 3}
+            active={state.valueMarketReaction === 3}
           >
             <Text>
               Sell some of my assets. It can go lower and I want to take some
@@ -370,7 +377,27 @@ function CalculationFeedback(props) {
 
   useEffect(() => {
     async function getVaults() {
-      if (gardens.gardenData.length === 0 && !loadingGardens && !!library) {
+      if (
+        props.isActive &&
+        gardens.gardenData.length === 0 &&
+        !loadingGardens &&
+        !!library
+      ) {
+        const {
+          valueToInvest,
+          valueRiskProfile,
+          valueMarketReaction,
+          valueVaultChoice,
+        } = state;
+
+        const args = {
+          valueToInvest,
+          valueRiskProfile,
+          valueMarketReaction,
+          valueVaultChoice,
+        };
+        console.log("TODO: get gardens with args", { args });
+
         setLoadingGardens(true);
         await getVaultData();
         setLoadingGardens(false);
@@ -378,6 +405,8 @@ function CalculationFeedback(props) {
     }
     getVaults();
   }, [
+    state,
+    props.isActive,
     gardens.gardenData.length,
     loadingGardens,
     setLoadingGardens,
@@ -465,6 +494,23 @@ function DisplayResults(props) {
     state.onValueChange("valueVaultChoice", value);
   }
 
+  function invethedInVault() {
+    const {
+      valueToInvest,
+      valueRiskProfile,
+      valueMarketReaction,
+      valueVaultChoice,
+    } = state;
+
+    const args = {
+      valueToInvest,
+      valueRiskProfile,
+      valueMarketReaction,
+      valueVaultChoice,
+    };
+    console.log("TODO: Invest in vault with args", { args });
+  }
+
   return (
     <Flex direction={"column"} alignItems="center" maxW="80vw">
       <NavButtons step={5} {...props} />
@@ -488,7 +534,7 @@ function DisplayResults(props) {
                 m="2rem 1rem 1rem 1rem"
                 p="1rem"
                 onClick={() => onCardClick(index + 1)}
-                active={props.valueVaultChoice === index + 1}
+                active={state.valueVaultChoice === index + 1}
               >
                 <Flex>
                   <Image
@@ -539,7 +585,9 @@ function DisplayResults(props) {
           })}
         </Flex>
 
-        <Button alignSelf="flex-end">Deposit</Button>
+        <Button disabled={!state.valueVaultChoice} onClick={invethedInVault}>
+          Deposit
+        </Button>
       </Box>
     </Flex>
   );
@@ -580,28 +628,38 @@ const NavButtons = ({
   step,
   hideForward,
   children,
-}) => (
-  <Center>
-    {step > 1 ? (
-      <Button variant="ghost" onClick={previousStep}>
-        <ArrowBackIcon />
-      </Button>
-    ) : (
-      <div />
-    )}
+}) => {
+  const history = useHistory();
 
-    {children ? children : <Text mx="2rem">Preferences</Text>}
+  function navigateToPortfolio() {
+    history.push("/admin/portfolio");
+  }
 
-    {!hideForward &&
-      (step < totalSteps ? (
-        <Button variant="ghost" onClick={nextStep}>
-          <ArrowForwardIcon />
+  return (
+    <Center>
+      {step > 1 ? (
+        <Button variant="ghost" onClick={previousStep}>
+          <ArrowBackIcon />
         </Button>
       ) : (
-        <Button onClick={nextStep} variant="ghost">Finish</Button>
-      ))}
-  </Center>
-);
+        <div />
+      )}
+
+      {children ? children : <Text mx="2rem">Preferences</Text>}
+
+      {!hideForward &&
+        (step < totalSteps ? (
+          <Button variant="ghost" onClick={nextStep}>
+            <ArrowForwardIcon />
+          </Button>
+        ) : (
+          <Button onClick={navigateToPortfolio} variant="ghost">
+            Finish
+          </Button>
+        ))}
+    </Center>
+  );
+};
 
 export {
   StepWizardStyled,

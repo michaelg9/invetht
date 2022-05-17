@@ -29,32 +29,6 @@ import { useHistory } from "react-router-dom";
 import StepWizard from "react-step-wizard";
 import { getControllerContract, getGardens } from "../Explore";
 
-const StepWizardStyled = styled(StepWizard)`
-  width: 100%;
-  display: flex;
-  flex-direction: column-reverse;
-  align-items: center;
-`;
-
-const Card = styled(Container)`
-  cursor: pointer;
-  &:hover {
-    background-color: #4fd1c5;
-    transform: translateY(-5px);
-    height: 120%;
-    box-shadow: 0px 0px 10px 0px rgba(0, 0, 0, 0.75);
-  }
-  ${(props) => {
-    if (props.active)
-      return `
-      background-color: #4fd1c5;
-      transform: translateY(-5px);
-      height: 120%;
-      box-shadow: 0px 0px 10px 0px rgba(0, 0, 0, 0.75);
-      `;
-  }}
-`;
-
 function ValueToInvest(props) {
   const { state } = props;
 
@@ -595,26 +569,22 @@ function DisplayResults(props) {
 
 const Nav = (props) => {
   const dots = [];
+
   for (let i = 1; i <= props.totalSteps; i += 1) {
-    // const isActive = props.currentStep === i;
+    const isActive = props.currentStep === i;
+
     dots.push(
-      <span
-        key={`step-${i}`}
-        // className={`${styles.dot} ${isActive ? styles.active : ""}`}
+      <NavDotStyled
+        key={`nav-dot-${i}`}
+                active={isActive}
         onClick={() => props.goToStep(i)}
       >
         &bull;
-      </span>
+      </NavDotStyled>
     );
   }
 
-  return (
-    <div
-    //   className={styles.nav}
-    >
-      {dots}
-    </div>
-  );
+  return <NavStyled>{dots}</NavStyled>;
 };
 
 const NavButtons = ({
@@ -660,6 +630,58 @@ const NavButtons = ({
     </Center>
   );
 };
+
+const StepWizardStyled = styled(StepWizard)`
+  width: 100%;
+  display: flex;
+  flex-direction: column-reverse;
+  align-items: center;
+`;
+
+const Card = styled(Container)`
+  cursor: pointer;
+  &:hover {
+    background-color: #4fd1c5;
+    transform: translateY(-5px);
+    height: 120%;
+    box-shadow: 0px 0px 10px 0px rgba(0, 0, 0, 0.75);
+  }
+  ${(props) => {
+    if (props.active)
+      return `
+      background-color: #4fd1c5;
+      transform: translateY(-5px);
+      height: 120%;
+      box-shadow: 0px 0px 10px 0px rgba(0, 0, 0, 0.75);
+      `;
+  }}
+`;
+
+const NavStyled = styled.div`
+  margin-top: 15px;
+  text-align: center;
+`;
+
+const NavDotStyled = styled.span`
+  color: black;
+  cursor: pointer;
+  font-size: 36px;
+  line-height: 1;
+  margin: 0 15px;
+  opacity: 0.4;
+  text-shadow: none;
+  transition: opacity 1s ease, text-shadow 1s ease;
+  will-change: opacity, text-shadow;
+
+  ${(props) => {
+    if (props.active)
+      return `
+    color: #4fd1c5;
+    opacity: 1;
+    text-shadow: 0 0px 8px;
+    `;
+  }}
+`;
 
 export {
   StepWizardStyled,

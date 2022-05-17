@@ -1,4 +1,3 @@
-import { ArrowBackIcon, ArrowForwardIcon } from "@chakra-ui/icons";
 import {
   Box,
   Button,
@@ -12,100 +11,19 @@ import {
   SliderThumb,
   SliderTrack,
   Table,
-  TableCaption,
   TableContainer,
   Tbody,
   Td,
   Text,
-  Th,
-  Thead,
-  Tr,
+  Tr
 } from "@chakra-ui/react";
 import styled from "@emotion/styled";
 import { useWeb3React } from "@web3-react/core";
 import { VisaIcon } from "components/Icons/Icons";
 import { useCallback, useEffect, useRef, useState } from "react";
-import { useHistory } from "react-router-dom";
 import StepWizard from "react-step-wizard";
-import { getControllerContract, getGardens } from "../Explore";
-
-function ValueToInvest(props) {
-  const { state } = props;
-
-  function onSliderChange(value) {
-    state.onValueSliderChange("valueToInvest", value);
-  }
-
-  return (
-    <Flex direction={"column"} alignItems="center" maxW="80vw">
-      <NavButtons step={1} {...props} />
-
-      <Box
-        border="1px"
-        borderRadius="xl"
-        px="5rem"
-        py="2rem"
-        borderColor="gray.500"
-      >
-        <Text fontSize="2xl">
-          Your wallet currently has {state.walletValueETH} ETH.
-        </Text>
-
-        <TableContainer>
-          <Table variant="simple">
-            <TableCaption placement="top">Current holdings</TableCaption>
-
-            <Thead>
-              <Tr>
-                <Th>Asset</Th>
-                <Th isNumeric>Value</Th>
-              </Tr>
-            </Thead>
-            <Tbody>
-              <Tr>
-                <Td>20 ETH</Td>
-                <Td isNumeric>$58,200</Td>
-              </Tr>
-              <Tr>
-                <Td>2 YFI</Td>
-                <Td isNumeric>$36,100</Td>
-              </Tr>
-              <Tr>
-                <Td>300 MATIC</Td>
-                <Td isNumeric>$417</Td>
-              </Tr>
-              <Tr>
-                <Td>7014 FRAX</Td>
-                <Td isNumeric>$7,014</Td>
-              </Tr>
-            </Tbody>
-          </Table>
-        </TableContainer>
-
-        <Box mt="2rem">
-          <Text fontSize="2xl">How much are you looking to invest?</Text>
-
-          <Center mt="1rem">
-            <Text>{state.valueToInvest} ETH</Text>
-          </Center>
-          <Slider
-            min={0}
-            max={state.walletValueETH}
-            defaultValue={0}
-            colorScheme="teal"
-            onChange={onSliderChange}
-            mt="1rem"
-          >
-            <SliderTrack bg="#4fd1c5">
-              <SliderFilledTrack />
-            </SliderTrack>
-            <SliderThumb />
-          </Slider>
-        </Box>
-      </Box>
-    </Flex>
-  );
-}
+import { getControllerContract, getGardens } from "../../Explore";
+import NavButtons from "./NavButtons";
 
 function Goals(props) {
   const { state } = props;
@@ -567,70 +485,6 @@ function DisplayResults(props) {
   );
 }
 
-const Nav = (props) => {
-  const dots = [];
-
-  for (let i = 1; i <= props.totalSteps; i += 1) {
-    const isActive = props.currentStep === i;
-
-    dots.push(
-      <NavDotStyled
-        key={`nav-dot-${i}`}
-        active={isActive}
-        onClick={() => props.goToStep(i)}
-      >
-        {/* &bull; */}
-      </NavDotStyled>
-    );
-  }
-
-  return <NavStyled>{dots}</NavStyled>;
-};
-
-const NavButtons = ({
-  currentStep,
-  firstStep,
-  goToStep,
-  lastStep,
-  nextStep,
-  previousStep,
-  totalSteps,
-  step,
-  hideForward,
-  children,
-}) => {
-  const history = useHistory();
-
-  function navigateToPortfolio() {
-    history.push("/admin/portfolio");
-  }
-
-  return (
-    <Center>
-      {step > 1 ? (
-        <Button variant="ghost" onClick={previousStep}>
-          <ArrowBackIcon />
-        </Button>
-      ) : (
-        <div />
-      )}
-
-      {children ? children : <Text mx="2rem">Preferences</Text>}
-
-      {!hideForward &&
-        (step < totalSteps ? (
-          <Button variant="ghost" onClick={nextStep}>
-            <ArrowForwardIcon />
-          </Button>
-        ) : (
-          <Button onClick={navigateToPortfolio} variant="ghost">
-            Finish
-          </Button>
-        ))}
-    </Center>
-  );
-};
-
 const StepWizardStyled = styled(StepWizard)`
   height: 80vh;
   width: 100%;
@@ -659,40 +513,10 @@ const Card = styled(Container)`
   }}
 `;
 
-const NavStyled = styled.div`
-  margin-top: 15px;
-  text-align: center;
-`;
-
-const NavDotStyled = styled.span`
-  width: 8rem;
-  height: 0.5rem;
-  border-radius: 40px;
-  background-color: black;
-  display: inline-block;
-  margin-left: 0.5rem;
-  margin-right: 0.5rem;
-
-  cursor: pointer;
-
-  opacity: 0.4;
-
-  ${(props) => {
-    if (props.active)
-      return `
-    background-color: #4fd1c5;
-    opacity: 1;
-    `;
-  }}
-`;
-
 export {
   StepWizardStyled,
-  ValueToInvest,
   Goals,
   CrashReaction,
   CalculationFeedback,
   DisplayResults,
-  Nav,
-  NavButtons,
 };

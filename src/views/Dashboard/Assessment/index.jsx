@@ -1,14 +1,14 @@
 import { Flex } from "@chakra-ui/react";
 import { useState } from "react";
 import {
-  StepWizardStyled,
   CalculationFeedback,
   CrashReaction,
   DisplayResults,
   Goals,
-  ValueToInvest,
-  Nav,
-} from "./wizard.jsx";
+  StepWizardStyled,
+} from "./Wizard/index.jsx";
+import Nav from "./Wizard/Nav.jsx";
+import ValueToInvest from "./Wizard/ValueToInvest.jsx";
 
 export default function Assessment() {
   const [assessmentState, setAssessmentState] = useState({
@@ -20,11 +20,6 @@ export default function Assessment() {
   });
   const [gardenData, setGardenData] = useState([]);
 
-  // Do something on step change
-  const onStepChange = (stats) => {
-    // console.log(stats);
-  };
-
   const onValueChange = (key, value) =>
     setAssessmentState({ ...assessmentState, [key]: value });
 
@@ -33,7 +28,7 @@ export default function Assessment() {
 
   return (
     <Flex pt={{ base: "120px", md: "75px" }}>
-      <StepWizardStyled onStepChange={onStepChange} nav={<Nav />}>
+      <StepWizardStyled nav={<Nav />}>
         <ValueToInvest state={{ ...assessmentState, onValueSliderChange }} />
         <Goals state={{ ...assessmentState, onValueSliderChange }} />
         <CrashReaction state={assessmentState} onValueChange={onValueChange} />

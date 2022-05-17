@@ -1,14 +1,11 @@
 import { Flex } from "@chakra-ui/react";
 import { useState } from "react";
-import {
-  CalculationFeedback,
-  CrashReaction,
-  DisplayResults,
-  Goals,
-  StepWizardStyled,
-} from "./Wizard/index.jsx";
-import Nav from "./Wizard/Nav.jsx";
-import ValueToInvest from "./Wizard/ValueToInvest.jsx";
+import { DisplayResults, StepWizardStyled } from "./Wizard/index.jsx";
+import CalculationFeedback from "./Wizard/CalculationFeedback";
+import CrashReaction from "./Wizard/CrashReaction";
+import Nav from "./Wizard/Nav";
+import ValueToInvest from "./Wizard/ValueToInvest";
+import Goals from "./Wizard/Goals";
 
 export default function Assessment() {
   const [assessmentState, setAssessmentState] = useState({

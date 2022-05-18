@@ -44,6 +44,7 @@ export default function CalculationFeedback(props) {
     async function getVaults() {
       if (
         props.isActive &&
+        allValuesCollected &&
         gardens.gardenData.length === 0 &&
         !loadingGardens &&
         !!library
@@ -72,6 +73,7 @@ export default function CalculationFeedback(props) {
   }, [
     state,
     props.isActive,
+    allValuesCollected,
     gardens.gardenData.length,
     loadingGardens,
     setLoadingGardens,

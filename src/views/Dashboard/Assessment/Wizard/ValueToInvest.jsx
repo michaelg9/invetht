@@ -1,20 +1,20 @@
 import {
-    Box,
-    Center,
-    Flex,
-    Slider,
-    SliderFilledTrack,
-    SliderThumb,
-    SliderTrack,
-    Table,
-    TableCaption,
-    TableContainer,
-    Tbody,
-    Td,
-    Text,
-    Th,
-    Thead,
-    Tr
+  Box,
+  Center,
+  Flex,
+  Slider,
+  SliderFilledTrack,
+  SliderThumb,
+  SliderTrack,
+  Table,
+  TableCaption,
+  TableContainer,
+  Tbody,
+  Td,
+  Text,
+  Th,
+  Thead,
+  Tr,
 } from "@chakra-ui/react";
 import NavButtons from "./NavButtons";
 
@@ -24,6 +24,13 @@ export default function ValueToInvest(props) {
   function onSliderChange(value) {
     state.onValueSliderChange("valueToInvest", value);
   }
+
+  const walletResponse = state.walletBalances.response;
+
+  const ethBalance = walletResponse && walletResponse?.ETH?.balance;
+  let ethValue =
+    walletResponse && walletResponse?.ETH?.price?.rate * ethBalance;
+  if (typeof ethValue === "number") ethValue = ethValue.toFixed(2);
 
   return (
     <Flex direction={"column"} alignItems="center" maxW="80vw">
@@ -52,21 +59,20 @@ export default function ValueToInvest(props) {
             </Thead>
             <Tbody>
               <Tr>
-                <Td>20 ETH</Td>
-                <Td isNumeric>$58,200</Td>
+                <Td>{ethBalance} ETH</Td>
+                <Td isNumeric>${ethValue}</Td>
               </Tr>
-              <Tr>
-                <Td>2 YFI</Td>
-                <Td isNumeric>$36,100</Td>
-              </Tr>
-              <Tr>
-                <Td>300 MATIC</Td>
-                <Td isNumeric>$417</Td>
-              </Tr>
-              <Tr>
-                <Td>7014 FRAX</Td>
-                <Td isNumeric>$7,014</Td>
-              </Tr>
+              {walletResponse &&
+                walletResponse?.tokens.map((token, i) => {
+                  return (
+                    <Tr key={`${token.tokenInfo?.symbol}-${i}`}>
+                      <Td>
+                        {token.balance} {token.tokenInfo?.symbol}
+                      </Td>
+                      <Td isNumeric>${token.tokenInfo?.price}</Td>
+                    </Tr>
+                  );
+                })}
             </Tbody>
           </Table>
         </TableContainer>
@@ -75,8 +81,18 @@ export default function ValueToInvest(props) {
           <Text fontSize="2xl">How much are you looking to invest?</Text>
 
           <Center mt="1rem">
-            <Text>{state.valueToInvest} ETH</Text>
+            <Flex flexDirection="column" alignItems="center">
+              <Text>{state.valueToInvest} ETH</Text>
+
+              {state.walletValueETH && state.walletValueETH < 0.01 && (
+                <Text>
+                  Sorry, not enough ETH funds to invest. Please top up your
+                  wallet.
+                </Text>
+              )}
+            </Flex>
           </Center>
+
           <Slider
             min={0}
             max={state.walletValueETH}

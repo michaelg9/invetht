@@ -1,8 +1,8 @@
 import { Box, Button, Flex, Text } from "@chakra-ui/react";
 import { useWeb3React } from "@web3-react/core";
-import { ethers } from "ethers";
-import { useCallback, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { useHistory } from "react-router-dom";
+import { useBalances } from "../Portfolio/api.ts";
 import {
   CalculationFeedback,
   CrashReaction,
@@ -21,7 +21,8 @@ export default function Assessment() {
     valueVaultChoice: null,
   });
   const [gardenData, setGardenData] = useState([]);
-  const { account, library, active } = useWeb3React();
+  const { account, active } = useWeb3React();
+  const walletBalances = useBalances(account);
 
   const history = useHistory();
 
@@ -31,30 +32,26 @@ export default function Assessment() {
   const onValueSliderChange = (key, value) =>
     setAssessmentState({ ...assessmentState, [key]: value });
 
-  const getBalance = useCallback(async () => {
-    if (!library) return;
-
-    const signer = library.getSigner();
-
-    const balance = await signer.provider.getBalance(account);
-    setAssessmentState({
-      ...assessmentState,
-      walletValueETH: ethers.utils.formatEther(balance),
-    });
-  }, [account, assessmentState, library]);
-
   useEffect(() => {
-    if (library && account && !assessmentState.walletValueETH) {
-      console.log({ library });
-      getBalance();
+    if (!assessmentState.walletValueETH && walletBalances.response) {
+      setAssessmentState({
+        ...assessmentState,
+        walletValueETH: walletBalances.response.ETH.balance,
+      });
     }
-  }, [library, account, getBalance, assessmentState.walletValueETH]);
+  }, [assessmentState, walletBalances]);
 
   return (
     <Flex pt={{ base: "120px", md: "75px" }}>
       {active ? (
         <StepWizardStyled nav={<Nav />}>
-          <ValueToInvest state={{ ...assessmentState, onValueSliderChange }} />
+          <ValueToInvest
+            state={{
+              ...assessmentState,
+              onValueSliderChange,
+              walletBalances,
+            }}
+          />
           <Goals state={{ ...assessmentState, onValueSliderChange }} />
           <CrashReaction
             state={assessmentState}

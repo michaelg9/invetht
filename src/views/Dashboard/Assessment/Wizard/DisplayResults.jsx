@@ -1,13 +1,14 @@
 import {
   Box,
-  Button, Flex,
+  Button,
+  Flex,
   Image,
   Table,
   TableContainer,
   Tbody,
   Td,
   Text,
-  Tr
+  Tr,
 } from "@chakra-ui/react";
 import { VisaIcon } from "components/Icons/Icons";
 import NavButtons from "./NavButtons";
@@ -23,7 +24,10 @@ export default function DisplayResults(props) {
 
   function invethedInVault() {
     const {
-      valueToInvest, valueRiskProfile, valueMarketReaction, valueVaultChoice,
+      valueToInvest,
+      valueRiskProfile,
+      valueMarketReaction,
+      valueVaultChoice,
     } = state;
 
     const args = {
@@ -40,77 +44,89 @@ export default function DisplayResults(props) {
       <NavButtons step={5} {...props} />
 
       <Box border="1px" borderRadius="xl" p="2rem" borderColor="gray.500">
-        <Text fontSize="2xl">
-          Recommendations ready. Vaults shown are most aligned with your
-          determined needs.
-        </Text>
+        {gardens.length ? (
+          <>
+            <Text fontSize="2xl">
+              Recommendations ready. Vaults shown are most aligned with your
+              determined needs.
+            </Text>
 
-        <Flex>
-          {gardens.slice(0, 3).map((garden, index) => {
-            return (
-              <Card
-                key={garden.name}
-                display="flex"
-                flexDirection="column"
-                border="1px"
-                borderRadius="xl"
-                borderColor="teal.300"
-                m="2rem 1rem 1rem 1rem"
-                p="1rem"
-                onClick={() => onCardClick(index + 1)}
-                active={state.valueVaultChoice === index + 1}
-              >
-                <Flex>
-                  <Image
-                    src={`https://www.babylon.finance/gardens/${garden.address}/thumb.png`}
-                    h={"40px"}
-                    w={"40px"}
-                    pe="5px"
-                    onError={({ currentTarget }) => {
-                      currentTarget.onerror = null; // prevents looping
-                      currentTarget.src = "/assets/invest.svg";
-                    }} />
+            <Flex>
+              {gardens.slice(0, 3).map((garden, index) => {
+                return (
+                  <Card
+                    key={garden.name}
+                    display="flex"
+                    flexDirection="column"
+                    border="1px"
+                    borderRadius="xl"
+                    borderColor="teal.300"
+                    m="2rem 1rem 1rem 1rem"
+                    p="1rem"
+                    onClick={() => onCardClick(index + 1)}
+                    active={state.valueVaultChoice === index + 1}
+                  >
+                    <Flex>
+                      <Image
+                        src={`https://www.babylon.finance/gardens/${garden.address}/thumb.png`}
+                        h={"40px"}
+                        w={"40px"}
+                        pe="5px"
+                        onError={({ currentTarget }) => {
+                          currentTarget.onerror = null; // prevents looping
+                          currentTarget.src = "/assets/invest.svg";
+                        }}
+                      />
 
-                  <Box mx="1rem" w="100%" textAlign="center">
-                    <VisaIcon h={"40px"} w={"40px"} />
-                  </Box>
-                </Flex>
+                      <Box mx="1rem" w="100%" textAlign="center">
+                        <VisaIcon h={"40px"} w={"40px"} />
+                      </Box>
+                    </Flex>
 
-                <Text fontSize="2xl" mt="1rem">
-                  {garden.name}
-                </Text>
+                    <Text fontSize="2xl" mt="1rem">
+                      {garden.name}
+                    </Text>
 
-                <Text mt="1rem" wordBreak="break-all">
-                  <Box>Address: </Box>
-                  {garden.address}
-                </Text>
+                    <Text mt="1rem" wordBreak="break-all">
+                      <Box>Address: </Box>
+                      {garden.address}
+                    </Text>
 
-                <TableContainer>
-                  <Table variant="simple">
-                    <Tbody>
-                      <Tr>
-                        <Td>NAV</Td>
-                        <Td isNumeric>$58,200</Td>
-                      </Tr>
-                      <Tr>
-                        <Td>30D</Td>
-                        <Td isNumeric>7.1%</Td>
-                      </Tr>
-                      <Tr>
-                        <Td>90D</Td>
-                        <Td isNumeric>9%</Td>
-                      </Tr>
-                    </Tbody>
-                  </Table>
-                </TableContainer>
-              </Card>
-            );
-          })}
-        </Flex>
+                    <TableContainer>
+                      <Table variant="simple">
+                        <Tbody>
+                          <Tr>
+                            <Td>NAV</Td>
+                            <Td isNumeric>$58,200</Td>
+                          </Tr>
+                          <Tr>
+                            <Td>30D</Td>
+                            <Td isNumeric>7.1%</Td>
+                          </Tr>
+                          <Tr>
+                            <Td>90D</Td>
+                            <Td isNumeric>9%</Td>
+                          </Tr>
+                        </Tbody>
+                      </Table>
+                    </TableContainer>
+                  </Card>
+                );
+              })}
+            </Flex>
 
-        <Button disabled={!state.valueVaultChoice} onClick={invethedInVault}>
-          Deposit
-        </Button>
+            <Button
+              disabled={!state.valueVaultChoice}
+              onClick={invethedInVault}
+            >
+              Deposit
+            </Button>
+          </>
+        ) : (
+          <Text fontSize="2xl">
+            Vaults not loaded. Were you missing some steps?
+          </Text>
+        )}{" "}
       </Box>
     </Flex>
   );

@@ -1,17 +1,18 @@
-import { Text, Flex, HStack, Spinner } from "@chakra-ui/react";
+import { Box, Button, Flex, HStack, Spinner, Text } from "@chakra-ui/react";
 import { useWeb3React } from "@web3-react/core";
 import { ethers } from "ethers";
-import {
-  IBabController,
-  IGarden,
-  IERC20Metadata,
-  ICoreGarden,
-  IAdminGarden,
-  IStrategyGarden,
-} from "./interfaces";
 import { useEffect, useState } from "react";
+import { useHistory } from "react-router-dom";
 import { COOL_GARDENS, GardenDataType, getGardenData } from "./data";
 import Gardens from "./Gardens";
+import {
+  IAdminGarden,
+  IBabController,
+  ICoreGarden,
+  IERC20Metadata,
+  IGarden,
+  IStrategyGarden,
+} from "./interfaces";
 
 function getControllerContract(library: any) {
   const contractAddress = "0xD4a5b5fcB561dAF3aDF86F8477555B92FBa43b5F";
@@ -58,6 +59,8 @@ function Explore() {
   const [gardens, setGardens] = useState<GardenDataType[]>([]);
   const [loading, setLoading] = useState<boolean>(false);
 
+  const history = useHistory();
+
   useEffect(() => {
     if (!active) return;
 
@@ -76,7 +79,15 @@ function Explore() {
   if (!active) {
     return (
       <Flex flexDirection="column" pt={{ base: "120px", md: "75px" }}>
-        <div>No connected wallet found</div>
+        <Text fontSize="2xl">No connected wallet found.</Text>
+        <Box>
+          <Button
+            variant="outline"
+            onClick={() => history.push("/admin/connect")}
+          >
+            Please connect first!
+          </Button>
+        </Box>
       </Flex>
     );
   } else if (loading) {

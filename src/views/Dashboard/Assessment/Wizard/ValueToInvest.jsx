@@ -80,6 +80,7 @@ export default function ValueToInvest(props) {
           <Slider
             min={0}
             max={state.walletValueETH}
+            step={0.01}
             defaultValue={0}
             colorScheme="teal"
             onChange={onSliderChange}

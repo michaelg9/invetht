@@ -10,9 +10,12 @@ import {
   Text,
   Tr,
 } from "@chakra-ui/react";
-import { VisaIcon } from "components/Icons/Icons";
+import { IoIosCheckmarkCircleOutline } from "react-icons/io";
+import { FaBitcoin, FaEthereum } from "react-icons/fa";
 import NavButtons from "./NavButtons";
 import { Card } from "./index";
+import ManualData from "./manual_data";
+import Dailogo from "./dai-logo.png";
 
 export default function DisplayResults(props) {
   const { state, gardens } = props;
@@ -53,6 +56,44 @@ export default function DisplayResults(props) {
 
             <Flex>
               {gardens.slice(0, 3).map((garden, index) => {
+                let manualGardenData = ManualData.find(
+                  (data) => data.address === garden.address
+                );
+                if (!manualGardenData) {
+                  manualGardenData = {
+                    description: "",
+                    NAV: 0,
+                    D30: 0,
+                    D90: 0,
+                  };
+                }
+
+                const gardenStyle = {
+                  marginLeft: "1rem",
+                  width: "20px",
+                  height: "20px",
+                  color: "white",
+                  backgroundColor: "black",
+                  borderRadius: "50%",
+                };
+                let GardenLogo;
+                switch (manualGardenData.currency) {
+                  case "ETH":
+                    GardenLogo = <FaEthereum style={gardenStyle} />;
+                    break;
+                  case "WBTC":
+                    GardenLogo = <FaBitcoin style={gardenStyle} />;
+                    break;
+                  case "DAI":
+                    GardenLogo = (
+                      <img src={Dailogo} alt="DAI" style={gardenStyle} />
+                    );
+                    break;
+
+                  default:
+                    <div style={gardenStyle} />;
+                }
+
                 return (
                   <Card
                     key={garden.name}
@@ -78,9 +119,19 @@ export default function DisplayResults(props) {
                         }}
                       />
 
-                      <Box mx="1rem" w="100%" textAlign="center">
-                        <VisaIcon h={"40px"} w={"40px"} />
-                      </Box>
+                      <Flex mx="1rem" w="100%" justifyContent="center">
+                        <IoIosCheckmarkCircleOutline
+                          style={{
+                            weight: "20px",
+                            height: "20px",
+                            color: "white",
+                            backgroundColor: "#4fd1c5",
+                            borderRadius: "50%",
+                          }}
+                        />
+
+                        {GardenLogo}
+                      </Flex>
                     </Flex>
 
                     <Text fontSize="2xl" mt="1rem">
@@ -88,24 +139,23 @@ export default function DisplayResults(props) {
                     </Text>
 
                     <Text mt="1rem" wordBreak="break-all">
-                      <Box>Address: </Box>
-                      {garden.address}
+                      {manualGardenData.description}
                     </Text>
 
-                    <TableContainer>
+                    <TableContainer mt="2rem">
                       <Table variant="simple">
                         <Tbody>
                           <Tr>
                             <Td>NAV</Td>
-                            <Td isNumeric>$58,200</Td>
+                            <Td isNumeric>${manualGardenData.NAV}</Td>
                           </Tr>
                           <Tr>
                             <Td>30D</Td>
-                            <Td isNumeric>7.1%</Td>
+                            <Td isNumeric>{manualGardenData.D30}%</Td>
                           </Tr>
                           <Tr>
                             <Td>90D</Td>
-                            <Td isNumeric>9%</Td>
+                            <Td isNumeric>{manualGardenData.D90}%</Td>
                           </Tr>
                         </Tbody>
                       </Table>

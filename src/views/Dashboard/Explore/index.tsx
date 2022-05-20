@@ -3,7 +3,12 @@ import { useWeb3React } from "@web3-react/core";
 import { ethers } from "ethers";
 import { useEffect, useState } from "react";
 import { useHistory } from "react-router-dom";
-import { COOL_GARDENS, GardenDataType, getGardenData } from "./data";
+import {
+  getGardensByRiskProfile,
+  GardenDataType,
+  getGardenData,
+  calculateRiskProfile,
+} from "./data";
 import Gardens from "./Gardens";
 import {
   IAdminGarden,
@@ -28,10 +33,15 @@ function getControllerContract(library: any) {
   return controllerContract;
 }
 
-async function getGardens(_controller: ethers.Contract, library: any) {
+async function getGardens(
+  _controller: ethers.Contract,
+  library: any,
+  riskProfile?: number
+) {
   const allGardenData = [];
+
   // const gardenAddresses = await controller.getGardens();
-  const selectedGardenAddresses = COOL_GARDENS; // TODO: For now just load the first few gardens
+  const selectedGardenAddresses = getGardensByRiskProfile(riskProfile);
 
   for (const gardenAddress of selectedGardenAddresses) {
     const gardenContract = new ethers.Contract(
@@ -115,4 +125,9 @@ function Explore() {
   );
 }
 
-export { getControllerContract, getGardens, Explore as default };
+export {
+  getControllerContract,
+  getGardens,
+  calculateRiskProfile,
+  Explore as default,
+};

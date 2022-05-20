@@ -2,13 +2,59 @@ import { ethers } from "ethers";
 
 export type GardenDataType = Awaited<ReturnType<typeof getGardenData>>;
 
-export const COOL_GARDENS = [ 
-  '0xB5bD20248cfe9480487CC0de0d72D0e19eE0AcB6', //fountain of eth
-  '0x1D50c4F18D7af4fCe2Ea93c7942aae6260788596', //stable garden
-  '0x4C4Ad2790D2ea7D293B06896b09e1d102e6B2613', //fountain of btc
-  '0xd42B3A30ca89155d6C3499c81F0C4e5A978bE5c2', // arkhad's
-  '0x3eeC6Ac8675ab1B4768f6032F0598e36Ac64f415', //stable pebble
-]
+export const gardens = {
+  fountain_eth: "0xB5bD20248cfe9480487CC0de0d72D0e19eE0AcB6",
+  fountain_btc: "0x4C4Ad2790D2ea7D293B06896b09e1d102e6B2613",
+  arkads: "0xd42B3A30ca89155d6C3499c81F0C4e5A978bE5c2",
+  stable: "0x1D50c4F18D7af4fCe2Ea93c7942aae6260788596",
+  forever_stables: "0x8174e96F7F7e14B252f20de1e5F932CB5a1a911c",
+  stable_pebble: "0x3eeC6Ac8675ab1B4768f6032F0598e36Ac64f415",
+};
+
+export interface AssessmentState {
+  walletValueETH: number;
+  valueToInvest: number;
+  valueRiskProfile: number;
+  valueMarketReaction: number;
+}
+
+export function calculateRiskProfile(state: AssessmentState): number | null {
+  if (state.valueRiskProfile === null || state.valueMarketReaction === null) {
+    return null;
+  }
+
+  const riskProfile = state.valueRiskProfile + state.valueMarketReaction;
+
+  return riskProfile;
+}
+
+export function getGardensByRiskProfile(riskProfile?: number): string[] {
+  if (riskProfile == null) {
+    return Object.values(gardens);
+  }
+
+  switch (riskProfile) {
+    case 1:
+    case 2:
+    case 3:
+      return [gardens.stable, gardens.forever_stables, gardens.fountain_btc];
+    case 4:
+      return [gardens.fountain_btc, gardens.fountain_eth, gardens.stable];
+    case 5:
+    case 6:
+    case 7:
+      return [gardens.fountain_eth, gardens.fountain_btc, gardens.stable];
+    case 8:
+    case 9:
+      return [gardens.fountain_eth, gardens.fountain_btc, gardens.arkads];
+    case 10:
+    case 11:
+    case 12:
+      return [gardens.arkads, gardens.fountain_eth, gardens.fountain_btc];
+    default:
+      throw new Error("Invalid risk profile");
+  }
+}
 
 async function getGardenData(gardenContract: ethers.Contract) {
   //   const symbol = await gardenContract.symbol();
@@ -83,7 +129,7 @@ async function getGardenData(gardenContract: ethers.Contract) {
       lastPricePerShareTS: promises[29],
       pricePerShareDecayRate: promises[30],
       pricePerShareDelta: promises[31],
-      address: '',
+      address: "",
     };
   });
 }

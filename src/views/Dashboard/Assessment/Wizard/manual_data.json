@@ -1,0 +1,47 @@
+[
+  {
+    "name": "The Fountain of ETH",
+    "description": "Accumulate ETH through low-risk strategies without exposure to the fiat price.",
+    "NAV": 3060,
+    "D30": -1.97,
+    "D90": -1.79,
+    "address": "0xB5bD20248cfe9480487CC0de0d72D0e19eE0AcB6",
+    "currency": "ETH"
+  },
+  {
+    "name": "The Fountain of BTC",
+    "description": "Deposit and grow your WBTC",
+    "NAV": 1.25,
+    "D30": 3.97,
+    "D90": 0.56,
+    "address": "0x4C4Ad2790D2ea7D293B06896b09e1d102e6B2613",
+    "currency": "WBTC"
+  },
+  {
+    "name": "Arkad's Garden",
+    "description": "Generate DAI through leveraged farming and directional bets.",
+    "NAV": 404530000,
+    "D30": -50.7,
+    "D90": -59.85,
+    "address": "0xd42B3A30ca89155d6C3499c81F0C4e5A978bE5c2",
+    "currency": "DAI"
+  },
+  {
+    "name": "The Stable Garden",
+    "description": "Yield farm DAI with low risk investments.",
+    "NAV": 47800000,
+    "D30": -0.75,
+    "D90": 0.6,
+    "address": "0x1D50c4F18D7af4fCe2Ea93c7942aae6260788596",
+    "currency": "DAI"
+  },
+  {
+    "name": "Forever Stables",
+    "description": "Deposit and grow your DAI",
+    "NAV": 1770000,
+    "D30": 0.18,
+    "D90": -0.16,
+    "address": "0x8174e96F7F7e14B252f20de1e5F932CB5a1a911c",
+    "currency": "DAI"
+  }
+]

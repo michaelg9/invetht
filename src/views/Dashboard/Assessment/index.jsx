@@ -12,9 +12,10 @@ import {
   StepWizardStyled,
   ValueToInvest,
 } from "./Wizard/index.jsx";
+
 export default function Assessment() {
   const [assessmentState, setAssessmentState] = useState({
-    walletValueETH: null,
+    walletValueETH: 5,
     valueToInvest: null,
     valueRiskProfile: null,
     valueMarketReaction: null,

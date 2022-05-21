@@ -1,7 +1,6 @@
 import {
   Box,
   Center,
-  Container,
   Flex,
   Slider,
   SliderFilledTrack,

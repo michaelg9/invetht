@@ -43,5 +43,14 @@
     "D90": -0.16,
     "address": "0x8174e96F7F7e14B252f20de1e5F932CB5a1a911c",
     "currency": "DAI"
+  },
+  {
+    "name": "Hello World",
+    "description": "Deposit and grow your WETH",
+    "NAV": 16.99,
+    "D30": -13.04,
+    "D90": -25.89,
+    "address": "0x8174e96F7F7e14B252f20de1e5F932CB5a1a911c",
+    "currency": "WBTC"
   }
 ]

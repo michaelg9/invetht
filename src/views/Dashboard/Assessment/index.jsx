@@ -50,14 +50,18 @@ export default function Assessment() {
           <ValueToInvest
             state={{ ...assessmentState, onValueSliderChange, walletBalances }}
           />
+
           <Goals
             state={{ ...assessmentState, onValueSliderChange, onValueChange }}
           />
+
           <CrashReaction state={{ ...assessmentState, onValueChange }} />
+
           <CalculationFeedback
             state={assessmentState}
             gardens={{ gardenData, setGardenData }}
           />
+
           <DisplayResults
             state={{ ...assessmentState, onValueChange }}
             gardens={gardenData}

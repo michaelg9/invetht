@@ -9,21 +9,23 @@ export const gardens = {
   stable: "0x1D50c4F18D7af4fCe2Ea93c7942aae6260788596",
   forever_stables: "0x8174e96F7F7e14B252f20de1e5F932CB5a1a911c",
   stable_pebble: "0x3eeC6Ac8675ab1B4768f6032F0598e36Ac64f415",
+  hello_world: "0xeEf3125fF571194A7fCA71862bAA425727eb3703",
 };
 
 export interface AssessmentState {
   walletValueETH: number;
   valueToInvest: number;
+  valueGoal: number;
   valueRiskProfile: number;
   valueMarketReaction: number;
 }
 
 export function calculateRiskProfile(state: AssessmentState): number | null {
-  if (state.valueRiskProfile === null || state.valueMarketReaction === null) {
-    return null;
+  if (state.valueGoal === null) {
+    throw Error("Goal is not set");
   }
 
-  const riskProfile = state.valueRiskProfile + state.valueMarketReaction;
+  const riskProfile = state.valueGoal; // state.valueRiskProfile + state.valueMarketReaction;
 
   return riskProfile;
 }
@@ -37,9 +39,9 @@ export function getGardensByRiskProfile(riskProfile?: number): string[] {
     case 1:
       return [gardens.stable, gardens.forever_stables, gardens.fountain_btc];
     case 2:
-      return [gardens.fountain_eth, gardens.fountain_btc, gardens.stable];
+      return [gardens.fountain_eth, gardens.fountain_btc, gardens.hello_world];
     case 3:
-      return [gardens.arkads, gardens.fountain_eth, gardens.fountain_btc];
+      return [gardens.arkads, gardens.fountain_eth, gardens.hello_world];
     default:
       throw new Error("Invalid risk profile");
   }

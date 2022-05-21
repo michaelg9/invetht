@@ -10,36 +10,51 @@ import {
   Text,
   Tr,
 } from "@chakra-ui/react";
-import { IoIosCheckmarkCircleOutline } from "react-icons/io";
+import { useWeb3React } from "@web3-react/core";
+import { ethers } from "ethers";
 import { FaBitcoin, FaEthereum } from "react-icons/fa";
-import NavButtons from "./NavButtons";
+import { IoIosCheckmarkCircleOutline } from "react-icons/io";
+import { ICoreGarden } from "views/Dashboard/Explore/interfaces";
+import Dailogo from "./dai-logo.png";
 import { Card } from "./index";
 import ManualData from "./manual_data";
-import Dailogo from "./dai-logo.png";
+import NavButtons from "./NavButtons";
 
 export default function DisplayResults(props) {
+  const { library, account } = useWeb3React();
+
   const { state, gardens } = props;
 
   function onCardClick(value) {
-    console.log(value);
     state.onValueChange("valueVaultChoice", value);
   }
 
-  function invethedInVault() {
-    const {
-      valueToInvest,
-      valueRiskProfile,
-      valueMarketReaction,
-      valueVaultChoice,
-    } = state;
+  async function invethedInVault() {
+    const { valueToInvest, valueVaultChoice } = state;
 
-    const args = {
-      valueToInvest,
-      valueRiskProfile,
-      valueMarketReaction,
-      valueVaultChoice,
-    };
-    console.log("TODO: Invest in vault with args", { args });
+    const gardenData = gardens[valueVaultChoice - 1];
+    const signer = library.getSigner();
+
+    const gardenContract = new ethers.Contract(
+      gardenData.address,
+      ICoreGarden.abi,
+      signer
+    );
+
+    const amountIn = ethers.utils.parseUnits(`${valueToInvest}`, 18);
+    const minAmountOut = 0;
+    const to = account;
+    const referer = "0x4bFC74983D6338D3395A00118546614bB78472c2";
+
+    try {
+      await gardenContract
+        .connect(signer)
+        .deposit(amountIn, minAmountOut, to, referer, {
+          value: amountIn,
+        });
+    } catch (e) {
+      console.error(e.message);
+    }
   }
 
   return (

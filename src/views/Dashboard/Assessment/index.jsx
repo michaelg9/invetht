@@ -15,7 +15,7 @@ import {
 
 export default function Assessment() {
   const [assessmentState, setAssessmentState] = useState({
-    walletValueETH: 5,
+    walletValueETH: null,
     valueToInvest: null,
     valueGoal: null,
     valueRiskProfile: null,

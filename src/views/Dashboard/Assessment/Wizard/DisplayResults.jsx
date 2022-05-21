@@ -12,6 +12,7 @@ import {
 } from "@chakra-ui/react";
 import { useWeb3React } from "@web3-react/core";
 import { ethers } from "ethers";
+import { useState } from "react";
 import { FaBitcoin, FaEthereum } from "react-icons/fa";
 import { IoIosCheckmarkCircleOutline } from "react-icons/io";
 import { ICoreGarden } from "views/Dashboard/Explore/interfaces";
@@ -22,14 +23,19 @@ import NavButtons from "./NavButtons";
 
 export default function DisplayResults(props) {
   const { library, account } = useWeb3React();
+  const [deposited, setDeposited] = useState(false);
 
   const { state, gardens } = props;
 
   function onCardClick(value) {
+    setDeposited(false);
+
     state.onValueChange("valueVaultChoice", value);
   }
 
   async function invethedInVault() {
+    setDeposited(false);
+
     const { valueToInvest, valueVaultChoice } = state;
 
     const gardenData = gardens[valueVaultChoice - 1];
@@ -52,6 +58,8 @@ export default function DisplayResults(props) {
         .deposit(amountIn, minAmountOut, to, referer, {
           value: amountIn,
         });
+      onCardClick(null); // reset vault
+      setDeposited(true);
     } catch (e) {
       console.error(e.message);
     }
@@ -186,6 +194,10 @@ export default function DisplayResults(props) {
             >
               Deposit
             </Button>
+
+            {deposited && (
+              <Text> Successfully deposited to choosen vault.</Text>
+            )}
           </>
         ) : (
           <Text fontSize="2xl">

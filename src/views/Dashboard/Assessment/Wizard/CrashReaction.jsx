@@ -6,7 +6,7 @@ export default function CrashReaction(props) {
   const { state } = props;
 
   function onCardClick(value) {
-    props.onValueChange("valueMarketReaction", value);
+    state.onValueChange("valueMarketReaction", value);
 
     props.goToStep(props.currentStep + 1);
   }

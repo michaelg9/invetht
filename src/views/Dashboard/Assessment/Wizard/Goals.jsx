@@ -1,18 +1,23 @@
 import {
-    Box,
-    Center,
-    Container,
-    Flex,
-    Slider,
-    SliderFilledTrack,
-    SliderThumb,
-    SliderTrack,
-    Text
+  Box,
+  Center,
+  Container,
+  Flex,
+  Slider,
+  SliderFilledTrack,
+  SliderThumb,
+  SliderTrack,
+  Text,
 } from "@chakra-ui/react";
+import { Card } from "./index";
 import NavButtons from "./NavButtons";
 
 export default function Goals(props) {
   const { state } = props;
+
+  function onCardClick(value) {
+    state.onValueChange("valueGoal", value);
+  }
 
   function onSliderChange(value) {
     state.onValueSliderChange("valueRiskProfile", value);
@@ -25,8 +30,9 @@ export default function Goals(props) {
       <Box border="1px" borderRadius="xl" p="2rem" borderColor="gray.500">
         <Text fontSize="2xl">What are your goals?</Text>
 
+        <Text textAlign="center">Please select a card</Text>
         <Flex>
-          <Container
+          <Card
             border="1px"
             borderRadius="xl"
             borderColor="teal.300"
@@ -34,6 +40,8 @@ export default function Goals(props) {
             display="flex"
             flexDirection="column"
             justifyContent="space-between"
+            onClick={() => onCardClick(1)}
+            active={state.valueGoal === 1}
           >
             <Flex direction="column" alignItems="center" py="1rem">
               <Text fontSize="4rem">🐷</Text>
@@ -47,13 +55,9 @@ export default function Goals(props) {
                 regardless of market volatility.
               </Text>
             </Flex>
+          </Card>
 
-            <Text align={"center"} mb="1rem">
-              1 - 3
-            </Text>
-          </Container>
-
-          <Container
+          <Card
             border="1px"
             borderRadius="xl"
             borderColor="teal.300"
@@ -61,6 +65,8 @@ export default function Goals(props) {
             display="flex"
             flexDirection="column"
             justifyContent="space-between"
+            onClick={() => onCardClick(2)}
+            active={state.valueGoal === 2}
           >
             <Flex direction="column" alignItems="center" py="1rem">
               <Text fontSize="4rem">🪴</Text>
@@ -74,13 +80,9 @@ export default function Goals(props) {
                 term focused, targeting constant growth YoY.
               </Text>
             </Flex>
+          </Card>
 
-            <Text align={"center"} mb="1rem">
-              4 - 6
-            </Text>
-          </Container>
-
-          <Container
+          <Card
             border="1px"
             borderRadius="xl"
             borderColor="teal.300"
@@ -88,6 +90,8 @@ export default function Goals(props) {
             display="flex"
             flexDirection="column"
             justifyContent="space-between"
+            onClick={() => onCardClick(3)}
+            active={state.valueGoal === 3}
           >
             <Flex direction="column" alignItems="center" py="1rem">
               <Text fontSize="4rem">🚀</Text>
@@ -100,11 +104,7 @@ export default function Goals(props) {
                 Targeting multiples for my portfolio. Ready for a 100x.
               </Text>
             </Flex>
-
-            <Text align={"center"} mb="1rem">
-              7 - 9
-            </Text>
-          </Container>
+          </Card>
         </Flex>
 
         <Box mt="2rem">
@@ -115,7 +115,7 @@ export default function Goals(props) {
           </Center>
           <Slider
             min={0}
-            max={9}
+            max={10}
             defaultValue={0}
             colorScheme="teal"
             onChange={onSliderChange}

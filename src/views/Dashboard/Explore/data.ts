@@ -35,21 +35,10 @@ export function getGardensByRiskProfile(riskProfile?: number): string[] {
 
   switch (riskProfile) {
     case 1:
-    case 2:
-    case 3:
       return [gardens.stable, gardens.forever_stables, gardens.fountain_btc];
-    case 4:
-      return [gardens.fountain_btc, gardens.fountain_eth, gardens.stable];
-    case 5:
-    case 6:
-    case 7:
+    case 2:
       return [gardens.fountain_eth, gardens.fountain_btc, gardens.stable];
-    case 8:
-    case 9:
-      return [gardens.fountain_eth, gardens.fountain_btc, gardens.arkads];
-    case 10:
-    case 11:
-    case 12:
+    case 3:
       return [gardens.arkads, gardens.fountain_eth, gardens.fountain_btc];
     default:
       throw new Error("Invalid risk profile");

@@ -17,6 +17,7 @@ export default function Assessment() {
   const [assessmentState, setAssessmentState] = useState({
     walletValueETH: 5,
     valueToInvest: null,
+    valueGoal: null,
     valueRiskProfile: null,
     valueMarketReaction: null,
     valueVaultChoice: null,
@@ -47,17 +48,12 @@ export default function Assessment() {
       {active ? (
         <StepWizardStyled nav={<Nav />}>
           <ValueToInvest
-            state={{
-              ...assessmentState,
-              onValueSliderChange,
-              walletBalances,
-            }}
+            state={{ ...assessmentState, onValueSliderChange, walletBalances }}
           />
-          <Goals state={{ ...assessmentState, onValueSliderChange }} />
-          <CrashReaction
-            state={assessmentState}
-            onValueChange={onValueChange}
+          <Goals
+            state={{ ...assessmentState, onValueSliderChange, onValueChange }}
           />
+          <CrashReaction state={{ ...assessmentState, onValueChange }} />
           <CalculationFeedback
             state={assessmentState}
             gardens={{ gardenData, setGardenData }}

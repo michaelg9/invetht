@@ -19,6 +19,7 @@ export default function CalculationFeedback(props) {
 
   const allValuesCollected =
     !!state.valueToInvest &&
+    !!state.valueGoal &&
     !!state.valueRiskProfile &&
     !!state.valueMarketReaction;
 

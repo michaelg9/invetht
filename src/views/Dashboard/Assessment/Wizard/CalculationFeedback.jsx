@@ -1,7 +1,11 @@
 import { Box, Flex, Progress, Text } from "@chakra-ui/react";
 import { useWeb3React } from "@web3-react/core";
 import { useCallback, useEffect, useRef, useState } from "react";
-import { getControllerContract, getGardens } from "../../Explore";
+import {
+  getControllerContract,
+  getGardens,
+  calculateRiskProfile,
+} from "../../Explore";
 import NavButtons from "./NavButtons";
 
 export default function CalculationFeedback(props) {
@@ -15,6 +19,7 @@ export default function CalculationFeedback(props) {
 
   const allValuesCollected =
     !!state.valueToInvest &&
+    !!state.valueGoal &&
     !!state.valueRiskProfile &&
     !!state.valueMarketReaction;
 
@@ -31,38 +36,27 @@ export default function CalculationFeedback(props) {
 
   const getVaultData = useCallback(async () => {
     const controller = getControllerContract(library);
-    const gardenData = await getGardens(controller, library);
+
+    const riskProfile = calculateRiskProfile(state);
+
+    const gardenData = await getGardens(controller, library, riskProfile);
 
     gardens.setGardenData(gardenData);
 
     console.log({ gardenData });
 
     return gardenData;
-  }, [gardens, library]);
+  }, [gardens, library, state]);
 
   useEffect(() => {
     async function getVaults() {
       if (
         props.isActive &&
+        allValuesCollected &&
         gardens.gardenData.length === 0 &&
         !loadingGardens &&
         !!library
       ) {
-        const {
-          valueToInvest,
-          valueRiskProfile,
-          valueMarketReaction,
-          valueVaultChoice,
-        } = state;
-
-        const args = {
-          valueToInvest,
-          valueRiskProfile,
-          valueMarketReaction,
-          valueVaultChoice,
-        };
-        console.log("TODO: get gardens with args", { args });
-
         setLoadingGardens(true);
         await getVaultData();
         setLoadingGardens(false);
@@ -72,6 +66,7 @@ export default function CalculationFeedback(props) {
   }, [
     state,
     props.isActive,
+    allValuesCollected,
     gardens.gardenData.length,
     loadingGardens,
     setLoadingGardens,

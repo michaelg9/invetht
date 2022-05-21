@@ -20,8 +20,8 @@ import ConnectWallet from "ether/ConnectWallet";
 
 const dashRoutes = [
   {
-    path: "/portofolio",
-    name: "Portofolio",
+    path: "/portfolio",
+    name: "Portfolio",
     icon: <HomeIcon color="inherit" />,
     component: Portfolio,
     layout: "/admin",

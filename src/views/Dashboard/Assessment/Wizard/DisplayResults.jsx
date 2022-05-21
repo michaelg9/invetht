@@ -1,38 +1,68 @@
 import {
   Box,
-  Button, Flex,
+  Button,
+  Flex,
   Image,
   Table,
   TableContainer,
   Tbody,
   Td,
   Text,
-  Tr
+  Tr,
 } from "@chakra-ui/react";
-import { VisaIcon } from "components/Icons/Icons";
-import NavButtons from "./NavButtons";
+import { useWeb3React } from "@web3-react/core";
+import { ethers } from "ethers";
+import { useState } from "react";
+import { FaBitcoin, FaEthereum } from "react-icons/fa";
+import { IoIosCheckmarkCircleOutline } from "react-icons/io";
+import { ICoreGarden } from "views/Dashboard/Explore/interfaces";
+import Dailogo from "./dai-logo.png";
 import { Card } from "./index";
+import ManualData from "./manual_data";
+import NavButtons from "./NavButtons";
 
 export default function DisplayResults(props) {
+  const { library, account } = useWeb3React();
+  const [deposited, setDeposited] = useState(false);
+
   const { state, gardens } = props;
 
   function onCardClick(value) {
-    console.log(value);
+    setDeposited(false);
+
     state.onValueChange("valueVaultChoice", value);
   }
 
-  function invethedInVault() {
-    const {
-      valueToInvest, valueRiskProfile, valueMarketReaction, valueVaultChoice,
-    } = state;
+  async function invethedInVault() {
+    setDeposited(false);
 
-    const args = {
-      valueToInvest,
-      valueRiskProfile,
-      valueMarketReaction,
-      valueVaultChoice,
-    };
-    console.log("TODO: Invest in vault with args", { args });
+    const { valueToInvest, valueVaultChoice } = state;
+
+    const gardenData = gardens[valueVaultChoice - 1];
+    const signer = library.getSigner();
+
+    const gardenContract = new ethers.Contract(
+      gardenData.address,
+      ICoreGarden.abi,
+      signer
+    );
+
+    const amountIn = ethers.utils.parseUnits(`${valueToInvest}`, 18);
+    const minAmountOut = 0;
+    const to = account;
+    const referer = "0x4bFC74983D6338D3395A00118546614bB78472c2";
+
+    try {
+      await gardenContract
+        .connect(signer)
+        .deposit(amountIn, minAmountOut, to, referer, {
+          value: amountIn,
+        });
+      onCardClick(null); // reset vault
+      setDeposited(true);
+    } catch (e) {
+      console.error(e.message);
+    }
   }
 
   return (
@@ -40,77 +70,140 @@ export default function DisplayResults(props) {
       <NavButtons step={5} {...props} />
 
       <Box border="1px" borderRadius="xl" p="2rem" borderColor="gray.500">
-        <Text fontSize="2xl">
-          Recommendations ready. Vaults shown are most aligned with your
-          determined needs.
-        </Text>
+        {gardens.length ? (
+          <>
+            <Text fontSize="2xl">
+              Recommendations ready. Vaults shown are most aligned with your
+              determined needs.
+            </Text>
 
-        <Flex>
-          {gardens.slice(0, 3).map((garden, index) => {
-            return (
-              <Card
-                key={garden.name}
-                display="flex"
-                flexDirection="column"
-                border="1px"
-                borderRadius="xl"
-                borderColor="teal.300"
-                m="2rem 1rem 1rem 1rem"
-                p="1rem"
-                onClick={() => onCardClick(index + 1)}
-                active={state.valueVaultChoice === index + 1}
-              >
-                <Flex>
-                  <Image
-                    src={`https://www.babylon.finance/gardens/${garden.address}/thumb.png`}
-                    h={"40px"}
-                    w={"40px"}
-                    pe="5px"
-                    onError={({ currentTarget }) => {
-                      currentTarget.onerror = null; // prevents looping
-                      currentTarget.src = "/assets/invest.svg";
-                    }} />
+            <Flex>
+              {gardens.slice(0, 3).map((garden, index) => {
+                let manualGardenData = ManualData.find(
+                  (data) => data.address === garden.address
+                );
+                if (!manualGardenData) {
+                  manualGardenData = {
+                    description: "",
+                    NAV: 0,
+                    D30: 0,
+                    D90: 0,
+                  };
+                }
 
-                  <Box mx="1rem" w="100%" textAlign="center">
-                    <VisaIcon h={"40px"} w={"40px"} />
-                  </Box>
-                </Flex>
+                const gardenStyle = {
+                  marginLeft: "1rem",
+                  width: "20px",
+                  height: "20px",
+                  color: "white",
+                  backgroundColor: "black",
+                  borderRadius: "50%",
+                };
+                let GardenLogo;
+                switch (manualGardenData.currency) {
+                  case "ETH":
+                    GardenLogo = <FaEthereum style={gardenStyle} />;
+                    break;
+                  case "WBTC":
+                    GardenLogo = <FaBitcoin style={gardenStyle} />;
+                    break;
+                  case "DAI":
+                    GardenLogo = (
+                      <img src={Dailogo} alt="DAI" style={gardenStyle} />
+                    );
+                    break;
 
-                <Text fontSize="2xl" mt="1rem">
-                  {garden.name}
-                </Text>
+                  default:
+                    <div style={gardenStyle} />;
+                }
 
-                <Text mt="1rem" wordBreak="break-all">
-                  <Box>Address: </Box>
-                  {garden.address}
-                </Text>
+                return (
+                  <Card
+                    key={garden.name}
+                    display="flex"
+                    flexDirection="column"
+                    border="1px"
+                    borderRadius="xl"
+                    borderColor="teal.300"
+                    m="2rem 1rem 1rem 1rem"
+                    p="1rem"
+                    onClick={() => onCardClick(index + 1)}
+                    active={state.valueVaultChoice === index + 1}
+                  >
+                    <Flex>
+                      <Image
+                        src={`https://www.babylon.finance/gardens/${garden.address}/thumb.png`}
+                        h={"40px"}
+                        w={"40px"}
+                        pe="5px"
+                        onError={({ currentTarget }) => {
+                          currentTarget.onerror = null; // prevents looping
+                          currentTarget.src = "/assets/invest.svg";
+                        }}
+                      />
 
-                <TableContainer>
-                  <Table variant="simple">
-                    <Tbody>
-                      <Tr>
-                        <Td>NAV</Td>
-                        <Td isNumeric>$58,200</Td>
-                      </Tr>
-                      <Tr>
-                        <Td>30D</Td>
-                        <Td isNumeric>7.1%</Td>
-                      </Tr>
-                      <Tr>
-                        <Td>90D</Td>
-                        <Td isNumeric>9%</Td>
-                      </Tr>
-                    </Tbody>
-                  </Table>
-                </TableContainer>
-              </Card>
-            );
-          })}
-        </Flex>
+                      <Flex mx="1rem" w="100%" justifyContent="center">
+                        <IoIosCheckmarkCircleOutline
+                          style={{
+                            weight: "20px",
+                            height: "20px",
+                            color: "white",
+                            backgroundColor: "#4fd1c5",
+                            borderRadius: "50%",
+                          }}
+                        />
 
-        <Button disabled={!state.valueVaultChoice} onClick={invethedInVault}>
-          Deposit
-        </Button>
+                        {GardenLogo}
+                      </Flex>
+                    </Flex>
+
+                    <Text fontSize="2xl" mt="1rem">
+                      {garden.name}
+                    </Text>
+
+                    <Text mt="1rem" wordBreak="break-all">
+                      {manualGardenData.description}
+                    </Text>
+
+                    <TableContainer mt="2rem">
+                      <Table variant="simple">
+                        <Tbody>
+                          <Tr>
+                            <Td>NAV</Td>
+                            <Td isNumeric>${manualGardenData.NAV}</Td>
+                          </Tr>
+                          <Tr>
+                            <Td>30D</Td>
+                            <Td isNumeric>{manualGardenData.D30}%</Td>
+                          </Tr>
+                          <Tr>
+                            <Td>90D</Td>
+                            <Td isNumeric>{manualGardenData.D90}%</Td>
+                          </Tr>
+                        </Tbody>
+                      </Table>
+                    </TableContainer>
+                  </Card>
+                );
+              })}
+            </Flex>
+
+            <Button
+              disabled={!state.valueVaultChoice}
+              onClick={invethedInVault}
+            >
+              Deposit
+            </Button>
+
+            {deposited && (
+              <Text> Successfully deposited to choosen vault.</Text>
+            )}
+          </>
+        ) : (
+          <Text fontSize="2xl">
+            Vaults not loaded. Were you missing some steps?
+          </Text>
+        )}{" "}
       </Box>
     </Flex>
   );

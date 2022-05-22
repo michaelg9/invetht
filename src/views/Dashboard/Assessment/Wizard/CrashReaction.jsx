@@ -34,7 +34,7 @@ export default function CrashReaction(props) {
             m="2rem 1rem 1rem 1rem"
             p="1rem"
             onClick={() => onCardClick(1)}
-            active={state.valueMarketReaction === 1}
+            active={state.valueMarketReaction === 1 ? 1 : 0}
           >
             <Text>
               Buy more, prices are cheap and it's a perfect buying opportunity
@@ -48,7 +48,7 @@ export default function CrashReaction(props) {
             m="1rem"
             p="1rem"
             onClick={() => onCardClick(2)}
-            active={state.valueMarketReaction === 2}
+            active={state.valueMarketReaction === 2 ? 1 : 0}
           >
             <Text>Hold. Prices will eventually recover.</Text>
           </Card>
@@ -60,7 +60,7 @@ export default function CrashReaction(props) {
             m="1rem"
             p="1rem"
             onClick={() => onCardClick(3)}
-            active={state.valueMarketReaction === 3}
+            active={state.valueMarketReaction === 3 ? 1 : 0}
           >
             <Text>
               Sell some of my assets. It can go lower and I want to take some

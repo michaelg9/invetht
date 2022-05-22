@@ -13,10 +13,10 @@ function die(message) {
 }
 
 async function deploy() {
-  const { WEB3_STORAGE_TOKEN } = process.env;
-  if (!WEB3_STORAGE_TOKEN) {
+  const { REACT_APP_WEB3_STORAGE_TOKEN } = process.env;
+  if (!REACT_APP_WEB3_STORAGE_TOKEN) {
     die(
-      "this script needs an env variable named WEB3_STORAGE_TOKEN containing API token for web3.storage"
+      "this script needs an env variable named REACT_APP_WEB3_STORAGE_TOKEN containing API token for web3.storage"
     );
   }
 
@@ -24,7 +24,7 @@ async function deploy() {
     die("build folder not found. Try running this first: npm run build");
   }
 
-  const web3Storage = new Web3Storage({ token: WEB3_STORAGE_TOKEN });
+  const web3Storage = new Web3Storage({ token: REACT_APP_WEB3_STORAGE_TOKEN });
 
   console.log("Loading site files...");
 

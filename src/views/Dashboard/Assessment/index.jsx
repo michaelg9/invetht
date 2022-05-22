@@ -13,7 +13,7 @@ import {
   StepWizardStyled,
   ValueToInvest,
 } from "./Wizard/index.jsx";
-import { LOCAL_STORAGE_PREFERENCES_CID_KEY } from '../../../variables/general';
+import { LOCAL_STORAGE_PREFERENCES_CID_KEY } from "../../../variables/general";
 
 async function loadState(cid) {
   try {
@@ -45,6 +45,7 @@ export default function Assessment() {
   const [gardenData, setGardenData] = useState([]);
   const { account, active } = useWeb3React();
   const walletBalances = useBalances(account);
+  const [wroteToIPFS, setWroteToIPFS] = useState(false);
 
   const history = useHistory();
 
@@ -52,26 +53,31 @@ export default function Assessment() {
     // load preferences from IPFS;
     const cid = localStorage[LOCAL_STORAGE_PREFERENCES_CID_KEY];
     if (!cid) return;
-    loadState(cid).then(r => {
-      if (r && 'walletValueETH' in r) setAssessmentState(r);
+    loadState(cid).then((r) => {
+      if (r && "walletValueETH" in r) setAssessmentState(r);
     });
   }, []);
 
   useEffect(() => {
     // write preferences to IPFS;
-    const isAssessmentComplete = 
+    const isAssessmentComplete =
       assessmentState.walletValueETH != null &&
       assessmentState.valueToInvest != null &&
       assessmentState.valueRiskProfile != null &&
-      assessmentState.valueMarketReaction != null
-    if (isAssessmentComplete) { 
-      storeFilesToIPFS(`${account}_pref.txt`, JSON.stringify(assessmentState)).then(cid => {
-        if (cid) {
-          localStorage[LOCAL_STORAGE_PREFERENCES_CID_KEY] = cid;
-        }
-      }).catch();
+      assessmentState.valueMarketReaction != null;
+    if (isAssessmentComplete && !wroteToIPFS) {
+      storeFilesToIPFS(`${account}_pref.txt`, JSON.stringify(assessmentState))
+        .then((cid) => {
+          if (cid) {
+            localStorage[LOCAL_STORAGE_PREFERENCES_CID_KEY] = cid;
+            console.log("wrote to IPFS", cid);
+            console.log(`read file on https://${cid}.ipfs.dweb.link`);
+          }
+        })
+        .catch((e) => console.error(e.message));
+      setWroteToIPFS(true);
     }
-  }, [assessmentState, account]);
+  }, [assessmentState, account, wroteToIPFS]);
 
   const onValueChange = (key, value) =>
     setAssessmentState({ ...assessmentState, [key]: value });
@@ -89,19 +95,21 @@ export default function Assessment() {
   }, [assessmentState, walletBalances]);
   let child = null;
   if (walletBalances.error) child = <div>Error while fetching balances</div>;
-  else if (assessmentState.walletValueETH == null) child = <Spinner />
+  else if (assessmentState.walletValueETH == null) child = <Spinner />;
   else if (!active) {
-    child =  <Box>
-    <Text fontSize="2xl">No connected wallet found.</Text>
-    <Box>
-      <Button
-        variant="outline"
-        onClick={() => history.push("/admin/connect")}
-      >
-        Please connect first!
-      </Button>
-    </Box>
-  </Box>
+    child = (
+      <Box>
+        <Text fontSize="2xl">No connected wallet found.</Text>
+        <Box>
+          <Button
+            variant="outline"
+            onClick={() => history.push("/admin/connect")}
+          >
+            Please connect first!
+          </Button>
+        </Box>
+      </Box>
+    );
   }
 
   return (
@@ -128,7 +136,9 @@ export default function Assessment() {
             gardens={gardenData}
           />
         </StepWizardStyled>
-      ) : (child)}
+      ) : (
+        child
+      )}
     </Flex>
   );
 }

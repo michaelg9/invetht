@@ -39,7 +39,7 @@ export default function Goals(props) {
             flexDirection="column"
             justifyContent="space-between"
             onClick={() => onCardClick(1)}
-            active={state.valueRiskProfile <= 3}
+            active={state.valueRiskProfile <= 3 ? 1 : 0}
           >
             <Flex direction="column" alignItems="center" py="1rem">
               <Text fontSize="4rem">🐷</Text>
@@ -64,7 +64,9 @@ export default function Goals(props) {
             flexDirection="column"
             justifyContent="space-between"
             onClick={() => onCardClick(2)}
-            active={state.valueRiskProfile <= 6 && state.valueRiskProfile > 3}
+            active={
+              state.valueRiskProfile <= 6 && state.valueRiskProfile > 3 ? 1 : 0
+            }
           >
             <Flex direction="column" alignItems="center" py="1rem">
               <Text fontSize="4rem">🪴</Text>
@@ -89,7 +91,7 @@ export default function Goals(props) {
             flexDirection="column"
             justifyContent="space-between"
             onClick={() => onCardClick(3)}
-            active={state.valueRiskProfile > 6}
+            active={state.valueRiskProfile > 6 ? 1 : 0}
           >
             <Flex direction="column" alignItems="center" py="1rem">
               <Text fontSize="4rem">🚀</Text>

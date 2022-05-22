@@ -147,6 +147,7 @@ export default function ConnectWallet() {
                   <option value="42">Kovan</option>
                   <option value="1666600000">Harmony</option>
                   <option value="42220">Celo</option>
+                  <option value="31337">Localhost</option>
                 </Select>
               </VStack>
             </Box>
@@ -186,17 +187,17 @@ export default function ConnectWallet() {
                   Verify Message
                 </Button>
                 {verified === true && (
-                    <VStack>
-                      <CheckCircleIcon color="green" />
-                      <Text>Signature Verified!</Text>
-                    </VStack>
-                  )}
-                  {verified === false && (
-                    <VStack>
-                      <WarningIcon color="red" />
-                      <Text>Signature Denied!</Text>
-                    </VStack>
-                  )}
+                  <VStack>
+                    <CheckCircleIcon color="green" />
+                    <Text>Signature Verified!</Text>
+                  </VStack>
+                )}
+                {verified === false && (
+                  <VStack>
+                    <WarningIcon color="red" />
+                    <Text>Signature Denied!</Text>
+                  </VStack>
+                )}
               </VStack>
             </Box>
           </HStack>

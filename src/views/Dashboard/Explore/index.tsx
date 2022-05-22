@@ -47,7 +47,7 @@ async function getGardens(_controller: ethers.Contract, library: any) {
 
     const gardenData = await getGardenData(gardenContract);
 
-    allGardenData.push({ ...gardenData, address: gardenAddress });
+    allGardenData.push({ ...gardenData, address: gardenAddress }); 
   }
 
   return allGardenData;

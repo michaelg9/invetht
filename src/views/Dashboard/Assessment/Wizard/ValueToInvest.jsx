@@ -22,7 +22,8 @@ export default function ValueToInvest(props) {
   const { state } = props;
 
   function onSliderChange(value) {
-    state.onValueSliderChange("valueToInvest", value);
+    state.onValueSliderChange("valueToInvest", value.toFixed(1));
+    console.log(value.toFixed(1))
   }
 
   return (

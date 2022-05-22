@@ -12,18 +12,57 @@ import {
 import { VisaIcon } from "components/Icons/Icons";
 import NavButtons from "./NavButtons";
 import { Card } from "./index";
+import { ethers, network } from "ethers";
+import { useWeb3React } from "@web3-react/core";
+import {
+  IBabController,
+  IGarden
+} from "./interfaces";
+import { sign } from "crypto";
+import { useState } from "react";
+import { impersonateAccount } from "./lib/helper";
+
+
+
 
 export default function DisplayResults(props) {
+  const [gardenClick, setGardenClick] = useState({})
   const { state, gardens } = props;
+  const {
+    AddressZero,
+  } = ethers.constants;
+
+  const { active, account, library, activate, deactivate } = useWeb3React();
 
   function onCardClick(value) {
-    console.log(value);
-    state.onValueChange("valueVaultChoice", value);
+    setGardenClick(Object.values(value))
+    state.onValueChange("valueVaultChoice", Object.keys(value));
+    console.log(Object.keys(value));
+    console.log(Object.values(value));
+
   }
 
-  function invethedInVault() {
+
+
+  // async function impersonateAddress() {
+  //   const account = "0x54be3a794282c030b15e43ae2bb182e14c409c5e";
+  //     const provider = ethers.provider;
+  //      await provider.request({
+  //        method: "hardhat_impersonateAccount",
+  //        params: [account],
+  //      });
+  //      const signer = await ethers.provider.getSigner(account);
+  //      signer.address = signer._address;
+  //      return signer;
+  // }
+
+  
+  async function invethedInVault(gardens) {
     const {
-      valueToInvest, valueRiskProfile, valueMarketReaction, valueVaultChoice,
+      valueToInvest,
+      valueRiskProfile,
+      valueMarketReaction,
+      valueVaultChoice,
     } = state;
 
     const args = {
@@ -32,7 +71,44 @@ export default function DisplayResults(props) {
       valueMarketReaction,
       valueVaultChoice,
     };
-    console.log("TODO: Invest in vault with args", { args });
+
+    // const ethaccount = account
+
+    const signer = impersonateAccount()
+    console.log(signer)
+
+    //controller instance
+    const controllerContract = new ethers.Contract(
+      "0xD4a5b5fcB561dAF3aDF86F8477555B92FBa43b5F",
+      IBabController.abi,
+      signer
+    );
+
+    try{
+      //garden instance
+       const gardenContract = new ethers.Contract(
+         gardenClick[0].address,
+         IGarden.abi,
+         signer
+       );
+       
+       //deposit function
+       const depositTx = await gardenContract.deposit(
+           ethers.utils.parseEther(valueToInvest),
+           0,
+           signer.address,
+           AddressZero,
+           {
+             value: ethers.utils.parseEther(valueToInvest),
+           }
+         );
+    } catch (error) {
+      console.error(error)
+    }
+
+
+      console.log(gardenClick[0])
+    // console.log("TODO: Invest in vault with args", { args });
   }
 
   return (
@@ -57,8 +133,10 @@ export default function DisplayResults(props) {
                 borderColor="teal.300"
                 m="2rem 1rem 1rem 1rem"
                 p="1rem"
-                onClick={() => onCardClick(index + 1)}
+                onClick={() => onCardClick({[`${index + 1}`]: garden})}
                 active={state.valueVaultChoice === index + 1}
+                
+
               >
                 <Flex>
                   <Image
@@ -108,7 +186,7 @@ export default function DisplayResults(props) {
           })}
         </Flex>
 
-        <Button disabled={!state.valueVaultChoice} onClick={invethedInVault}>
+        <Button disabled={!state.valueVaultChoice} onClick={() => invethedInVault(gardens)}>
           Deposit
         </Button>
       </Box>

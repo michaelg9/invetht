@@ -32,6 +32,6 @@
     "noFallthroughCasesInSwitch": true
   },
   "include": [
-    "src/**/*",
+    "src/**/*", "hardhat/lib",
   ]
 }

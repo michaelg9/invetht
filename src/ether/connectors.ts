@@ -4,7 +4,7 @@ import { WalletLinkConnector } from "@web3-react/walletlink-connector";
 import { INFURA_ID } from "variables/general";
 
 const injected = new InjectedConnector({
-  supportedChainIds: [1, 3, 4, 5, 42]
+  supportedChainIds: [1, 3, 4, 5, 42, 31337],
 });
 
 const walletconnect = new WalletConnectConnector({

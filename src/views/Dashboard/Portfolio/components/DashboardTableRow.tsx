@@ -58,7 +58,7 @@ function DashboardTableRow({
             color="teal.300"
             fontWeight="bold"
             pb=".2rem"
-          >{`${weight}%`}</Text>
+          >{`${(weight * 100).toFixed(2)}%`}</Text>
           <Progress
             colorScheme={weight === 100 ? "teal" : "cyan"}
             size="xs"

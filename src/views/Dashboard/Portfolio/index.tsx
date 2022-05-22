@@ -55,7 +55,7 @@ export default function Dashboard() {
     const balance = t.balance / Math.pow(10, Number(t.tokenInfo.decimals));
     return {
       name: t.tokenInfo.name,
-      weight: 10,
+      weight: 0,
       balance,
       symbol: t.tokenInfo.symbol,
       diff1h: t.tokenInfo.price.diff,
@@ -76,7 +76,7 @@ export default function Dashboard() {
   if (ETH.balance > 0)
     tokenDetails.push({
       name: "Ether",
-      weight: 10,
+      weight: 0,
       balance: ETH.balance,
       symbol: "ETH",
       diff1h: ETH.price.diff,
@@ -93,6 +93,8 @@ export default function Dashboard() {
       value: ETH.balance * ETH.price.rate,
       currency: "USD",
     });
+  const totalFunds = tokenDetails.reduce((acc, e) => acc + e.value, 0);
+  tokenDetails.forEach(e => e.weight = e.value/totalFunds);
   return (
     <Flex flexDirection="column" pt={{ base: "120px", md: "75px" }}>
       <Grid
@@ -130,13 +132,7 @@ export default function Dashboard() {
           <SimpleGrid spacing="24px">
             <MiniStatistics
               title={"Funds invested"}
-              amount={`${(ETH.balance * ETH.price.rate).toFixed(2)}USD`}
-              percentage={ETH.price[listTimeWindow]}
-              icon={<WalletIcon h={"24px"} w={"24px"} color={iconBoxInside} />}
-            />
-            <MiniStatistics
-              title={"Total ROI"}
-              amount={`${(ETH.balance * ETH.price.rate).toFixed(2)}USD`}
+              amount={`${(totalFunds).toFixed(2)}USD`}
               percentage={ETH.price[listTimeWindow]}
               icon={<WalletIcon h={"24px"} w={"24px"} color={iconBoxInside} />}
             />

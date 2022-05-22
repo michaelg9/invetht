@@ -92,7 +92,7 @@ export default function ValueToInvest(props) {
 
           <Slider
             min={0}
-            value={state.valueToInvest}
+            value={state.valueToInvest || 0}
             max={state.walletValueETH}
             step={state.walletValueETH / 10}
             defaultValue={0}

@@ -34,7 +34,7 @@ function GardenTableRow({ data }: GardenTableRowProps) {
             pe="5px"
             onError={({ currentTarget }) => {
               currentTarget.onerror = null; // prevents looping
-              currentTarget.src = "/assets/invest.svg";
+              currentTarget.src = "./assets/invest.svg";
             }}
           />
           <Link

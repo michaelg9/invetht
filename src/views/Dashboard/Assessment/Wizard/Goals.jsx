@@ -114,7 +114,7 @@ export default function Goals(props) {
           <Slider
             min={0}
             max={10}
-            value={state.valueRiskProfile}
+            value={state.valueRiskProfile || 0}
             colorScheme="teal"
             onChange={onSliderChange}
             mt="1rem"

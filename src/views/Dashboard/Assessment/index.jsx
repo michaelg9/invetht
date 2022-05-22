@@ -45,7 +45,6 @@ export default function Assessment() {
   const [gardenData, setGardenData] = useState([]);
   const { account, active } = useWeb3React();
   const walletBalances = useBalances(account);
-  const [wroteToIPFS, setWroteToIPFS] = useState(false);
 
   const history = useHistory();
 
@@ -58,26 +57,17 @@ export default function Assessment() {
     });
   }, []);
 
-  useEffect(() => {
-    // write preferences to IPFS;
-    const isAssessmentComplete =
-      assessmentState.walletValueETH != null &&
-      assessmentState.valueToInvest != null &&
-      assessmentState.valueRiskProfile != null &&
-      assessmentState.valueMarketReaction != null;
-    if (isAssessmentComplete && !wroteToIPFS) {
-      storeFilesToIPFS(`${account}_pref.txt`, JSON.stringify(assessmentState))
-        .then((cid) => {
-          if (cid) {
-            localStorage[LOCAL_STORAGE_PREFERENCES_CID_KEY] = cid;
-            console.log("wrote to IPFS", cid);
-            console.log(`read file on https://${cid}.ipfs.dweb.link`);
-          }
-        })
-        .catch((e) => console.error(e.message));
-      setWroteToIPFS(true);
-    }
-  }, [assessmentState, account, wroteToIPFS]);
+  function storeAssessmentToIPFS() {
+    storeFilesToIPFS(`${account}_pref.txt`, JSON.stringify(assessmentState))
+      .then((cid) => {
+        if (cid) {
+          localStorage[LOCAL_STORAGE_PREFERENCES_CID_KEY] = cid;
+          console.log("wrote to IPFS", cid);
+          console.log(`read file on https://${cid}.ipfs.dweb.link`);
+        }
+      })
+      .catch((e) => console.error(e.message));
+  }
 
   const onValueChange = (key, value) =>
     setAssessmentState({ ...assessmentState, [key]: value });
@@ -129,6 +119,7 @@ export default function Assessment() {
           <CalculationFeedback
             state={assessmentState}
             gardens={{ gardenData, setGardenData }}
+            storeAssessmentToIPFS={storeAssessmentToIPFS}
           />
 
           <DisplayResults

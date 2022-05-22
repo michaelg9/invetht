@@ -75,7 +75,7 @@ export default function CrashReaction(props) {
             m="1rem"
             p="1rem"
             onClick={() => onCardClick(4)}
-            active={props.valueMarketReaction === 4}
+            active={props.valueMarketReaction === 4 ? 1 : 0}
           >
             <Text>
               Sell everything. Investing in cryptocurrency was a mistake.

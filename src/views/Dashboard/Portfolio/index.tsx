@@ -5,6 +5,9 @@ import {
   useColorModeValue,
   Image,
   Spinner,
+  Box,
+  Text,
+  Button,
 } from "@chakra-ui/react";
 import { useWeb3React } from "@web3-react/core";
 import { WalletIcon } from "components/Icons/Icons";
@@ -20,6 +23,7 @@ import {
 import ReactApexChart from "react-apexcharts";
 import { lineChartOptions } from "variables/charts";
 import Holdings from "./components/Holdings";
+import { useHistory } from "react-router-dom";
 
 export default function Dashboard() {
   const iconBoxInside = useColorModeValue("white", "white");
@@ -27,6 +31,8 @@ export default function Dashboard() {
   const walletBalances = useBalances(account);
   const priceHistory = usePriceHistory("ethereum");
   const tokenTxs = useTokenTxHistory(account);
+  const history = useHistory();
+
   const errors = [
     walletBalances.error,
     priceHistory.error,
@@ -38,7 +44,20 @@ export default function Dashboard() {
     tokenTxs.response,
   ].filter((e) => !e);
   let initScreen = null;
-  if (!active || !account) initScreen = <div>connect wallet</div>;
+  if (!active || !account)
+    initScreen = (
+      <Box>
+        <Text fontSize="2xl">No connected wallet found.</Text>
+        <Box>
+          <Button
+            variant="outline"
+            onClick={() => history.push("/admin/connect")}
+          >
+            Please connect first!
+          </Button>
+        </Box>
+      </Box>
+    );
   else if (errors.length > 0) initScreen = <div>Error: {errors[0]}</div>;
   else if (loading.length > 0) initScreen = <Spinner />;
   if (initScreen) {
@@ -49,7 +68,9 @@ export default function Dashboard() {
     );
   }
   const { ETH, tokens = [] } = walletBalances.response!;
-  const txs = Array.isArray(tokenTxs.response?.result) ? tokenTxs.response!.result : [];
+  const txs = Array.isArray(tokenTxs.response?.result)
+    ? tokenTxs.response!.result
+    : [];
   const listTimeWindow = "diff7d";
   const tokenDetails = tokens.map((t) => {
     const balance = t.balance / Math.pow(10, Number(t.tokenInfo.decimals));
@@ -94,7 +115,7 @@ export default function Dashboard() {
       currency: "USD",
     });
   const totalFunds = tokenDetails.reduce((acc, e) => acc + e.value, 0);
-  tokenDetails.forEach(e => e.weight = e.value/totalFunds);
+  tokenDetails.forEach((e) => (e.weight = e.value / totalFunds));
   return (
     <Flex flexDirection="column" pt={{ base: "120px", md: "75px" }}>
       <Grid
@@ -132,7 +153,7 @@ export default function Dashboard() {
           <SimpleGrid spacing="24px">
             <MiniStatistics
               title={"Funds invested"}
-              amount={`${(totalFunds).toFixed(2)}USD`}
+              amount={`${totalFunds.toFixed(2)}USD`}
               percentage={ETH.price[listTimeWindow]}
               icon={<WalletIcon h={"24px"} w={"24px"} color={iconBoxInside} />}
             />

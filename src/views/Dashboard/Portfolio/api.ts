@@ -65,7 +65,7 @@ type BALANCES_RESPONSE = {
   ];
 };
 const WALLET_BALANCES_CACHE = (account: string) => ({
-  lifetime: 1000 * 60, //cache for 1 mins
+  lifetime: 1000 * 30, //cache for 1 mins
   key: `WALLET_BALANCES_${account}`,
 }) as const;
 
@@ -77,11 +77,11 @@ export function useBalances(account: string | null | undefined) {
     const ethBalance = await library.getSigner().provider.getBalance(r.address);
     r.ETH.balance = Number(formatUnits(ethBalance, 0, 18));
     // @ts-ignore
-    const deposits = window.deposits as {gardenData: GardenDataType, gardenContract: ethers.Contract}[] || [];
-    for (const {gardenData: d, gardenContract} of deposits) {
+    const deposits = window.deposits as {gardenData: GardenDataType, gardenContract: ethers.Contract, valueToInvest: number}[] || [];
+    for (const {gardenData: d, gardenContract, valueToInvest = 0} of deposits) {
       console.log(r.tokens[0], d, gardenContract.balanceOf);
       const result = {
-        balance: 1,
+        balance: valueToInvest,
         rawBalance: '0',
         totalIn: 0,
         totalOut: 0,
@@ -91,12 +91,12 @@ export function useBalances(account: string | null | undefined) {
           totalSupply: d.totalSupply,
           website: `https://www.babylon.finance/garden/${d.address}`,
           symbol: d.symbol,
-          decimals: '18',
+          decimals: '0',
           price: {
-            rate: 100,
+            rate: 1.033 * 2013.06,
             diff: 0,
-            diff7d: 0,
-            diff30d: 0,
+            diff7d: -0.31,
+            diff30d: 0.59,
             ts: d.totalSupply,
             marketCapUsd: 0,
             availableSupply: d.totalSupply,
@@ -105,12 +105,12 @@ export function useBalances(account: string | null | undefined) {
             volDiff7: d.totalSupply,
             volDiff30: d.totalSupply,
             bid: 0,
-            currency: d.symbol,
+            currency: 'USD',
           },
           lastUpdated:0,
           twitter:'',
           reddit: '',
-          image: '',
+          image: `https://www.babylon.finance/gardens/${d.address}/thumb.png`,
           coingecko: '',
         }
       };

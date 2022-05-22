@@ -59,7 +59,7 @@ export default function DisplayResults(props) {
         });
       onCardClick(null); // reset vault
       setDeposited(true);
-      window.deposits = window.deposits ? window.deposits.push({gardenData, gardenContract}) : [{gardenData, gardenContract}];
+      window.deposits = window.deposits ? window.deposits.push({gardenData, gardenContract}) : [{gardenData, gardenContract, valueToInvest}];
     } catch (e) {
       console.error(e.message);
     }

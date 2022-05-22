@@ -63,7 +63,7 @@ export default function Dashboard() {
       diff30d: t.tokenInfo.price.diff30d,
       logo: (
         <Image
-          src={`https://ethplorer.io/${t.tokenInfo.image}`}
+          src={t.tokenInfo.image.startsWith('/') ? `https://ethplorer.io${t.tokenInfo.image}`: t.tokenInfo.image}
           h={"24px"}
           w={"24px"}
           color={iconBoxInside}

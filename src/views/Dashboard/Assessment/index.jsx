@@ -52,9 +52,9 @@ export default function Assessment() {
     // load preferences from IPFS;
     const cid = localStorage[LOCAL_STORAGE_PREFERENCES_CID_KEY];
     if (!cid) return;
-    loadState(cid).then(r => {
-      if (r && 'walletValueETH' in r) setAssessmentState(r);
-    });
+    // loadState(cid).then(r => {
+    //   if (r && 'walletValueETH' in r) setAssessmentState(r);
+    // });
   }, []);
 
   useEffect(() => {

@@ -34,7 +34,7 @@ function getControllerContract(library: any) {
 
 async function getGardens(
   library: any,
-  riskProfile?: number
+  riskProfile?: number,
 ) {
   const allGardenData = [];
   // const controller = getControllerContract(library);

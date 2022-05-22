@@ -13,10 +13,9 @@ import {
 import { useWeb3React } from "@web3-react/core";
 import { ethers } from "ethers";
 import { useState } from "react";
-import { FaBitcoin, FaEthereum } from "react-icons/fa";
 import { IoIosCheckmarkCircleOutline } from "react-icons/io";
+import { formatUnits } from "views/Dashboard/Explore/data";
 import { ICoreGarden } from "views/Dashboard/Explore/interfaces";
-import Dailogo from "./dai-logo.png";
 import { Card } from "./index";
 import ManualData from "./manual_data";
 import NavButtons from "./NavButtons";
@@ -85,7 +84,6 @@ export default function DisplayResults(props) {
                 if (!manualGardenData) {
                   manualGardenData = {
                     description: "",
-                    NAV: 0,
                     D30: 0,
                     D90: 0,
                   };
@@ -99,23 +97,7 @@ export default function DisplayResults(props) {
                   backgroundColor: "black",
                   borderRadius: "50%",
                 };
-                let GardenLogo;
-                switch (manualGardenData.currency) {
-                  case "ETH":
-                    GardenLogo = <FaEthereum style={gardenStyle} />;
-                    break;
-                  case "WBTC":
-                    GardenLogo = <FaBitcoin style={gardenStyle} />;
-                    break;
-                  case "DAI":
-                    GardenLogo = (
-                      <img src={Dailogo} alt="DAI" style={gardenStyle} />
-                    );
-                    break;
-
-                  default:
-                    <div style={gardenStyle} />;
-                }
+                const GardenLogo = <img src={`https://ethplorer.io/images/${garden.reserveAssetSymbol.toLowerCase()}.png`} alt={garden.reserveAssetSymbol} style={gardenStyle} />
 
                 return (
                   <Card
@@ -170,7 +152,7 @@ export default function DisplayResults(props) {
                         <Tbody>
                           <Tr>
                             <Td>NAV</Td>
-                            <Td isNumeric>${manualGardenData.NAV}</Td>
+                            <Td isNumeric>{`${formatUnits(garden.nav, 32, 36)} ${garden.reserveAssetSymbol}`}</Td>
                           </Tr>
                           <Tr>
                             <Td>30D</Td>
@@ -196,14 +178,14 @@ export default function DisplayResults(props) {
             </Button>
 
             {deposited && (
-              <Text> Successfully deposited to choosen vault.</Text>
+              <Text> Successfully deposited to chosen vault.</Text>
             )}
           </>
         ) : (
           <Text fontSize="2xl">
             Vaults not loaded. Were you missing some steps?
           </Text>
-        )}{" "}
+        )}
       </Box>
     </Flex>
   );

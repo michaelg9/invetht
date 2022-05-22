@@ -7,18 +7,10 @@ import {
   useColorModeValue,
   Link,
 } from "@chakra-ui/react";
-import { GardenDataType } from "./data";
-import { utils } from "ethers";
+import { formatUnits, GardenDataType } from "./data";
 
 interface GardenTableRowProps {
   data: GardenDataType;
-}
-
-function formatUnits(n: utils.BigNumber, trimExp = 14, decimalUnits = 18) {
-  //to 4 decimal places
-  const trim = new utils.BigNumber(10).pow(trimExp);
-  const num = trimExp ? n.sub(n.mod(trim)) : n;
-  return utils.formatUnits(num, decimalUnits);
 }
 
 function GardenTableRow({ data }: GardenTableRowProps) {
@@ -28,6 +20,7 @@ function GardenTableRow({ data }: GardenTableRowProps) {
     totalSupply,
     symbol,
     reserveAssetSymbol,
+    nav,
   } = data;
   const textColor = useColorModeValue("gray.700", "white");
   return (
@@ -78,7 +71,7 @@ function GardenTableRow({ data }: GardenTableRowProps) {
         </Link>
       </Td>
       <Td>{`${formatUnits(lastPricePerShare)} ${reserveAssetSymbol}`}</Td>
-      <Td>{`${formatUnits(lastPricePerShare.mul(totalSupply), 32, 36)} ${reserveAssetSymbol}`}</Td>
+      <Td>{`${formatUnits(nav, 32, 36)} ${reserveAssetSymbol}`}</Td>
       <Td>{formatUnits(totalSupply, 17)}</Td>
     </Tr>
   );

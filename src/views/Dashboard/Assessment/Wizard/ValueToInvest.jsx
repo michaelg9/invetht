@@ -81,7 +81,7 @@ export default function ValueToInvest(props) {
             <Flex flexDirection="column" alignItems="center">
               <Text>{state.valueToInvest} ETH</Text>
 
-              {state.walletValueETH && state.walletValueETH < 0.01 && (
+              {state.walletValueETH === 0 && (
                 <Text>
                   Sorry, not enough ETH funds to invest. Please top up your
                   wallet.
@@ -92,8 +92,9 @@ export default function ValueToInvest(props) {
 
           <Slider
             min={0}
+            value={state.valueToInvest}
             max={state.walletValueETH}
-            step={0.01}
+            step={state.walletValueETH / 10}
             defaultValue={0}
             colorScheme="teal"
             onChange={onSliderChange}

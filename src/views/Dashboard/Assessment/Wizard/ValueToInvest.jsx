@@ -66,7 +66,7 @@ export default function ValueToInvest(props) {
                       <Td>
                         {balance} {token.tokenInfo.symbol}
                       </Td>
-                      <Td isNumeric>${token.tokenInfo.price.rate.toFixed(2)}</Td>
+                      <Td isNumeric>${token.tokenInfo.price.rate?.toFixed(2)}</Td>
                     </Tr>
                   );
                 })}

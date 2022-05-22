@@ -98,7 +98,13 @@ export default function DisplayResults(props) {
                   backgroundColor: "black",
                   borderRadius: "50%",
                 };
-                const GardenLogo = <img src={`https://ethplorer.io/images/${garden.reserveAssetSymbol.toLowerCase()}.png`} alt={garden.reserveAssetSymbol} style={gardenStyle} />
+                const GardenLogo = (
+                  <img
+                    src={`https://ethplorer.io/images/${garden.reserveAssetSymbol.toLowerCase()}.png`}
+                    alt={garden.reserveAssetSymbol}
+                    style={gardenStyle}
+                  />
+                );
 
                 return (
                   <Card
@@ -111,7 +117,7 @@ export default function DisplayResults(props) {
                     m="2rem 1rem 1rem 1rem"
                     p="1rem"
                     onClick={() => onCardClick(index + 1)}
-                    active={state.valueVaultChoice === index + 1}
+                    active={state.valueVaultChoice === index + 1 ? 1 : 0}
                   >
                     <Flex>
                       <Image
@@ -153,7 +159,11 @@ export default function DisplayResults(props) {
                         <Tbody>
                           <Tr>
                             <Td>NAV</Td>
-                            <Td isNumeric>{`${formatUnits(garden.nav, 32, 36)} ${garden.reserveAssetSymbol}`}</Td>
+                            <Td isNumeric>{`${formatUnits(
+                              garden.nav,
+                              32,
+                              36
+                            )} ${garden.reserveAssetSymbol}`}</Td>
                           </Tr>
                           <Tr>
                             <Td>30D</Td>
@@ -178,9 +188,7 @@ export default function DisplayResults(props) {
               Deposit
             </Button>
 
-            {deposited && (
-              <Text> Successfully deposited to chosen vault.</Text>
-            )}
+            {deposited && <Text> Successfully deposited to chosen vault.</Text>}
           </>
         ) : (
           <Text fontSize="2xl">

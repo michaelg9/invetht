@@ -1,17 +1,14 @@
 import { Box, Flex, Progress, Text } from "@chakra-ui/react";
 import { useWeb3React } from "@web3-react/core";
 import { useCallback, useEffect, useRef, useState } from "react";
-import {
-  getGardens,
-  calculateRiskProfile,
-} from "../../Explore";
+import { getGardens, calculateRiskProfile } from "../../Explore";
 import NavButtons from "./NavButtons";
 
 export default function CalculationFeedback(props) {
   const [progressValue, setProgressValue] = useState(0);
   const [timer, setTimer] = useState(null);
 
-  const { state, gardens } = props;
+  const { state, gardens, storeAssessmentToIPFS } = props;
 
   const { library } = useWeb3React();
   const [loadingGardens, setLoadingGardens] = useState(false);
@@ -57,6 +54,7 @@ export default function CalculationFeedback(props) {
       ) {
         setLoadingGardens(true);
         await getVaultData();
+        storeAssessmentToIPFS();
         setLoadingGardens(false);
       }
     }
@@ -70,6 +68,7 @@ export default function CalculationFeedback(props) {
     setLoadingGardens,
     library,
     getVaultData,
+    storeAssessmentToIPFS,
   ]);
 
   const updateProgress = useCallback(() => {

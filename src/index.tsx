@@ -56,7 +56,7 @@ function App() {
       <Switch>
         <Route path={`/auth`} component={AuthLayout} />
         <Route path={`/admin`} component={AdminLayout} />
-        <Redirect from={`/`} to="/admin/portofolio" />
+        <Redirect from={`/`} to="/admin/portfolio" />
       </Switch>
     </HashRouter>
   );

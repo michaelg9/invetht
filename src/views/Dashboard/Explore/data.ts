@@ -1,6 +1,14 @@
-import { ethers } from "ethers";
+import { ethers, utils } from "ethers";
+import { IERC20Metadata } from "./interfaces";
 
 export type GardenDataType = Awaited<ReturnType<typeof getGardenData>>;
+
+export function formatUnits(n: utils.BigNumber, trimExp = 14, decimalUnits = 18) {
+  //to given decimal places
+  const trim = new utils.BigNumber(10).pow(trimExp);
+  const num = trimExp ? n.sub(n.mod(trim)) : n;
+  return utils.formatUnits(num, decimalUnits);
+}
 
 export const gardens = {
   fountain_eth: "0xB5bD20248cfe9480487CC0de0d72D0e19eE0AcB6",
@@ -9,23 +17,22 @@ export const gardens = {
   stable: "0x1D50c4F18D7af4fCe2Ea93c7942aae6260788596",
   forever_stables: "0x8174e96F7F7e14B252f20de1e5F932CB5a1a911c",
   stable_pebble: "0x3eeC6Ac8675ab1B4768f6032F0598e36Ac64f415",
-  hello_world: "0xeEf3125fF571194A7fCA71862bAA425727eb3703",
+  pickle_field: "0xA4E524391A878346A168AAbFA984b9b8f94A3Db4",
 };
 
 export interface AssessmentState {
   walletValueETH: number;
   valueToInvest: number;
-  valueGoal: number;
   valueRiskProfile: number;
   valueMarketReaction: number;
 }
 
 export function calculateRiskProfile(state: AssessmentState): number | null {
-  if (state.valueGoal === null) {
+  if (state.valueRiskProfile === null) {
     throw Error("Goal is not set");
   }
 
-  const riskProfile = state.valueGoal; // state.valueRiskProfile + state.valueMarketReaction;
+  const riskProfile = state.valueRiskProfile;
 
   return riskProfile;
 }
@@ -34,22 +41,30 @@ export function getGardensByRiskProfile(riskProfile?: number): string[] {
   if (riskProfile == null) {
     return Object.values(gardens);
   }
-
+  riskProfile = Math.floor(riskProfile / 3);
   switch (riskProfile) {
     case 1:
       return [gardens.stable, gardens.forever_stables, gardens.fountain_btc];
     case 2:
-      return [gardens.fountain_eth, gardens.fountain_btc, gardens.hello_world];
+      return [gardens.fountain_eth, gardens.fountain_btc, gardens.pickle_field];
     case 3:
-      return [gardens.arkads, gardens.fountain_eth, gardens.hello_world];
+      return [gardens.arkads, gardens.fountain_eth, gardens.pickle_field];
     default:
       throw new Error("Invalid risk profile");
   }
 }
 
-async function getGardenData(gardenContract: ethers.Contract) {
-  //   const symbol = await gardenContract.symbol();
-  //   const tokenURI = await gardenContract.tokenURI();
+async function getGardenData(gardenContract: ethers.Contract, library: any) {
+  const reserveAssetAddress = gardenContract.reserveAsset();
+  const reserveAssetContract = reserveAssetAddress.then((address: string) =>   new ethers.Contract(
+    address,
+    [
+      ...IERC20Metadata.abi,
+    ],
+    library.getSigner()
+  ));
+  const reserveAssetSymbol = reserveAssetContract.then((c: ethers.Contract) => c.symbol());
+
 
   const promises = [
     gardenContract.name(),
@@ -58,7 +73,7 @@ async function getGardenData(gardenContract: ethers.Contract) {
     gardenContract.publicStewards(),
     gardenContract.controller(),
     gardenContract.creator(),
-    gardenContract.reserveAsset(),
+    reserveAssetAddress,
     gardenContract.verifiedCategory(),
     gardenContract.canMintNftAfter(),
     gardenContract.hardlockStartsAt(),
@@ -84,9 +99,15 @@ async function getGardenData(gardenContract: ethers.Contract) {
     gardenContract.lastPricePerShareTS(),
     gardenContract.pricePerShareDecayRate(),
     gardenContract.pricePerShareDelta(),
+    gardenContract.addressPromise,
+    gardenContract.totalSupply(),
+    gardenContract.symbol(),
+    reserveAssetSymbol,
   ];
 
   return Promise.all(promises).then((promises) => {
+    const totalSupply = promises[33];
+    const lastPricePerShare = promises[28];
     return {
       name: promises[0],
       privateGarden: promises[1],
@@ -116,11 +137,15 @@ async function getGardenData(gardenContract: ethers.Contract) {
       getFinalizedStrategies: promises[25],
       keeperDebt: promises[26],
       totalKeeperFees: promises[27],
-      lastPricePerShare: promises[28],
+      lastPricePerShare,
       lastPricePerShareTS: promises[29],
       pricePerShareDecayRate: promises[30],
       pricePerShareDelta: promises[31],
-      address: "",
+      address: promises[32],
+      totalSupply,
+      symbol: promises[34],
+      reserveAssetSymbol: promises[35],
+      nav: lastPricePerShare.mul(totalSupply),
     };
   });
 }

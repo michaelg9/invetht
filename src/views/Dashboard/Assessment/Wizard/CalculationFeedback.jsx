@@ -2,7 +2,6 @@ import { Box, Flex, Progress, Text } from "@chakra-ui/react";
 import { useWeb3React } from "@web3-react/core";
 import { useCallback, useEffect, useRef, useState } from "react";
 import {
-  getControllerContract,
   getGardens,
   calculateRiskProfile,
 } from "../../Explore";
@@ -19,7 +18,6 @@ export default function CalculationFeedback(props) {
 
   const allValuesCollected =
     !!state.valueToInvest &&
-    !!state.valueGoal &&
     !!state.valueRiskProfile &&
     !!state.valueMarketReaction;
 
@@ -35,11 +33,11 @@ export default function CalculationFeedback(props) {
   }, [timer]);
 
   const getVaultData = useCallback(async () => {
-    const controller = getControllerContract(library);
+    // const controller = getControllerContract(library);
 
     const riskProfile = calculateRiskProfile(state);
 
-    const gardenData = await getGardens(controller, library, riskProfile);
+    const gardenData = await getGardens(library, riskProfile);
 
     gardens.setGardenData(gardenData);
 
@@ -128,7 +126,7 @@ export default function CalculationFeedback(props) {
 
             <Text>
               {progressValue === 100 &&
-                "Best solution found! Forwarding you to your best fitting vaults."}
+                "Best package found! Forwarding to your best fitting vaults."}
             </Text>
           </>
         ) : (

@@ -29,17 +29,15 @@ function getControllerContract(library: any) {
     IBabController.abi,
     signer
   );
-  // console.log({ controllerContract });
   return controllerContract;
 }
 
 async function getGardens(
-  _controller: ethers.Contract,
   library: any,
-  riskProfile?: number
+  riskProfile?: number,
 ) {
   const allGardenData = [];
-
+  // const controller = getControllerContract(library);
   // const gardenAddresses = await controller.getGardens();
   const selectedGardenAddresses = getGardensByRiskProfile(riskProfile);
 
@@ -56,7 +54,7 @@ async function getGardens(
       library.getSigner()
     );
 
-    const gardenData = await getGardenData(gardenContract);
+    const gardenData = await getGardenData(gardenContract, library);
 
     allGardenData.push({ ...gardenData, address: gardenAddress });
   }
@@ -77,8 +75,7 @@ function Explore() {
     async function load() {
       setLoading(true);
       try {
-        const controller = getControllerContract(library);
-        setGardens(await getGardens(controller, library));
+        setGardens(await getGardens(library));
       } finally {
         setLoading(false);
       }
@@ -116,7 +113,7 @@ function Explore() {
         ) : (
           <Gardens
             title="Explore"
-            captions={["Vault Name", "Net Asset Value", "90D", "30D", "APY"]}
+            captions={["Vault Name", "Token", "Price", "Net Asset Value", "Total Supply"]}
             data={gardens}
           />
         )}

@@ -1,4 +1,4 @@
-import { Box, Button, Flex, Text } from "@chakra-ui/react";
+import { Box, Button, Flex, Text, Spinner } from "@chakra-ui/react";
 import { useWeb3React } from "@web3-react/core";
 import { useEffect, useState } from "react";
 import { useHistory } from "react-router-dom";
@@ -17,7 +17,6 @@ export default function Assessment() {
   const [assessmentState, setAssessmentState] = useState({
     walletValueETH: null,
     valueToInvest: null,
-    valueGoal: null,
     valueRiskProfile: null,
     valueMarketReaction: null,
     valueVaultChoice: null,
@@ -35,17 +34,33 @@ export default function Assessment() {
     setAssessmentState({ ...assessmentState, [key]: value });
 
   useEffect(() => {
-    if (!assessmentState.walletValueETH && walletBalances.response) {
+    if (assessmentState.walletValueETH == null && walletBalances.response) {
       setAssessmentState({
         ...assessmentState,
         walletValueETH: walletBalances.response.ETH.balance,
       });
     }
   }, [assessmentState, walletBalances]);
+  let child = null;
+  if (walletBalances.error) child = <div>Error while fetching balances</div>;
+  else if (assessmentState.walletValueETH == null) child = <Spinner />
+  else if (!active) {
+    child =  <Box>
+    <Text fontSize="2xl">No connected wallet found.</Text>
+    <Box>
+      <Button
+        variant="outline"
+        onClick={() => history.push("/admin/connect")}
+      >
+        Please connect first!
+      </Button>
+    </Box>
+  </Box>
+  }
 
   return (
     <Flex pt={{ base: "120px", md: "75px" }}>
-      {active ? (
+      {!child ? (
         <StepWizardStyled nav={<Nav />}>
           <ValueToInvest
             state={{ ...assessmentState, onValueSliderChange, walletBalances }}
@@ -67,19 +82,7 @@ export default function Assessment() {
             gardens={gardenData}
           />
         </StepWizardStyled>
-      ) : (
-        <Box>
-          <Text fontSize="2xl">No connected wallet found.</Text>
-          <Box>
-            <Button
-              variant="outline"
-              onClick={() => history.push("/admin/connect")}
-            >
-              Please connect first!
-            </Button>
-          </Box>
-        </Box>
-      )}
+      ) : (child)}
     </Flex>
   );
 }

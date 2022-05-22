@@ -27,11 +27,8 @@ export default function ValueToInvest(props) {
 
   const walletResponse = state.walletBalances.response;
 
-  const ethBalance = walletResponse && walletResponse?.ETH?.balance;
-  let ethValue =
-    walletResponse && walletResponse?.ETH?.price?.rate * ethBalance;
-  if (typeof ethValue === "number") ethValue = ethValue.toFixed(2);
-
+  const ethBalance = (walletResponse && walletResponse.ETH.balance) || 0;
+  const ethValue = ((walletResponse && walletResponse.ETH.price.rate * ethBalance) || 0).toFixed(2);
   return (
     <Flex direction={"column"} alignItems="center" maxW="80vw">
       <NavButtons step={1} {...props} />
@@ -44,7 +41,7 @@ export default function ValueToInvest(props) {
         borderColor="gray.500"
       >
         <Text fontSize="2xl">
-          Your wallet currently has {state.walletValueETH} ETH.
+          Your wallet currently has {state.walletValueETH.toFixed(4)} ETH.
         </Text>
 
         <TableContainer>
@@ -59,17 +56,17 @@ export default function ValueToInvest(props) {
             </Thead>
             <Tbody>
               <Tr>
-                <Td>{ethBalance} ETH</Td>
+                <Td>{ethBalance.toFixed(4)} ETH</Td>
                 <Td isNumeric>${ethValue}</Td>
               </Tr>
-              {walletResponse &&
-                walletResponse?.tokens.map((token, i) => {
+              {walletResponse?.tokens && walletResponse.tokens.map((token) => {
+                  const balance = token.balance / Math.pow(10, Number(token.tokenInfo.decimals));
                   return (
-                    <Tr key={`${token.tokenInfo?.symbol}-${i}`}>
+                    <Tr key={token.tokenInfo.symbol}>
                       <Td>
-                        {token.balance} {token.tokenInfo?.symbol}
+                        {balance} {token.tokenInfo.symbol}
                       </Td>
-                      <Td isNumeric>${token.tokenInfo?.price}</Td>
+                      <Td isNumeric>${token.tokenInfo.price.rate.toFixed(2)}</Td>
                     </Tr>
                   );
                 })}
@@ -84,7 +81,7 @@ export default function ValueToInvest(props) {
             <Flex flexDirection="column" alignItems="center">
               <Text>{state.valueToInvest} ETH</Text>
 
-              {state.walletValueETH && state.walletValueETH < 0.01 && (
+              {state.walletValueETH === 0 && (
                 <Text>
                   Sorry, not enough ETH funds to invest. Please top up your
                   wallet.
@@ -95,8 +92,9 @@ export default function ValueToInvest(props) {
 
           <Slider
             min={0}
+            value={state.valueToInvest}
             max={state.walletValueETH}
-            step={0.01}
+            step={state.walletValueETH / 10}
             defaultValue={0}
             colorScheme="teal"
             onChange={onSliderChange}

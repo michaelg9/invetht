@@ -23,7 +23,7 @@ export default function Dashboard(props) {
 
   // functions for changing the states from components
   const getActiveRoute = (routes) => {
-    let activeRoute = "Default Brand Text";
+    let activeRoute = "Portfolio";
     for (let i = 0; i < routes.length; i++) {
       if (routes[i].collapse) {
         let collapseActiveRoute = getActiveRoute(routes[i].views);
@@ -117,7 +117,7 @@ export default function Dashboard(props) {
           <PanelContainer>
             <Switch>
               {getRoutes(routes)}
-              <Redirect from="/admin" to="/admin/portofolio" />
+              <Redirect from="/admin" to="/admin/portfolio" />
             </Switch>
           </PanelContainer>
         </PanelContent>

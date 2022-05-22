@@ -49,7 +49,7 @@ export default function Dashboard() {
     );
   }
   const { ETH, tokens = [] } = walletBalances.response!;
-  const { result: txs } = tokenTxs.response!;
+  const txs = Array.isArray(tokenTxs.response?.result) ? tokenTxs.response!.result : [];
   const listTimeWindow = "diff7d";
   const tokenDetails = tokens.map((t) => {
     const balance = t.balance / Math.pow(10, Number(t.tokenInfo.decimals));

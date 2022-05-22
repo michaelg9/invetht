@@ -15,13 +15,12 @@ export default function Goals(props) {
   const { state } = props;
 
   function onCardClick(value) {
-    state.onValueChange("valueGoal", value);
+    state.onValueSliderChange("valueRiskProfile", value * 3);
   }
 
   function onSliderChange(value) {
     state.onValueSliderChange("valueRiskProfile", value);
   }
-
   return (
     <Flex direction={"column"} alignItems="center" maxW="80vw">
       <NavButtons step={2} {...props} />
@@ -40,7 +39,7 @@ export default function Goals(props) {
             flexDirection="column"
             justifyContent="space-between"
             onClick={() => onCardClick(1)}
-            active={state.valueGoal === 1}
+            active={state.valueRiskProfile <= 3}
           >
             <Flex direction="column" alignItems="center" py="1rem">
               <Text fontSize="4rem">🐷</Text>
@@ -65,7 +64,7 @@ export default function Goals(props) {
             flexDirection="column"
             justifyContent="space-between"
             onClick={() => onCardClick(2)}
-            active={state.valueGoal === 2}
+            active={state.valueRiskProfile <= 6 && state.valueRiskProfile > 3}
           >
             <Flex direction="column" alignItems="center" py="1rem">
               <Text fontSize="4rem">🪴</Text>
@@ -90,7 +89,7 @@ export default function Goals(props) {
             flexDirection="column"
             justifyContent="space-between"
             onClick={() => onCardClick(3)}
-            active={state.valueGoal === 3}
+            active={state.valueRiskProfile > 6}
           >
             <Flex direction="column" alignItems="center" py="1rem">
               <Text fontSize="4rem">🚀</Text>
@@ -115,7 +114,7 @@ export default function Goals(props) {
           <Slider
             min={0}
             max={10}
-            defaultValue={0}
+            value={state.valueRiskProfile}
             colorScheme="teal"
             onChange={onSliderChange}
             mt="1rem"

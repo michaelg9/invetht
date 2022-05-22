@@ -50,7 +50,7 @@ export default function CrashReaction(props) {
             onClick={() => onCardClick(2)}
             active={state.valueMarketReaction === 2}
           >
-            <Text>Hodl. Prices will eventually recover.</Text>
+            <Text>Hold. Prices will eventually recover.</Text>
           </Card>
 
           <Card

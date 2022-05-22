@@ -56,7 +56,7 @@ async function getGardens(
 
     const gardenData = await getGardenData(gardenContract, library);
 
-    allGardenData.push({ ...gardenData, address: gardenAddress });
+    allGardenData.push({ ...gardenData });
   }
 
   return allGardenData;

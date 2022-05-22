@@ -26,7 +26,7 @@ function writeToCache(key: string, item: unknown) {
   localStorage[key] = JSON.stringify(toWrite);
 }
 
-export default function useApi<T = unknown>(p: ApiParams, cache?: CacheProps) {
+export default function useApi<T = unknown>(p: ApiParams, cache?: CacheProps, transform?: ((arg: T) => Promise<T>)) {
   const [response, setResponse] = useState<T>();
   const [error, setError] = useState();
   useEffect(() => {
@@ -37,6 +37,7 @@ export default function useApi<T = unknown>(p: ApiParams, cache?: CacheProps) {
     } else if (url) {
       fetch(...p)
         .then((r) => r.json())
+        .then(r => transform ? transform(r) : r)
         .then((r) => {
           if (cache) writeToCache(cache.key, r);
           setResponse(r);

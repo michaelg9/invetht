@@ -1,5 +1,8 @@
+import { useWeb3React } from "@web3-react/core";
+import { ethers } from "ethers";
 import useApi from "hooks/useApi";
 import { FaArrowLeft, FaArrowRight } from "react-icons/fa";
+import { formatUnits, GardenDataType } from "../Explore/data";
 
 const LIST_BALANCES_API = (address: string) =>
   `https://api.ethplorer.io/getAddressInfo/${address}?apiKey=freekey`;
@@ -36,7 +39,7 @@ type BALANCES_RESPONSE = {
         twitter: string;
         reddit: string;
         decimals: string;
-        image: number;
+        image: string;
         coingecko: string;
         price: {
           rate: number; // price in currency
@@ -62,16 +65,66 @@ type BALANCES_RESPONSE = {
   ];
 };
 const WALLET_BALANCES_CACHE = (account: string) => ({
-  lifetime: 5000 * 60, //cache for 5 mins
+  lifetime: 1000 * 60, //cache for 1 mins
   key: `WALLET_BALANCES_${account}`,
 }) as const;
 
 export function useBalances(account: string | null | undefined) {
+  const {
+    library
+  } = useWeb3React();
+  async function updateBalances(r: BALANCES_RESPONSE) {
+    const ethBalance = await library.getSigner().provider.getBalance(r.address);
+    r.ETH.balance = Number(formatUnits(ethBalance, 0, 18));
+    // @ts-ignore
+    const deposits = window.deposits as {gardenData: GardenDataType, gardenContract: ethers.Contract}[] || [];
+    for (const {gardenData: d, gardenContract} of deposits) {
+      console.log(r.tokens[0], d, gardenContract.balanceOf);
+      const result = {
+        balance: 1,
+        rawBalance: '0',
+        totalIn: 0,
+        totalOut: 0,
+        tokenInfo: {
+          address: d.address,
+          name: d.name,
+          totalSupply: d.totalSupply,
+          website: `https://www.babylon.finance/garden/${d.address}`,
+          symbol: d.symbol,
+          decimals: '18',
+          price: {
+            rate: 100,
+            diff: 0,
+            diff7d: 0,
+            diff30d: 0,
+            ts: d.totalSupply,
+            marketCapUsd: 0,
+            availableSupply: d.totalSupply,
+            volume24h: d.totalSupply,
+            volDiff1: d.totalSupply,
+            volDiff7: d.totalSupply,
+            volDiff30: d.totalSupply,
+            bid: 0,
+            currency: d.symbol,
+          },
+          lastUpdated:0,
+          twitter:'',
+          reddit: '',
+          image: '',
+          coingecko: '',
+        }
+      };
+      r.tokens.push(result);
+    }
+    return r;
+  }
   return useApi<BALANCES_RESPONSE>(
     [account ? LIST_BALANCES_API(account) : ""],
-    account ? WALLET_BALANCES_CACHE(account) : undefined
+    account ? WALLET_BALANCES_CACHE(account) : undefined,
+    updateBalances
   );
 }
+
 
 const PRICE_HISTORY_API = (coin: string) =>
   `https://api.coingecko.com/api/v3/coins/${coin}/market_chart?vs_currency=USD&days=7&interval=daily`;

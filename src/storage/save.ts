@@ -20,7 +20,6 @@ export async function storeFilesToIPFS(filename:string, content:string) {
 export async function retrieveFilesFromIPFS (cid: string) {
   const res = await client.get(cid)
   if (!res || !res.ok || !res.body) return [];
-  console.log('here');
   for (const f of res.files()) {
     console.log(f);
   }

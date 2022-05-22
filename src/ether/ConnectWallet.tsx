@@ -147,6 +147,7 @@ export default function ConnectWallet() {
                   <option value="42">Kovan</option>
                   <option value="1666600000">Harmony</option>
                   <option value="42220">Celo</option>
+                  <option value="31337">HardHat</option>
                 </Select>
               </VStack>
             </Box>

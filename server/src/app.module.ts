@@ -3,6 +3,7 @@ import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { MongooseModule } from '@nestjs/mongoose';
 import { ConfigModule } from '@nestjs/config';
+import { UserModule } from './user/user.module';
 import 'dotenv/config';
 
 const mongodb_user = process.env.MONGODB_USER;
@@ -15,6 +16,7 @@ const mongodb_suffix = process.env.MONGODB_SUFFIX;
     MongooseModule.forRoot(
       `mongodb+srv://${mongodb_user}:${mongodb_pw}@${mongodb_suffix}`,
     ),
+    UserModule,
   ],
   controllers: [AppController],
   providers: [AppService],
